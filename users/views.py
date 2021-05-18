@@ -1,16 +1,16 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm
+from .forms import UserSignupForm
 
 
-def registration_view(request):
+def signup_view(request):
     """
-    Renders Registration Form 
+    Renders UserSignup Form 
     """
     context = {}
     if request.POST:
-        form = UserRegistrationForm(request.POST)
+        form = UserSignupForm(request.POST)
         if form.is_valid():
             form.save()
             email = form.cleaned_data.get('email')
@@ -22,8 +22,8 @@ def registration_view(request):
             return redirect('home')
         else:
             messages.error(request, "Please Correct Below Errors")
-            context['registration_form'] = form
+            context['signup_form'] = form
     else:
-        form = UserRegistrationForm()
-        context['registration_form'] = form
-    return render(request, "usersapp/register.html", context)
+        form = UserSignupForm()
+        context['signup_form'] = form
+    return render(request, "signup.html", context)

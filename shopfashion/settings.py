@@ -38,7 +38,7 @@ ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
-    'usersapp',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -144,10 +144,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Default user login with email address not user name.
 
-AUTH_USER_MODEL = 'usersapp.MyUser'
+AUTH_USER_MODEL = 'users.User'
 
-LOGIN_REDIRECT_URL = env('LOGIN_REDIRECT_URL')
-LOGOUT_REDIRECT_URL = env('LOGOUT_REDIRECT_URL')
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')
