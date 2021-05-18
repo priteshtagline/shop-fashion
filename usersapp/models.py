@@ -19,7 +19,6 @@ class MyUserManager(BaseUserManager):
 
         user.set_password(password)
         user.is_admin = False
-        user.is_customer = True
         user.save(using=self._db)
         return user
 
@@ -43,13 +42,9 @@ class MyUser(AbstractBaseUser):
         unique=True,
     )
 
-    
-    is_active = models.BooleanField(default=True)
-    is_customer = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = MyUserManager()
-
 
     username = None
     USERNAME_FIELD = 'email'
