@@ -5,15 +5,15 @@ from users.models import User
 
 class UserAdmin(BaseUserAdmin):
     """
-    The forms to add and change user instances
-    The fields to be used in displaying the User model.
-    These override the definitions on the base UserAdmin
-    that reference specific fields on auth.User.
+    Customize the users admin in the django admin site.
+    We can customize the fields to disply in the list view and edit view.
+    Also set the search and filters for the user admin.
     """
-    
-    list_display = ('email', )
+
+    list_display = ('email', 'is_superuser')
+    list_filter = ('is_superuser',)
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'is_superuser')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -27,5 +27,5 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 
-# Now register the new UserAdmin.
+# Register the user model to the Django admin.
 admin.site.register(User, UserAdmin)
