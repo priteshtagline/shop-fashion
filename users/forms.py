@@ -5,7 +5,8 @@ from django.contrib.auth.forms import UserCreationForm as SignupFrom
 
 class UserSignupForm(SignupFrom):
     """
-    Form for Registering new users 
+    UserCreattionForm extend as SignupFrom for django auth form.
+    User model to create form and username field remove and add email field.
     """
     email = forms.EmailField(max_length=60, help_text = 'Required. Add a valid email address')
     class Meta:

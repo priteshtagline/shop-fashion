@@ -28,20 +28,23 @@ class UserManager(BaseUserManager):
             password=password,
         )
         user.is_staff = True
-        user.is_admin = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
 
 
 class User(AbstractUser):
+    """
+        AbstractUser method because django provide default user login with username and password
+        but requirment is user authanticate with his email and password.
+        So, hear username filed none set email field with unique.
+    """
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
         unique=True,
     )
 
-    is_admin = models.BooleanField(default=False)
     objects = UserManager()
 
     username = None

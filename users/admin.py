@@ -4,11 +4,13 @@ from users.models import User
 
 
 class UserAdmin(BaseUserAdmin):
-    # The forms to add and change user instances
-
-    # The fields to be used in displaying the User model.
-    # These override the definitions on the base UserAdmin
-    # that reference specific fields on auth.User.
+    """
+    The forms to add and change user instances
+    The fields to be used in displaying the User model.
+    These override the definitions on the base UserAdmin
+    that reference specific fields on auth.User.
+    """
+    
     list_display = ('email', )
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
@@ -25,5 +27,5 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 
-# # Now register the new UserAdmin...
+# Now register the new UserAdmin.
 admin.site.register(User, UserAdmin)

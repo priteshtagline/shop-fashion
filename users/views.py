@@ -6,7 +6,8 @@ from .forms import UserSignupForm
 
 def signup_view(request):
     """
-    Renders UserSignup Form 
+    The user fill the signup form and submit. 
+    If form data is validate then automaticaly user login and redirect to the website home page.
     """
     context = {}
     if request.POST:
@@ -18,7 +19,7 @@ def signup_view(request):
             account = authenticate(email=email, password=password)
             login(request, account)
             messages.success(
-                request, "You have been Registered as {}".format(request.user.email))
+                request, "You have been signup as {}".format(request.user.email))
             return redirect('home')
         else:
             messages.error(request, "Please Correct Below Errors")
