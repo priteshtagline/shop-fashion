@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <div class="container jumbotron">
+        {% if user.is_authenticated %}
+        <strong>You Are AllReady Signup with This Email {{ user.email }}.</strong><br>
+        <a href="{% url 'home' %}" class="btn-link btn">Return to the HomePage</a>
+        {% else %}
+        <strong class="display-3 mb-4">Sign In Here... </strong>
+        <form action="{% url 'signup' %}" class="pt-3" method="POST">
+            {% csrf_token %}
+            {{ signup_form.as_p }}
+            <input type="submit" name="submit" value="Signup" class="btn btn-success">
+            <p class="p-2 m-1">Already a Member? <a href="{% url 'login' %}">Sign In Here...</a></p>
+        </form>
+        {% endif %}
+    </div>
+</body>
+
+</html>
