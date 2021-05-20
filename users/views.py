@@ -1,13 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
+
 from .forms import UserSignupForm
 
 
 def signup_view(request):
-    """
-    The user fill the signup form and submit. 
-    If form data is validate then automaticaly user login and redirect to the website home page.
+    """This view is for the sign up page which displays signup form.
+    After successful registration, it will automatically login the user in the system and
+    redirect user to the home page.
     """
     context = {}
     if request.POST:
@@ -19,7 +20,7 @@ def signup_view(request):
             account = authenticate(email=email, password=password)
             login(request, account)
             messages.success(
-                request, "You have been signup as {}".format(request.user.email))
+                request, "Thank you for signup.")
             return redirect('home')
         else:
             messages.error(request, "Please Correct Below Errors")

@@ -14,7 +14,7 @@ cd shop-fashion/
 
 2. Then run the following command to setup project using docker:
 
-```sh 
+```sh
 docker-compose up -d --build
 ```
 
@@ -30,10 +30,56 @@ docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py createsuperuser
 ```
 
-5. Run the project in localhost
+You can go to the http:///127.0.0.1:8000 to view the application running.
 
-```sh 
-docker-compose up
+## Docker Development
+
+### Build the docker containers
+
+```sh
+docker-compose up -d --build
 ```
 
-You can go to the http:///127.0.0.1:8000 to view the application running.
+### Stop the containers
+
+```
+docker-compose stop
+```
+
+### Check the docker containers status
+
+```sh
+docker-compose ps -a
+```
+
+### Check the logs of the docker containers
+
+The below command displays logs of both containers together.
+
+```sh
+docker-compose logs -f --tail 20
+```
+
+Check the logs for only the database container.=
+
+```sh
+docker-compose logs -f --tail 20 postgres
+```
+
+Check the logs for only the django container.
+
+```sh
+docker-compose logs -f --tail 20 web
+```
+
+### To remove the docker containers
+
+```sh
+docker-compose down
+```
+
+To remove the docker containers with all the data. `Do not use this command. This will removes all the data of database.`
+
+```sh
+docker-compose down -v
+```
