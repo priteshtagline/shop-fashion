@@ -1,22 +1,19 @@
 from django.contrib import admin
-from adminsortable2.admin import SortableAdminMixin
-from django.utils.html import format_html
 from .models import Color
-from .forms import ColorForm
 
 
-class ColorAdmin(SortableAdminMixin, admin.ModelAdmin):
-    """
-    ColorAdmin override with SortableAdminMixin and admin.ModelAdmin.
-    SortableAdminMixin is define display of color order in admin and user side.
-    Display Django admin color name, and color code.
-    """
-    form = ColorForm
-    list_display = ('color_name', 'color_code_display',)
+@admin.register(Color)
+class ColorAdmin(admin.ModelAdmin):
+    list_display = ('color_name', 'color_code')
 
-    def color_code_display(self, obj):
-        return format_html('<b style="color:{0};">{0}</b>'.format(obj.color_code))
+    def changelist_view(self, request, extra_context=None):
+        extra_context = extra_context or {}
 
-    color_code_display.short_description = 'Color Code'
+        color = Color.objects.all()
+        color_disply = Color.objects.all()
 
-admin.site.register(Color, ColorAdmin)
+        extra_context.update({
+            "colors": color,
+            "color_disply": color_disply,
+        })
+        return super().changelist_view(request, extra_context=extra_context)

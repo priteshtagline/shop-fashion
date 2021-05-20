@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'website',
-    'adminsortable2',
+    'colorfield',
 ]
 
 MIDDLEWARE = [
