@@ -6,9 +6,9 @@ from .models import User
 
 class UserSignupForm(SignupFrom):
     """Signup form which displays email and password fields."""
-    email = forms.EmailField(
-        max_length=60, help_text='Required. Add a valid email address')
-
-    class Meta:
+    class Meta(SignupFrom.Meta):
+        widgets = {
+            'gender': forms.RadioSelect()
+        }
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'gender', 'phone_number')

@@ -39,17 +39,26 @@ class User(AbstractUser):
         but requirment is user authanticate with his email and password.
         So, hear username filed none set email field with unique.
     """
-    email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
-        unique=True,
+
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
     )
+
+    email = models.EmailField(verbose_name='email address', max_length=255, unique=True, error_messages={
+                              'unique': 'A user with that email already exists.'})
+    phone_number = models.CharField(
+        verbose_name='phone number', max_length=20, blank=True, null=True)
+    gender = models.CharField(verbose_name='gender', blank=False, default='M', max_length=1, choices=GENDER_CHOICES, error_messages={
+                              'invalid_choice': 'Choise any one gender.'})
 
     objects = UserManager()
 
-    username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+    
+    class Meta:
+        db_table = 'user'
 
     def __str__(self):
         return self.email
