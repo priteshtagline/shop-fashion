@@ -7,4 +7,3 @@ from .shop_look import ShopLook
 from .similar_product import SimilarProduct
 from .vtov_product import VtovProduct
 from .recommended_product import RecommendedProduct
-from .color import Color

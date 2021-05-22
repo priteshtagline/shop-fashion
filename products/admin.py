@@ -3,7 +3,6 @@ from django.utils.html import format_html
 from products.models.department import Department
 from products.models.category import Category
 from products.models.brand import Brand
-from products.models.color import Color
 from products.models.product import Product
 from products.models.campaign import Campaign
 from products.models.shop_look import ShopLook
@@ -16,18 +15,18 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'department', )
 
 
-class ColorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color_code')
-
-
-class ProductMetadataAdmin(admin.ModelAdmin):
+class ProductAdmin(admin.ModelAdmin):
     class Media:
-        js = ('js/admin_custom.js',)
+        js = ('js/admin_product_custom.js',)
+
+    list_display = ('title', 'department', 'category', 'brand', 'color_view',
+                    'store', 'redirect_url_view', 'price', 'image1_view', 'image2_view')
 
     readonly_fields = ('image1_view', 'image2_view')
 
-    list_display = ('title', 'department', 'category', 'brand',
-                    'store', 'redirect_url_view', 'price', 'image1_view')
+    def color_view(self, obj):
+        return format_html('<span style="color: {0};">{0}</span>'.format(obj.color))
+    color_view.short_description = 'Color'
 
     def redirect_url_view(self, obj):
         return format_html('<a href="{0}" target="_blank">{0}</a>'.format(obj.redirect_url))
@@ -42,6 +41,9 @@ class ProductMetadataAdmin(admin.ModelAdmin):
 
 
 class ShopLookAdmin(admin.ModelAdmin):
+    class Media:
+        js = ('js/admin_shoplook_custom.js',)
+
     list_display = ('title', 'department', 'image_view', 'products_list')
     readonly_fields = ('image_view',)
 
@@ -61,6 +63,9 @@ class CampaignAdmin(admin.ModelAdmin):
 
 
 class SimilarProductAdmin(admin.ModelAdmin):
+    class Media:
+        js = ('js/admin_products_custom.js',)
+
     list_display = ('product', 'products_list')
 
     def products_list(self, obj):
@@ -68,6 +73,9 @@ class SimilarProductAdmin(admin.ModelAdmin):
 
 
 class VtovProductAdmin(admin.ModelAdmin):
+    class Media:
+        js = ('js/admin_products_custom.js',)
+
     list_display = ('product', 'products_list')
 
     def products_list(self, obj):
@@ -75,6 +83,9 @@ class VtovProductAdmin(admin.ModelAdmin):
 
 
 class RecommendedProductAdmin(admin.ModelAdmin):
+    class Media:
+        js = ('js/admin_products_custom.js',)
+
     list_display = ('product', 'products_list')
 
     def products_list(self, obj):
@@ -84,8 +95,7 @@ class RecommendedProductAdmin(admin.ModelAdmin):
 admin.site.register(Brand)
 admin.site.register(Department)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Color, ColorAdmin)
-admin.site.register(Product, ProductMetadataAdmin)
+admin.site.register(Product, ProductAdmin)
 admin.site.register(Campaign, CampaignAdmin)
 admin.site.register(ShopLook, ShopLookAdmin)
 admin.site.register(SimilarProduct, SimilarProductAdmin)

@@ -14,4 +14,5 @@ class Category(models.Model):
         verbose_name = "Category"
         verbose_name_plural = "Categories"
         db_table = 'category'
+        unique_together = ('department', 'name')
     

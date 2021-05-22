@@ -1,8 +1,8 @@
 from django.db import models
-from .department import Department
-from .category import Category
+from colorfield.fields import ColorField
 from .brand import Brand
-from .color import Color
+from .category import Category
+from .department import Department
 
 
 class Product(models.Model):
@@ -14,15 +14,14 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     redirect_url = models.URLField()
     price = models.FloatField(blank=True, null=True,)
-    color = models.ForeignKey(
-        Color, blank=True, null=True, on_delete=models.SET_NULL)
+    color = ColorField(format='hexa')
     description = models.TextField()
     image1 = models.ImageField(upload_to='product/')
     image2 = models.ImageField(upload_to='product/')
-    publish_data = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
-    
+
     class Meta:
         db_table = 'product'
+
