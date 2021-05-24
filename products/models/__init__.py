@@ -1,5 +1,6 @@
 from .department import Department
 from .category import Category
+from .sub_category import SubCategory
 from .brand import Brand
 from .product import Product
 from .campaign import Campaign

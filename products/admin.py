@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from products.models.department import Department
 from products.models.category import Category
+from products.models.sub_category import SubCategory
 from products.models.brand import Brand
 from products.models.product import Product
 from products.models.campaign import Campaign
@@ -15,11 +16,18 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'department', )
 
 
+class SubCategoryAdmin(admin.ModelAdmin):
+    class Media:
+        js = ('js/admin_category_custom.js',)
+        
+    list_display = ('name', 'category', 'department')
+    
+
 class ProductAdmin(admin.ModelAdmin):
     class Media:
-        js = ('js/admin_product_custom.js',)
+        js = ('js/admin_category_custom.js',)
 
-    list_display = ('title', 'department', 'category', 'brand', 'color_view',
+    list_display = ('title', 'department', 'category', 'subcategory', 'brand', 'color_view',
                     'store', 'redirect_url_view', 'price', 'image1_view', 'image2_view')
 
     readonly_fields = ('image1_view', 'image2_view')
@@ -95,6 +103,7 @@ class RecommendedProductAdmin(admin.ModelAdmin):
 admin.site.register(Brand)
 admin.site.register(Department)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Campaign, CampaignAdmin)
 admin.site.register(ShopLook, ShopLookAdmin)

@@ -2,12 +2,14 @@ from django.db import models
 from colorfield.fields import ColorField
 from .brand import Brand
 from .category import Category
+from .sub_category import SubCategory
 from .department import Department
 
 
 class Product(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     brand = models.ForeignKey(
         Brand, blank=True, null=True, on_delete=models.SET_NULL)
     store = models.CharField(max_length=255)

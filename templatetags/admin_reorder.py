@@ -1,8 +1,5 @@
-from django.contrib.admin import site
-from django.apps import apps
+
 from django import template
-from django.utils.text import capfirst
-from django.contrib.auth.models import User
 
 
 register = template.Library()
@@ -19,13 +16,14 @@ def render_model_list(app_list):
         "Users": 2,
         "Departments": 3,
         "Categories": 4,
-        "Brands": 5,
-        "Products": 6,
-        "Recommended Products": 7,
-        "Similar Products": 8,
-        "Vtov Products": 9,
-        "Shop Looks": 10,
-        "Campaigns": 11,
+        "Sub Categories": 5,
+        "Brands": 6,
+        "Products": 7,
+        "Recommended Products": 8,
+        "Similar Products": 9,
+        "Vtov Products": 10,
+        "Shop Looks": 11,
+        "Campaigns": 12,
     }
 
     for app in app_list:

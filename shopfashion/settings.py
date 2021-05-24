@@ -76,7 +76,6 @@ TEMPLATES = [
             'builtins': [
                 'templatetags.admin_reorder'
             ],
-            # or as @x-yuri pointed out, you can put them in `libraries`
             'libraries': {
                 'admin_reorder': 'templatetags.admin_reorder',
             },
