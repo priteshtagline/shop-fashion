@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'users',
     'products',
     'colorfield',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +75,12 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'builtins': [
-                'templatetags.admin_reorder'
+                'templatetags.admin_reorder',
+                'templatetags.department_tags',
             ],
             'libraries': {
                 'admin_reorder': 'templatetags.admin_reorder',
+                'department_tags': 'templatetags.department_tags',
             },
         },
 

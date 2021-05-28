@@ -47,9 +47,11 @@ class User(AbstractUser):
 
     email = models.EmailField(verbose_name='email address', max_length=255, unique=True, error_messages={
                               'unique': 'A user with that email already exists.'})
+    username = models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, 
+                                verbose_name='username', blank=True, null=True, default=None, unique=True)
     phone_number = models.CharField(
         verbose_name='phone number', max_length=20, blank=True, null=True)
-    gender = models.CharField(verbose_name='gender', blank=False, default='M', max_length=1, choices=GENDER_CHOICES, error_messages={
+    gender = models.CharField(verbose_name='gender', blank=True, default='M', max_length=1, choices=GENDER_CHOICES, error_messages={
                               'invalid_choice': 'Choise any one gender.'})
 
     objects = UserManager()

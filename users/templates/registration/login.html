@@ -1,24 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In</title>
-</head>
-<body>
-    <h2>Sign In</h2>
-    <form method="post">
-        {% if user.is_authenticated %}
-        <strong>You Are All Ready Login With This Email {{ user.email }}.</strong><br>
-        <a href="{% url 'home' %}" class="btn-link btn">Return to the HomePage</a>
-        {% else %}
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign In</button>
-        <p>Not Acccount? <a href="{% url 'signup' %}">Sign Up</a></p>
-        <p>Not Remember Password? <a href="/password_reset">Reset</a></p>
-        {% endif %}
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %} Sign In | {{block.super}} {% endblock %}
+
+{% block body %}
+    <main>
+        <div class="signin-form">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-4 signin-form">
+                        <h3>Sign In</h3>
+                        <p>Enter your email to get started.</p>
+                        <form method="post">
+                            {% csrf_token %}
+
+                            {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <label for="{{ form.username.id_for_label }}" class="fw-bold">Email</label>
+                            <br>
+                            {{form.username|add_class:"rounded-0"}}
+
+                            <label for="{{ form.password.id_for_label }}" class="mt-4 fw-bold">Password</label>
+                            {{form.password|add_class:"rounded-0"}}
+
+                            <p class="warning">By tapping Next, you agree to our <span><a href="#">Privacy
+                                        Policy</a></span> and <span><a href="#">Terms & Conditions.</a></span></p>
+
+                            <input type="submit" name="submit" value="LogIn" class="btn btn-dark rounded-0">
+
+                            <p class="mt-2"><a
+                                    href="{% url 'password_reset' %}" class="text-decoration-underline">Forgot Password?</a></p>
+                            <p class="mt-2 mb-1">Not an User? <a href="{% url 'signup' %}" class="text-decoration-underline">Sign Up</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+password_reset

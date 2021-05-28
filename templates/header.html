@@ -1,0 +1,174 @@
+{% load department_tags %}
+
+{% show_departments %}
+
+
+{% for dep in show_departments %}
+{{dep}}
+{% endfor %}
+
+<ul>
+    {% for dep in departments %}
+    <li> {{ dep }} </li>
+    {% endfor %}
+</ul>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light md-bg-light">
+        <div class="container-fluid px-0">
+            <a class="navbar-brand order-0" href="{% url 'home' %}">Shopfashion</a>
+            <button class="navbar-toggler order-xl-1 order-lg-2 order-md-2 order-sm-2 order-2" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav m-auto left-menu">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{% url 'home' %}" target="_self">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown megamenu-li">
+                        <a class="nav-link dropdown-toggle" id="dropdown01" href="#" data-bs-toggle="dropdown">
+                            Women </a>
+                        <div class="dropdown-menu megamenu p-4" role="menu">
+                            <div class="row">
+                                <div class="col-lg-3 col-6">
+                                    <div class="col-megamenu">
+                                        <h6 class="title"><strong>Clothing</strong></h6>
+                                        <ul class="list-unstyled">
+                                            <li><a href="browse.html">Activewear</a></li>
+                                            <li><a href="browse.html">Blazers</a></li>
+                                            <li><a href="browse.html">Coat & Jackets</a></li>
+                                            <li><a href="browse.html">Dresses</a></li>
+                                            <li><a href="browse.html">Jeans & Denim</a></li>
+                                            <li><a href="browse.html">Lingerie, Hosiery & Shapewear</a></li>
+                                            <li><a href="browse.html">Loungewear</a></li>
+                                            <li><a href="browse.html">Pants & Leggings</a></li>
+                                            <li><a href="browse.html">Shorts</a></li>
+                                            <li><a href="browse.html">Skirts</a></li>
+                                            <li><a href="browse.html">Sleepwear & Robes</a></li>
+                                            <li><a href="browse.html">Sweaters</a></li>
+                                            <li><a href="browse.html">Sweatshirts & Hoodies</a></li>
+                                            <li><a href="browse.html">Swimsuits & Cover-Ups</a></li>
+                                            <li><a href="browse.html">Tops</a></li>
+                                            <li><a href="browse.html">Juniors' Clothing</a></li>
+                                            <li><a href="browse.html">Lingerie, Hosiery & Shapewear</a></li>
+                                            <li><a href="browse.html">Plus-Size Clothing</a></li>
+                                        </ul>
+                                    </div> <!-- col-megamenu.// -->
+                                </div><!-- end col-3 -->
+
+                                <div class="col-lg-3 col-6">
+                                    <div class="col-megamenu">
+                                        <h6 class="title"><strong>Shoes</strong></h6>
+                                        <ul class="list-unstyled">
+                                            <li><a href="browse.html">Booties</a></li>
+                                            <li><a href="browse.html">Boots</a></li>
+                                            <li><a href="browse.html">Comfort</a></li>
+                                            <li><a href="browse.html">Espadrilles</a></li>
+                                            <li><a href="browse.html">Flats</a></li>
+                                            <li><a href="browse.html">Heels</a></li>
+                                            <li><a href="browse.html">Mules & Slides</a></li>
+                                            <li><a href="browse.html">Oxfords & Loafers</a></li>
+                                            <li><a href="browse.html">Running Shoes</a></li>
+                                            <li><a href="browse.html">Sandals</a></li>
+                                            <li><a href="browse.html">Shoe Care & Accessories</a></li>
+                                            <li><a href="browse.html">Slippers</a></li>
+                                            <li><a href="browse.html">Sneakers & Athletic</a></li>
+                                            <li><a href="browse.html">Sneaker Release Calendar</a></li>
+                                        </ul>
+                                    </div> <!-- col-megamenu.// -->
+                                </div><!-- end col-3 -->
+
+                                <div class="col-lg-3 col-6 mt-lg-0 mt-md-3 mt-sm-3 mt-3">
+                                    <div class="col-megamenu">
+                                        <h6 class="title"><strong>Handbag</strong></h6>
+                                        <ul class="list-unstyled">
+                                            <li><a href="browse.html">Backpacks</a></li>
+                                            <li><a href="browse.html">Belt Bags</a></li>
+                                            <li><a href="browse.html">Camera Bags</a></li>
+                                            <li><a href="browse.html">Bucket Bags</a></li>
+                                            <li><a href="browse.html">Clutches & Pouches</a></li>
+                                            <li><a href="browse.html">Crossbody Bags</a></li>
+                                            <li><a href="browse.html">Designer Bags</a></li>
+                                            <li><a href="browse.html">Hobo Bags</a></li>
+                                            <li><a href="browse.html">Luggage & Travel</a></li>
+                                            <li><a href="browse.html">Satchels</a></li>
+                                            <li><a href="browse.html">Shoulder Bags</a></li>
+                                            <li><a href="browse.html">Straw Bags</a></li>
+                                            <li><a href="browse.html">Tote Bags</a></li>
+                                            <li><a href="browse.html">Wallets & Card Cases</a></li>
+                                        </ul>
+                                    </div> <!-- col-megamenu.// -->
+                                </div><!-- end col-3 -->
+
+                                <div class="col-lg-3 col-6 mt-lg-0 mt-md-3 mt-sm-3 mt-3">
+                                    <div class="col-megamenu">
+                                        <h6 class="title"><strong>Jewelry</strong></h6>
+                                        <ul class="list-unstyled">
+                                            <li><a href="browse.html">Bracelets</a></li>
+                                            <li><a href="browse.html">Earrings</a></li>
+                                            <li><a href="browse.html">Necklaces</a></li>
+                                            <li><a href="browse.html">Rings</a></li>
+                                            <li><a href="browse.html">Watches</a></li>
+                                        </ul>
+
+                                        <h6 class="title mt-3 mb-5"><strong>Fine Jewelry</strong></h6>
+                                        <ul class="list-unstyled">
+                                            <li><a href="browse.html">
+
+                                                </a></li>
+                                        </ul>
+
+                                        <h6 class="title"><strong>Accessories</strong></h6>
+                                        <ul class="list-unstyled">
+                                            <li><a href="browse.html">Belts</a></li>
+                                            <li><a href="browse.html">Face Masks</a></li>
+                                            <li><a href="browse.html">Hair Accessories</a></li>
+                                            <li><a href="browse.html">Hats</a></li>
+                                            <li><a href="browse.html">Headphones</a></li>
+                                            <li><a href="browse.html">Phone Cases</a></li>
+                                            <li><a href="browse.html">Scarves & Wraps</a></li>
+                                            <li><a href="browse.html">Sunglasses & Eyewear</a></li>
+                                        </ul>
+                                    </div> <!-- col-megamenu.// -->
+                                </div><!-- end col-3 -->
+
+                            </div><!-- end row -->
+                        </div> <!-- dropdown-mega-menu.// -->
+                    </li>
+
+                </ul>
+                <div class="search-product">
+                    <a class="nav-link search-link" href="#search-box"><i class="fal fa-search"></i> Search</a>
+                    <form action="search.html" id="search-box">
+                        <input type="search" name="search" class="rounded-0 border-0 search-place" placeholder="search">
+                        <input type="submit" value="Go" class="d-none">
+                    </form>
+                </div>
+            </div>
+            <ul class="order-xl-2 order-lg-1 order-md-1 order-sm-1 order-1 ms-sm-auto user-list">
+                <li class="nav-item dropdown">
+                    <a class="nav-link user" href="#" id="user-dropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{ user.first_name|default:"User" }}<i class="fal fa-chevron-down ps-2"></i>
+                    </a>
+                    <ul class="dropdown-menu user-menu" aria-labelledby="user-dropdown">
+                        {% if not user.is_authenticated %}
+                        <li class="px-2 py-2"><a class="btn btn-dark signin-btn rounded-0" href="{% url 'login' %}"
+                                target="_self">Sign In</a></li>
+                        <li class="px-2 py-2"><a class="btn btn-outline-dark signin-btn rounded-0 signup-btn"
+                                href="{% url 'signup' %}">Create Account</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'account' %}" target="_self">Your Account</a></li>
+                        <li><a class="dropdown-item" href="user.html">Wish List</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
