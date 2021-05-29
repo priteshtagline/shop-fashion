@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from adminsortable2.admin import SortableAdminMixin
 from products.models.department import Department
 from products.models.category import Category
 from products.models.sub_category import SubCategory
@@ -12,18 +13,26 @@ from products.models.vtov_product import VtovProduct
 from products.models.recommended_product import RecommendedProduct
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class BrandAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ('name',)
+
+
+class DepartmentAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_display = ('name',)
+    
+
+class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ('name', 'department', )
 
 
-class SubCategoryAdmin(admin.ModelAdmin):
+class SubCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Media:
         js = ('js/admin_category_custom.js',)
         
     list_display = ('name', 'category', 'department')
     
 
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Media:
         js = ('js/admin_category_custom.js',)
 
@@ -48,7 +57,7 @@ class ProductAdmin(admin.ModelAdmin):
     image2_view.short_description = 'Image2'
 
 
-class ShopLookAdmin(admin.ModelAdmin):
+class ShopLookAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Media:
         js = ('js/admin_shoplook_custom.js',)
 
@@ -63,14 +72,14 @@ class ShopLookAdmin(admin.ModelAdmin):
         return ", ".join([p.title for p in obj.products.all()])
 
 
-class CampaignAdmin(admin.ModelAdmin):
+class CampaignAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ('title', 'products_list')
 
     def products_list(self, obj):
         return ", ".join([p.title for p in obj.products.all()])
 
 
-class SimilarProductAdmin(admin.ModelAdmin):
+class SimilarProductAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Media:
         js = ('js/admin_products_custom.js',)
 
@@ -80,7 +89,7 @@ class SimilarProductAdmin(admin.ModelAdmin):
         return ", ".join([p.title for p in obj.similar_products.all()])
 
 
-class VtovProductAdmin(admin.ModelAdmin):
+class VtovProductAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Media:
         js = ('js/admin_products_custom.js',)
 
@@ -90,7 +99,7 @@ class VtovProductAdmin(admin.ModelAdmin):
         return ", ".join([p.title for p in obj.vtov_products.all()])
 
 
-class RecommendedProductAdmin(admin.ModelAdmin):
+class RecommendedProductAdmin(SortableAdminMixin, admin.ModelAdmin):
     class Media:
         js = ('js/admin_products_custom.js',)
 
@@ -100,8 +109,8 @@ class RecommendedProductAdmin(admin.ModelAdmin):
         return ", ".join([p.title for p in obj.recommended_products.all()])
 
 
-admin.site.register(Brand)
-admin.site.register(Department)
+admin.site.register(Brand, BrandAdmin)
+admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Product, ProductAdmin)

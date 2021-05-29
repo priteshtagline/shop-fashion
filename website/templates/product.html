@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Product | {{block.super}} {% endblock %}
+
+{% block body %}
+<main>
+    <div class="product-details">
+        <div class="row">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="browse.html">{{product.department}}</a></li>
+                    <li class="breadcrumb-item text-capitalize" aria-current="page"><a
+                            href="browse.html">{{product.category}}</a></li>
+                    </li>
+                    <li class="breadcrumb-item active text-capitalize" aria-current="page">{{product.subcategory}}</li>
+                </ol>
+            </nav>
+            <div class="col-md-2 d-flex order-xl-0 order-lg-0 order-md-0 order-sm-2 order-2">
+                <div class="product-images">
+                    <div class="thumbs">
+                        <div id="pr_item_gallery" class="product_gallery_item ">
+                            <a href="#" class="product_gallery_item active"
+                                data-image="{{product.image1.url}}"
+                                data-zoom-image="{{product.image1.url}}">
+                                <img src="{{product.image1.url}}" alt="main-image" class="img-fluid">
+                            </a>
+                            <a href="#" class="product_gallery_item"
+                                data-image="{{product.image2.url}}"
+                                data-zoom-image="{{product.image2.url}}">
+                                <img src="{{product.image2.url}}" alt="main-image" class="img-fluid">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 order-xl-2 order-lg-2 order-md-2 order-sm-0 order-0">
+                <div class="text-center">
+                    <div class="col-md-12 order-xl-2 order-lg-2 order-md-0 order-sm-0 order-0 big-images">
+                        <img id="product_img" src="{{product.image1.url}}"
+                            data-zoom-image="{{product.image1.url}} " alt="product_img1" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 product-info order-xl-3 order-lg-3 order-md-3 order-sm-3 order-3">
+                <h4 class="fw-bold">{{product.title}}</h4>
+                <p>Shopfashion</p>
+
+                <p>{{product.description}}</p>
+
+                <div class="color my-4">
+                    <ul class="colors-list d-flex">
+                        <li class="color-item">
+                            <div class="color">
+                                <a href="#"><img src="{% static 'images/color-1.png' %}" alt="color-1"></a>
+                            </div>
+                        </li>
+                        <li class="color-item">
+                            <div class="color">
+                                <a href="#"><img src="{% static 'images/color-2.png' %}" alt="color-2"></a>
+                            </div>
+                        </li>
+                        <li class="color-item">
+                            <div class="color">
+                                <a href="#"><img src="{% static 'images/color-3.png' %}" alt="color-3"></a>
+                            </div>
+                        </li>
+                        <li class="color-item">
+                            <div class="color">
+                                <a href="#"><img src="{% static 'images/color-4.png' %}" alt="color-4"></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="{{product.redirect_url}}" target="_blank" class="btn btn-dark rounded-0 my-5 buy-now-btn">Buy now from XYZ.com</a>
+                <a href="user.html" class="text-decoration-underline d-block">+ Add to Whish
+                    List</a>
+            </div>
+        </div>
+
+        <div class="recomended my-5">
+            <div class="recomended-products">
+                <h4 class="fw-bold text-center">Similar Products</h4>
+                <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
+                    data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
+                    data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-1.png' %}" class="card-img-top img-fluid"
+                                    alt="product-1">
+                                <div class="card-body">
+                                    <p class="card-text">Elan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-2.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-3.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Becca</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-5.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Elan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recomended my-5">
+            <div class="recomended-products">
+                <h4 class="fw-bold text-center">Recomenden Products</h4>
+                <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
+                    data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
+                    data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-1.png' %}" class="card-img-top img-fluid"
+                                    alt="product-1">
+                                <div class="card-body">
+                                    <p class="card-text">Elan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-2.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-3.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Becca</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-5.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Elan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="recomended my-5">
+            <div class="recomended-products">
+                <h4 class="fw-bold text-center">People also view this Products</h4>
+                <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
+                    data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
+                    data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-1.png' %}" class="card-img-top img-fluid"
+                                    alt="product-1">
+                                <div class="card-body">
+                                    <p class="card-text">Elan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-2.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-3.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Becca</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-5.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Elan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="recomended-item">
+                        <a href="{% url 'home' 2 %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Charles Henry Off the Shoulder Dress</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

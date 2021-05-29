@@ -1,0 +1,78 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light md-bg-light">
+        <div class="container-fluid px-0">
+            <a class="navbar-brand order-0" href="{% url 'home' %}">Shopfashion</a>
+            <button class="navbar-toggler order-xl-1 order-lg-2 order-md-2 order-sm-2 order-2" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav m-auto left-menu">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{% url 'home' %}" target="_self">
+                            Home
+                        </a>
+                    </li>
+
+                    {% for department in departments %}
+                    <li class="nav-item dropdown megamenu-li">
+                        <a class="nav-link dropdown-toggle" id="dropdown01" href="#" data-bs-toggle="dropdown">
+                            {{department}}</a>
+                        <div class="dropdown-menu megamenu p-4" role="menu">
+                            <div class="row">
+                                {% for category in department.category_set.all %}
+                                <div class="col-lg-3 col-6 mt-lg-0 mt-md-3 mt-sm-3 mt-3">
+                                    <div class="col-megamenu">
+                                        <h6 class="title"><strong>{{category}}</strong></h6>
+                                        <ul class="list-unstyled">
+                                            {% for subcategory in category.subcategory_set.all %}
+                                            <li><a href="browse.html">{{subcategory}}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div> <!-- col-megamenu.// -->
+                                </div><!-- end col-3 -->
+                                {% endfor %}
+                            </div><!-- end row -->
+                        </div> <!-- dropdown-mega-menu.// -->
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="search-product">
+                    <a class="nav-link search-link" href="#search-box"><i class="fal fa-search"></i> Search</a>
+                    <form action="search.html" id="search-box">
+                        <input type="search" name="search" class="rounded-0 border-0 search-place" placeholder="search">
+                        <input type="submit" value="Go" class="d-none">
+                    </form>
+                </div>
+            </div>
+            <ul class="order-xl-2 order-lg-1 order-md-1 order-sm-1 order-1 ms-sm-auto user-list">
+                <li class="nav-item dropdown">
+                    <a class="nav-link user" href="#" id="user-dropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+
+                        {{ request.user }}
+                        {% if request.user.is_authenticated %}
+                        {{ user.username }}
+                        {% else %}
+                        Not logged in.
+                        {% endif %}<i class="fal fa-chevron-down ps-2"></i>
+                    </a>
+                    <ul class="dropdown-menu user-menu" aria-labelledby="user-dropdown">
+                        {% if not request.user.is_authenticated %}
+                        <li class="px-2 py-2"><a class="btn btn-dark signin-btn rounded-0" href="{% url 'user:login' %}"
+                                target="_self">Sign In</a></li>
+                        <li class="px-2 py-2"><a class="btn btn-outline-dark signin-btn rounded-0 signup-btn"
+                                href="{% url 'user:signup' %}">Create Account</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'user:profile' %}" target="_self">Your Account</a>
+                        </li>
+                        <li><a class="dropdown-item" href="user.html">Wish List</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user:logout' %}">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>

@@ -38,15 +38,17 @@ ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
+    'website',  
     'products',
     'colorfield',
+    'adminsortable2',
     'widget_tweaks',
 ]
 
@@ -73,15 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
-            'builtins': [
-                'templatetags.admin_reorder',
-                'templatetags.department_tags',
-            ],
-            'libraries': {
-                'admin_reorder': 'templatetags.admin_reorder',
-                'department_tags': 'templatetags.department_tags',
-            },
+            ]
         },
 
     },

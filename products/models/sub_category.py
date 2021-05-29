@@ -8,6 +8,8 @@ class SubCategory(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
+    display_order = models.PositiveIntegerField(
+        default=0, blank=False, null=False)
 
     def __str__(self):
         return self.name
@@ -17,3 +19,4 @@ class SubCategory(models.Model):
         verbose_name_plural = "Sub Categories"
         db_table = 'sub_category'
         unique_together = ('department', 'category', 'name')
+        ordering = ['display_order']

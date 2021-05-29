@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% load widget_tweaks %}
+{% load static %}
 
-{% block title %} Home | {{block.super}} {% endblock %}
+{% block title %} Home | {{ request.user }}{{block.super}} {% endblock %}
 
 {% block body %}
     <main>
@@ -12,7 +12,7 @@
 
                 <div class="slide-1 position-relative">
                     <div class="slider-img position-relative">
-                        <img src="assets/images/image-1.jpeg" alt="slider-image-1">
+                        <img src="{% static 'images/image-1.jpeg' %}" alt="slider-image-1">
                     </div>
                     <div class="slider-content position-absolute text-center">
                         <h1 class="text-uppercase">New Collections</h1>
@@ -22,7 +22,7 @@
 
                 <div class="slide-2 position-relative">
                     <div class="slider-img position-relative">
-                        <img src="assets/images/image-2.jpeg" alt="slider-image-1">
+                        <img src="{% static 'images/image-2.jpeg' %}" alt="slider-image-1">
                     </div>
                     <div class="slider-content position-absolute">
                         <div class="slider-content position-absolute text-center">
@@ -55,9 +55,10 @@
                     data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
 
                     <div class="recomended-item">
-                        <a href="details.html">
+                        <a href="{% url 'home' 1 %}">
                             <div class="card" style="width: 18rem;">
-                                <img src="assets/images/product-1.png" class="card-img-top img-fluid" alt="product-1">
+                                <img src="{% static 'images/product-1.png' %}" class="card-img-top img-fluid"
+                                    alt="product-1">
                                 <div class="card-body">
                                     <p class="card-text">Elan</p>
                                 </div>
@@ -65,9 +66,9 @@
                         </a>
                     </div>
                     <div class="recomended-item">
-                        <a href="details.html">
+                        <a href="{% url 'home' 1 %}">
                             <div class="card" style="width: 18rem;">
-                                <img src="assets/images/product-2.png" class="card-img-top img-fluid" alt="...">
+                                <img src="{% static 'images/product-2.png' %}" class="card-img-top img-fluid" alt="...">
                                 <div class="card-body">
                                     <p class="card-text">Charles Henry Off the Shoulder Dress</p>
                                 </div>
@@ -75,9 +76,9 @@
                         </a>
                     </div>
                     <div class="recomended-item">
-                        <a href="details.html">
+                        <a href="{% url 'home' 1 %}">
                             <div class="card" style="width: 18rem;">
-                                <img src="assets/images/product-3.png" class="card-img-top img-fluid" alt="...">
+                                <img src="{% static 'images/product-3.png' %}" class="card-img-top img-fluid" alt="...">
                                 <div class="card-body">
                                     <p class="card-text">Becca</p>
                                 </div>
@@ -85,9 +86,9 @@
                         </a>
                     </div>
                     <div class="recomended-item">
-                        <a href="details.html">
+                        <a href="{% url 'home' 1 %}">
                             <div class="card" style="width: 18rem;">
-                                <img src="assets/images/product-4.png" class="card-img-top img-fluid" alt="...">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
                                 <div class="card-body">
                                     <p class="card-text">Charles Henry Off the Shoulder Dress</p>
                                 </div>
@@ -95,9 +96,9 @@
                         </a>
                     </div>
                     <div class="recomended-item">
-                        <a href="details.html">
+                        <a href="{% url 'home' 1 %}">
                             <div class="card" style="width: 18rem;">
-                                <img src="assets/images/product-5.png" class="card-img-top img-fluid" alt="...">
+                                <img src="{% static 'images/product-5.png' %}" class="card-img-top img-fluid" alt="...">
                                 <div class="card-body">
                                     <p class="card-text">Elan</p>
                                 </div>
@@ -105,9 +106,9 @@
                         </a>
                     </div>
                     <div class="recomended-item">
-                        <a href="details.html">
+                        <a href="{% url 'home' 1 %}">
                             <div class="card" style="width: 18rem;">
-                                <img src="assets/images/product-4.png" class="card-img-top img-fluid" alt="...">
+                                <img src="{% static 'images/product-4.png' %}" class="card-img-top img-fluid" alt="...">
                                 <div class="card-body">
                                     <p class="card-text">Charles Henry Off the Shoulder Dress</p>
                                 </div>
