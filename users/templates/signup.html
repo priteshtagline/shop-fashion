@@ -49,8 +49,10 @@
                             {{form.password1|add_class:"rounded-0"}}
                             <span toggle="#{{ form.password1.id_for_label }}" class="field-icon toggle-password">Show</span>
 
-                            <p class="warning mt-2">By creating an account, you agree to our <span><a href="#">Privacy
-                                        Policy</a></span> and <span><a href="#">Terms & Conditions.</a></span></p>
+                            <p class="warning mt-2">By creating an account, you agree to our <span>
+                                <a href="{% url 'website:privacy_policy' %}">Privacy Policy</a></span> and <span>
+                                <a href="{% url 'website:terms_conditions' %}">Terms & Conditions.</a></span>
+                            </p>
 
                             <input type="submit" name="submit" value="Create Account" class="btn btn-dark rounded-0">
 

@@ -15,12 +15,12 @@
             </div>
             <ul class="nav nav-pills" id="pills-tab" role="tablist">
                 <li class="nav-item w-100">
-                    <a class="nav-link" id="pills-wish-tab" data-toggle="pill" href="#wish-list" role="tab"
-                        aria-controls="wish-list" aria-selected="false">Wish List</a>
+                    <a class="nav-link active" id="pills-wish-tab" data-toggle="pill" href="#wish-list" role="tab"
+                        aria-controls="wish-list" aria-selected="true">Wish List</a>
                 </li>
                 <li class="nav-item w-100">
-                    <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#personal-info" role="tab"
-                        aria-controls="personal-info" aria-selected="true">Password &
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#personal-info"
+                        role="tab" aria-controls="personal-info" aria-selected="false">Password &
                         Personal Info.</a>
                 </li>
             </ul>
@@ -31,8 +31,7 @@
             <div id="overlay"></div>
             <div class="user-page-content">
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade" id="wish-list" role="tabpanel"
-                        aria-labelledby="pills-wish-tab">
+                    <div class="tab-pane fade active show" id="wish-list" role="tabpanel" aria-labelledby="pills-wish-tab">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="fetures-tab-content p-engement-fetures align-items-baseline">
@@ -83,127 +82,225 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade active show" id="personal-info" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="tab-pane fade" id="personal-info" role="tabpanel"
+                        aria-labelledby="pills-profile-tab">
                         <div class="row">
-                                <div class="col-md-12">
-                                    <div class="info">
-                                        <div action="#" class="d-flex flex-column">
-                                            <h5 class="text-uppercase">Sign-In Info</h5>
-                                            <label for="email" class="fw-bold mb-2">Email</label>
-                                            <p id="email" class="m-0">{{user.email}}</p>
-                                            <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
-                                                data-bs-target="#emailModel">Change
-                                                email</a>
+                            <div class="col-md-12">
+                                <div class="info">
+                                    <div action="#" class="d-flex flex-column">
+                                        <h5 class="text-uppercase">Sign-In Info</h5>
+                                        <label for="email" class="fw-bold mb-2">Email</label>
+                                        <p id="email" class="m-0">{{user.email}}</p>
+                                        <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
+                                            data-bs-target="#emailModel">Change
+                                            email</a>
 
-                                            <!-- change email modal -->
-                                            <div class="modal fade" id="emailModel" tabindex="-1"
-                                                aria-labelledby="emailModelLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content change-mail-modal">
-                                                        <div class="modal-header border-0">
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body flex-column">
-                                                            <h5 class="mb-3">Change your email</h5>
-                                                            <form method="post" class="d-flex flex-column">
-                                                                {% csrf_token %}
-                                                                <label for="{{ email_change_form.new_email.id_for_label }}" class="">New Email</label>
-                                                                {{email_change_form.new_email|add_class:"rounded-0"}}
-                                                                <p class="warning my-2">Use this email to shop at shopfashion.</p>
+                                        <!-- change email modal -->
+                                        <div class="modal fade" id="emailModel" tabindex="-1"
+                                            aria-labelledby="emailModelLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content change-mail-modal">
+                                                    <div class="modal-header border-0">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body flex-column">
+                                                        <h5 class="mb-3">Change your email</h5>
+                                                        
+                                                        <form method="post" id="emailChangeForm" class="d-flex flex-column"
+                                                            enctype="multipart/form-data">
+                                                            <div class="error_message">
+                                                            </div>
+                                                            
+                                                            {% csrf_token %}
+                                                            <label for="{{ email_change_form.new_email.id_for_label }}"
+                                                                class="">New Email</label>
+                                                            {{email_change_form.new_email|add_class:"rounded-0"}}
+                                                            <p class="warning my-2">Use this email to shop at
+                                                                shopfashion.</p>
 
-                                                                <label for="{{ email_change_form.confirm_email.id_for_label }}" class="">Confirm Email</label>
-                                                                {{email_change_form.confirm_email|add_class:"rounded-0"}}
+                                                            <label
+                                                                for="{{ email_change_form.confirm_email.id_for_label }}"
+                                                                class="">Confirm Email</label>
+                                                            {{email_change_form.confirm_email|add_class:"rounded-0"}}
 
-                                                                <label for="{{ email_change_form.password.id_for_label }}" class="mt-4 ">Re-enter Password<span class="required">*</span></label>
-                                                                {{email_change_form.password|add_class:"rounded-0"}}
-                                                                <span toggle="#{{ email_change_form.password.id_for_label }}" class="field-icon toggle-password">Show</span>
+                                                            <label for="{{ email_change_form.password.id_for_label }}"
+                                                                class="mt-4 ">Re-enter Password<span
+                                                                    class="required">*</span></label>
+                                                            {{email_change_form.password|add_class:"rounded-0"}}
+                                                            <span
+                                                                toggle="#{{ email_change_form.password.id_for_label }}"
+                                                                class="field-icon toggle-password">Show</span>
 
-                                                                <input type="submit" name="email_change_form" value="Change Email" class="btn btn-dark rounded-0 mt-5">
-                                                            </form>
-                                                        </div>
+                                                            <input type="submit" name="email_change_form"
+                                                                value="Change Email"
+                                                                class="btn btn-dark rounded-0 mt-5">
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <label for="password" class="mt-4 fw-bold mb-2">Password</label>
-                                            <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
-                                                data-bs-target="#passwordModal">Change
-                                                password</a>
-
-                                            <!-- change password modal -->
-                                            <div class="modal fade" id="passwordModal" tabindex="-1"
-                                                aria-labelledby="passwordModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content change-password-modal">
-                                                        <div class="modal-header border-0">
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body flex-column">
-                                                            <h5 class="mb-3">Change your password</h5>
-                                                            <p>You will change the password for your Shopfashion and Shopfashion Rack account.</p>
-                                                            <form method="post" class="d-flex flex-column">
-                                                                {% csrf_token %}
-                                                                <label for="{{ password_change_form.current_password.id_for_label }}" class="mt-4 ">Current
-                                                                    Password</label>
-                                                                {{password_change_form.current_password|add_class:"rounded-0"}}
-                                                                <span toggle="#{{ password_change_form.current_password.id_for_label }}"
-                                                                    class="field-icon field-icon1 toggle-password">Show</span>
-
-                                                                <label for="{{ password_change_form.new_password.id_for_label }}" class="mt-4 ">New
-                                                                    Password</label>
-                                                                {{password_change_form.new_password|add_class:"rounded-0"}}
-                                                                <span toggle="#{{ password_change_form.new_password.id_for_label }}"
-                                                                    class="field-icon field-icon2 toggle-password">Show</span>
-                                                                <input type="submit" name="password_change_form" value="Change Password" class="btn btn-dark rounded-0 mt-5">
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <h5 class="text-uppercase mt-5">Personal Info</h5>
-                                            <label for="name" class="fw-bold mb-2">Name</label>
-                                            <p id="name" class="m-0">{{user.first_name}}</p>
-                                            <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
-                                                data-bs-target="#nameModal">Edit</a>
-
-                                            <!-- change name modal -->
-                                            <div class="modal fade" id="nameModal" tabindex="-1"
-                                                aria-labelledby="nameModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content change-password-modal">
-                                                        <div class="modal-header border-0">
-                                                            <button type="button" class="btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body flex-column">
-                                                            <h5 class="mb-3">Edit your name</h5>
-                                                                {{personal_info_form.as_p}}
-                                                            <form  method="post" class="d-flex flex-column">
-                                                                {% csrf_token %}
-                                                                <label for="{{ personal_info_change_form.first_name.id_for_label }}" class="mt-4 ">First Name</label>
-                                                                {{personal_info_change_form.first_name|add_class:"rounded-0"}}
-
-                                                                <label for="{{ personal_info_change_form.last_name.id_for_label }}" class="mt-4 ">Last Name</label>
-                                                                {{personal_info_change_form.last_name|add_class:"rounded-0"}}
-
-                                                                <input type="submit" name="personal_info_change_form" value="Change Name" class="btn btn-dark rounded-0 mt-5">
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
+
+                                        <label for="password" class="mt-4 fw-bold mb-2">Password</label>
+                                        <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
+                                            data-bs-target="#passwordModal">Change
+                                            password</a>
+
+                                        <!-- change password modal -->
+                                        <div class="modal fade" id="passwordModal" tabindex="-1"
+                                            aria-labelledby="passwordModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content change-password-modal">
+                                                    <div class="modal-header border-0">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body flex-column">
+                                                        <h5 class="mb-3">Change your password</h5>
+                                                        <p>You will change the password for your Nordstrom
+                                                            and Nordstrom Rack account.</p>
+                                                        <form id="passwordChangeForm" method="post" class="d-flex flex-column">
+                                                            {% csrf_token %}
+                                                            <div class="error_message">
+                                    
+                                                            </div>
+                                                            <input type="hidden" name="password_change_form"
+                                                                value="password_change_form">
+                                                            <label
+                                                                for="{{ password_change_form.current_password.id_for_label }}"
+                                                                class="mt-4 ">Current Password</label>
+                                                            {{password_change_form.current_password|add_class:"rounded-0"}}
+                                                            <span
+                                                                toggle="#{{ password_change_form.current_password.id_for_label }}"
+                                                                class="field-icon field-icon1 toggle-password">Show</span>
+
+                                                            <label
+                                                                for="{{ password_change_form.new_password.id_for_label }}"
+                                                                class="mt-4 ">New Password</label>
+                                                            {{password_change_form.new_password|add_class:"rounded-0"}}
+                                                            <span
+                                                                toggle="#{{ password_change_form.new_password.id_for_label }}"
+                                                                class="field-icon field-icon2 toggle-password">Show</span>
+
+                                                            <input type="submit" name="password_change_form"
+                                                                value="Change Password"
+                                                                class="btn btn-dark rounded-0 mt-5">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="text-uppercase mt-5">Personal Info</h5>
+                                        <label for="name" class="fw-bold mb-2">Name</label>
+                                        <p id="name" class="m-0">{{user.first_name|default:""}} {{user.last_name|default:""}}</p>
+                                        <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
+                                            data-bs-target="#nameModal">Edit</a>
+
+                                        <!-- change name modal -->
+                                        <div class="modal fade" id="nameModal" tabindex="-1"
+                                            aria-labelledby="nameModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content change-password-modal">
+                                                    <div class="modal-header border-0 pb-0">
+                                                    <h5 class="m-2">Edit your name</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body flex-column pt-1">
+                                                        {{personal_info_form.as_p}}
+                                                        <form method="post" id="personalInfoForm"
+                                                            class="d-flex flex-column">
+                                                            <div class="error_message">
+
+                                                            </div>
+                                                            <input type="hidden" name="personal_info_change_form"
+                                                                value="personal_info_change_form">
+                                                            {% csrf_token %}
+                                                            <label
+                                                                for="{{ personal_info_change_form.first_name.id_for_label }}"
+                                                                class="mt-4 ">First Name</label>
+                                                            {{personal_info_change_form.first_name|add_class:"rounded-0"|attr:'required'}}
+
+                                                            <label
+                                                                for="{{ personal_info_change_form.last_name.id_for_label }}"
+                                                                class="mt-4 ">Last Name</label>
+                                                            {{personal_info_change_form.last_name|add_class:"rounded-0"|attr:'required'}}
+
+                                                            <input type="submit" name="personal_info_change_form"
+                                                                value="Change Name" class="btn btn-dark rounded-0 mt-5">
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </main>
+{% endblock %}
+
+{% block custom_ajax %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $("form").submit(function (e) {
+            form = $(this)
+            e.preventDefault();
+            $.ajax({
+                url: '/profile/',
+                method: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                success: function (data) {
+                    console.log(data);                        
+                    errors = ""
+                    if (data.status){
+                        location.reload();
+                    }else{
+                        $.each( data.errors, function( key, value ) {
+                            errors += '<div class="alert alert-danger"><span>'+value+'</strong></div>';
+                        });
+                    }
+                    form.find('.error_message').html(errors)
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

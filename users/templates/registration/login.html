@@ -35,9 +35,11 @@
 
                             <label for="{{ form.password.id_for_label }}" class="mt-4 fw-bold">Password</label>
                             {{form.password|add_class:"rounded-0"}}
-
-                            <p class="warning">By tapping Next, you agree to our <span><a href="#">Privacy
-                                        Policy</a></span> and <span><a href="#">Terms & Conditions.</a></span></p>
+                                    
+                            <p class="warning">By tapping Next, you agree to our <span>
+                                <a href="{% url 'website:privacy_policy' %}">Privacy Policy</a></span> and <span>
+                                <a href="{% url 'website:terms_conditions' %}">Terms & Conditions.</a></span>
+                            </p>
 
                             <input type="submit" name="submit" value="LogIn" class="btn btn-dark rounded-0">
 
@@ -51,5 +53,3 @@
         </div>
     </main>
 {% endblock %}
-
-password_reset

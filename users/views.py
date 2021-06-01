@@ -5,8 +5,11 @@ from .forms import UserSignupForm, UserPersonalInfoChnageForm, UserPasswordChnag
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponse
 from django.shortcuts import render
+from django.http import JsonResponse
+from .models import User
+
 
 
 class UserSignUpView(CreateView):
@@ -37,38 +40,40 @@ class UserSignUpView(CreateView):
 class ProfileUpdateView(LoginRequiredMixin, TemplateView):
     login_url = 'user:login'
     template_name = 'profile.html'
-    
+
     def get_context_data(self, **kwargs):
         kwargs['personal_info_change_form'] = UserPersonalInfoChnageForm()
-        kwargs['password_change_form'] = UserPasswordChnageForm()
+        kwargs['password_change_form'] = UserPasswordChnageForm(self.request.user)
         kwargs['email_change_form'] = UserEmailChnageForm(self.request.user)
         return kwargs
-            
+
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.get_context_data())
-    
+
     def post(self, request, *args, **kwargs):
-        ctxt = {}
         if 'personal_info_change_form' in request.POST:
             personal_info_change_form = UserPersonalInfoChnageForm(request.POST)
             if personal_info_change_form.is_valid():
-                print(personal_info_change_form)
+                request.user.first_name = request.POST['first_name']
+                request.user.last_name = request.POST['last_name']
+                request.user.save()
             else:
-                ctxt['personal_info_change_form'] = personal_info_change_form
+                return JsonResponse({'form': False, 'errors': personal_info_change_form.errors})
 
         elif 'password_change_form' in request.POST:
-            password_change_form = UserPasswordChnageForm(request.POST)
+            password_change_form = UserPasswordChnageForm(request.user, request.POST)
             if password_change_form.is_valid():
-                print(request)
+                self.request.user.set_password(request.POST['new_password'])
+                self.request.user.save()
             else:
-                ctxt['password_change_form'] = password_change_form
-                
+                return JsonResponse({'form': False, 'errors': password_change_form.errors})
+
         else:
             email_change_form = UserEmailChnageForm(request.user, request.POST)
-            print(email_change_form)
             if email_change_form.is_valid():
-                print(email_change_form)
+                self.request.user.email = request.POST['new_email']
+                self.request.user.save()
             else:
-                ctxt['email_change_form'] = email_change_form
+                return JsonResponse({'status': False, 'errors': email_change_form.errors})
 
-        return render(request, self.template_name, self.get_context_data(**ctxt))
+        return JsonResponse({"status": True, "errors": ""}, status=200)
