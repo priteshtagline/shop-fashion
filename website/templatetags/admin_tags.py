@@ -5,5 +5,5 @@ register = template.Library()
 
 
 @register.inclusion_tag('header.html')
-def header():
-    return {'departments': Department.objects.all()}
+def header(user):
+    return {'user':user, 'departments': Department.objects.all()}

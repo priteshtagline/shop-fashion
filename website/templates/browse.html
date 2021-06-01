@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+{% load static admin_tags %}
+
+{% block title %} Home | {{block.super}} {% endblock %}
+
+{% block body %}
+<main>
+    <div class="browse">
+        <div class="row">
+            <div class="col-md-2 filter side-nav fixed" id="slide-out">
+                <div class="accordion" id="accordionExample">
+                    <h2 class="fw-light fs-5 heading-filter">Filter by</h2>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                aria-controls="panelsStayOpen-collapseOne">
+                                Brands
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                            aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    <li class="collections-item">
+                                        <a href="#">Adidas</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">Aldo</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">Tommy Hilfiger</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">United Color Of Beneton</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">U.S. Polo</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">H & M</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">Jack Daniels</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Stores
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    <li class="collections-item">
+                                        <a href="#">Macy’s</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">Saks</a>
+                                    </li>
+                                    <li class="collections-item">
+                                        <a href="#">Neiman Marcus</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapseThree">
+                                Color
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
+                            aria-labelledby="panelsStayOpen-headingThree">
+                            <div class="accordion-body">
+                                <ul class="colors-list d-flex">
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-1.png' %}" alt="color-1"></a>
+                                        </div>
+                                    </li>
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-2.png' %}" alt="color-2"></a>
+                                        </div>
+                                    </li>
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-3.png' %}" alt="color-3"></a>
+                                        </div>
+                                    </li>
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-4.png' %}" alt="color-4"></a>
+                                        </div>
+                                    </li>
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-2.png' %}" alt="color-2"></a>
+                                        </div>
+                                    </li>
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-3.png' %}" alt="color-3"></a>
+                                        </div>
+                                    </li>
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-4.png' %}" alt="color-4"></a>
+                                        </div>
+                                    </li>
+                                    <li class="color-item">
+                                        <div class="color">
+                                            <a href="#"><img src="{% static 'images/color-1.png' %}" alt="color-1"></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-10 browse-page">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="browse.html">Women</a></li>
+                        <li class="breadcrumb-item"><a href="browse.html">Clothing</a></li>
+                        <li class="breadcrumb-item active text-capitalize" aria-current="page">Dress</li>
+                    </ol>
+                </nav>
+
+                <a href="#" data-activates="slide-out" class="button-collapse d-lg-none filter-btn"><i
+                        class="fas fa-filter pe-2"></i>Filter</a>
+                <div id="overlay"></div>
+                <div class="browse-content">
+                    <div class="campaign position-relative">
+                        <div class="campaign-img position-relative">
+                            <img src="{% static 'images/image-3.jpeg' %}" alt="slider-image-1">
+                        </div>
+                        <div class="campaign-content position-absolute text-center">
+                            <h2 class="text-uppercase">easy styles for every day</h2>
+                            <a href="#" class="btn btn-outline-dark text-uppercase">Shop Now</a>
+                        </div>
+                    </div>
+
+                    <div class="product-catalouge mt-5">
+                        <h4 class="fw-bold">Women's Dresses</h4>
+                        <p>{{products|length}} item{{ products|pluralize }}</p>
+                        <div class="products">
+                            <ul class="product-list d-flex justify-content-evenly">
+                                {% for product in products %}
+                                <li class="product-item">
+                                    <a href="{% url 'website:product' product.id %}">
+                                        <div class="card" style="width: 18rem;">
+                                            <img src="{{product.image1.url}}" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <p class="card-text">{{product.title}}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav aria-label="#" class="my-5">
+            <ul class="pagination pagination-sm justify-content-center">
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">1</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+            </ul>
+        </nav>
+    </div>
+</main>
+{% endblock %}
