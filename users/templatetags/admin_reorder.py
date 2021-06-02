@@ -1,12 +1,19 @@
 
 from django import template
 
-
 register = template.Library()
 
 
 @register.filter(is_safe=True)
 def render_model_list(app_list):
+    """Reorder django admin panel app and model list
+
+    Args:
+        app_list (list): [list of install app and his models]
+
+    Returns:
+        [list]: [reordered app and model list]
+    """
     app_ordering = {"Authentication and Authorization": 1,
                     "Users": 2, "Products": 3}
     app_list = sorted(app_list, key=lambda x: app_ordering[x['name']])

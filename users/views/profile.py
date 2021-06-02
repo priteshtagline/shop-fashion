@@ -1,38 +1,11 @@
-from django.views.generic import CreateView, TemplateView
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect, JsonResponse
-from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.shortcuts import render, redirect
-from .forms import UserSignupForm, UserPersonalInfoChnageForm, UserPasswordChnageForm, UserEmailChnageForm
-from .models import User
-
-
-class UserSignUpView(CreateView):
-    """This view is for the sign up page which display signup form.
-    If user is already login in website then user automatically redirect to home page 
-    otherwise display signup form.
-    After successful registration, it will automatically login the user in the system and
-    redirect user to the home page.
-    """
-
-    form_class = UserSignupForm
-    success_url = reverse_lazy('website:home')
-    template_name = 'signup.html'
-    success_message = "Your profile was created successfully"
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return super().dispatch(request, *args, **kwargs)
-        return redirect('website:home')
-
-    def form_valid(self, form):
-        super(UserSignUpView, self).form_valid(form)
-        user = authenticate(
-            self.request, email=form.cleaned_data['email'], password=form.cleaned_data['password1'])
-        if user:
-            login(self.request, user)
-            return HttpResponseRedirect(self.get_success_url())
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.generic import TemplateView
+from users.forms.email_change import UserEmailChnageForm
+from users.forms.password_change import UserPasswordChnageForm
+from users.forms.personal_info_chnage import UserPersonalInfoChnageForm
 
 
 class ProfileUpdateView(LoginRequiredMixin, TemplateView):
@@ -46,7 +19,8 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         user = self.request.user
-        kwargs['personal_info_change_form'] = UserPersonalInfoChnageForm(user, initial={'first_name': user.first_name, 'last_name': user.last_name})
+        kwargs['personal_info_change_form'] = UserPersonalInfoChnageForm(
+            user, initial={'first_name': user.first_name, 'last_name': user.last_name})
         kwargs['password_change_form'] = UserPasswordChnageForm(user)
         kwargs['email_change_form'] = UserEmailChnageForm(user)
         return kwargs
@@ -58,7 +32,8 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
         form_data = request.POST
         user = self.request.user
         if 'first_name' in form_data and 'last_name' in form_data:
-            personal_info_change_form = UserPersonalInfoChnageForm(user, form_data)
+            personal_info_change_form = UserPersonalInfoChnageForm(
+                user, form_data)
             if personal_info_change_form.is_valid():
                 personal_info_change_form.save()
             else:

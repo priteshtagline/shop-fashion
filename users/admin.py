@@ -11,14 +11,14 @@ class UserAdmin(BaseUserAdmin):
     Also set the search and filters for the user admin.
     """
 
-    list_display = ('email', 'first_name', 'last_name', 'is_superuser', 'is_staff', 'is_active')
+    list_display = ('email', 'first_name', 'last_name',
+                    'is_superuser', 'is_staff', 'is_active')
     list_filter = ('is_superuser', 'is_staff', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'first_name', 'last_name', 'password',
-        'is_superuser', 'is_staff', 'is_active')}),
+                           'is_superuser', 'is_staff', 'is_active')}),
     )
-    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
-    # overrides get_fieldsets to use this attribute when creating a user.
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -29,5 +29,4 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 
-# Register the user model to the Django admin.
 admin.site.register(User, UserAdmin)
