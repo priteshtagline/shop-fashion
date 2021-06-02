@@ -107,11 +107,10 @@
                                                     <div class="modal-body flex-column">
                                                         <h5 class="mb-3">Change your email</h5>
                                                         
-                                                        <form method="post" id="emailChangeForm" class="d-flex flex-column"
-                                                            enctype="multipart/form-data">
+                                                        <form method="post" class="d-flex flex-column">
                                                             <div class="error_message">
+
                                                             </div>
-                                                            
                                                             {% csrf_token %}
                                                             <label for="{{ email_change_form.new_email.id_for_label }}"
                                                                 class="">New Email</label>
@@ -159,13 +158,11 @@
                                                         <h5 class="mb-3">Change your password</h5>
                                                         <p>You will change the password for your Nordstrom
                                                             and Nordstrom Rack account.</p>
-                                                        <form id="passwordChangeForm" method="post" class="d-flex flex-column">
+                                                        <form method="post" class="d-flex flex-column">
                                                             {% csrf_token %}
                                                             <div class="error_message">
                                     
                                                             </div>
-                                                            <input type="hidden" name="password_change_form"
-                                                                value="password_change_form">
                                                             <label
                                                                 for="{{ password_change_form.current_password.id_for_label }}"
                                                                 class="mt-4 ">Current Password</label>
@@ -209,13 +206,10 @@
                                                     </div>
                                                     <div class="modal-body flex-column pt-1">
                                                         {{personal_info_form.as_p}}
-                                                        <form method="post" id="personalInfoForm"
-                                                            class="d-flex flex-column">
+                                                        <form method="post" class="d-flex flex-column">
                                                             <div class="error_message">
 
                                                             </div>
-                                                            <input type="hidden" name="personal_info_change_form"
-                                                                value="personal_info_change_form">
                                                             {% csrf_token %}
                                                             <label
                                                                 for="{{ personal_info_change_form.first_name.id_for_label }}"
@@ -250,42 +244,18 @@
 {% block custom_ajax %}
 <script type="text/javascript">
     $(document).ready(function () {
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        const csrftoken = getCookie('csrftoken');
-
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-
         $("form").submit(function (e) {
-            form = $(this)
+            form = $(this);
             e.preventDefault();
             $.ajax({
-                url: '/profile/',
-                method: 'POST',
-                data: $(this).serialize(),
+                url: "{% url 'user:profile' %}",
+                method: 'post',
+                data: form.serialize(),
                 dataType: 'json',
-                beforeSend: function (xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
+                headers:{
+                    "X-CSRFToken": form.find("[name=csrfmiddlewaretoken]").val()
                 },
-                success: function (data) {
-                    console.log(data);                        
+                success: function (data) {         
                     errors = ""
                     if (data.status){
                         location.reload();
@@ -296,9 +266,9 @@
                     }
                     form.find('.error_message').html(errors)
                 },
-                error: function (data) {
+                error: function(data) {
                     console.log(data);
-                }
+                },
             });
         });
     });

@@ -37,7 +37,7 @@ class User(AbstractUser):
     """
         AbstractUser method because django provide default user login with username and password
         but requirment is user authanticate with his email and password.
-        So, hear username filed none set email field with unique.
+        So, hear username filed none set email field with unique and extra field add link phone number and gender.
     """
 
     GENDER_CHOICES = (

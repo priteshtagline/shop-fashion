@@ -11,10 +11,10 @@ class UserAdmin(BaseUserAdmin):
     Also set the search and filters for the user admin.
     """
 
-    list_display = ('email', 'is_superuser', 'is_staff', 'is_active')
+    list_display = ('email', 'first_name', 'last_name', 'is_superuser', 'is_staff', 'is_active')
     list_filter = ('is_superuser', 'is_staff', 'is_active')
     fieldsets = (
-        (None, {'fields': ('email', 'password',
+        (None, {'fields': ('email', 'first_name', 'last_name', 'password',
         'is_superuser', 'is_staff', 'is_active')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -22,7 +22,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2'),
+            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2'),
         }),
     )
     search_fields = ('email',)

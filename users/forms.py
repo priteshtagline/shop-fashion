@@ -6,6 +6,11 @@ from .models import User
 
 
 class UserSignupForm(SignupFrom):
+    """
+    A form that lets a user signup form.
+    The form is extend form django auth UserCreationForm and customize to 
+    remove password2 field in signup form.
+    """
     def __init__(self, *args, **kwargs):
         super(UserSignupForm, self).__init__(*args, **kwargs)
         del self.fields['password2']
@@ -14,12 +19,24 @@ class UserSignupForm(SignupFrom):
         model = User
         fields = ('email', 'first_name', 'last_name', 'password1')
 
-
 class UserPersonalInfoChnageForm(forms.ModelForm):
+    """
+    A form that lets a user change their personl informattion like first name and last name.
+    """
     class Meta:
         model = User
         fields = ('first_name', 'last_name',)
 
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserPersonalInfoChnageForm, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        self.user.first_name = self.cleaned_data["first_name"]
+        self.user.last_name = self.cleaned_data["last_name"]
+        if commit:
+            self.user.save()
+        return self.user
 
 class UserEmailChnageForm(forms.Form):
     """
@@ -42,7 +59,7 @@ class UserEmailChnageForm(forms.Form):
 
     def clean_password(self):
         """
-        Validates that the password field is correct.
+        Validates that the user password field is correct.
         """
         password = self.cleaned_data["password"]
         if not self.user.check_password(password):
@@ -72,8 +89,18 @@ class UserEmailChnageForm(forms.Form):
                     self.error_messages['email_mismatch'], code='email_mismatch',)
         return confirm_email
 
+    def save(self, commit=True):
+        self.user.email = self.cleaned_data["new_email"]
+        if commit:
+            self.user.save()
+        return self.user
 
 class UserPasswordChnageForm(forms.Form):
+    """
+    A form that lets a user change set their password while checking for a change in the
+    password.
+    """
+
     error_messages = {
         'password_incorrect': _("Incorrect password."),
     }
@@ -87,10 +114,16 @@ class UserPasswordChnageForm(forms.Form):
     
     def clean_current_password(self):
         """
-        Validates that the current password field is correct.
+        Validates that the user current password field is correct.
         """
         current_password = self.cleaned_data["current_password"]
         if not self.user.check_password(current_password):
             raise forms.ValidationError(
                 self.error_messages['password_incorrect'], code='password_incorrect',)
         return current_password
+
+    def save(self, commit=True):
+        self.user.set_password(self.cleaned_data["new_password"])
+        if commit:
+            self.user.save()
+        return self.user
