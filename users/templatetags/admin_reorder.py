@@ -21,10 +21,10 @@ def render_model_list(app_list):
     model_ordering = {
         "Groups": 1,
         "Users": 2,
+        "Merchants": 3,
         "Departments": 3,
         "Categories": 4,
         "Sub Categories": 5,
-        "Brands": 6,
         "Products": 7,
         "Recommended Products": 8,
         "Similar Products": 9,
