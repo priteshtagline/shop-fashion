@@ -25,7 +25,7 @@
                                 <ul class="collections">
                                     {% for brand in filter_brands %}
                                     <li class="collections-item">
-                                        <a href="?brand={{brand}}">{{brand|title}}</a>
+                                        <input type="checkbox" class="filter_checkbox" name="brand" id="{{brand}}" value="{{brand}}"><label for="{{brand}}"> {{brand|title}}</label>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -46,7 +46,7 @@
                                 <ul class="collections">
                                     {% for store in filter_stors %}
                                     <li class="collections-item">
-                                        <a href="?store={{store}}">{{store|title}}</a>
+                                        <input type="checkbox" class="ml-1 filter_checkbox" name="store" value="{{store}}"> <a href="?store={{store}}">{{store|title}}</a>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -131,4 +131,46 @@
         </nav>
     </div>
 </main>
+
+{% endblock %}
+
+{% block custom_js %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var current_url = window.location.href;
+        aa(current_url);
+        var base_url = current_url.substr(0,current_url.lastIndexOf('/'));
+        const filter_json_object = {}
+        function createURLQuery (o) {
+            return Object.keys(o)
+                .map(key => `${encodeURIComponent(key)}=`
+                    + o[key].map(v => encodeURIComponent(v)).join(','))
+                .join('&')
+        }
+
+        $('.filter_checkbox').on('change', function() {
+            filter_name = this.name
+            var filter_value = $(':checkbox[name='+filter_name+']:checked').map(function() {
+                return this.value;
+            }).get();
+            filter_json_object[filter_name] = filter_value;
+            new_url = base_url+'/?'+createURLQuery(filter_json_object);
+            aa(new_url);
+        });
+
+        function aa(url){
+            $.ajax({
+                url: url,
+                method: 'get',
+                dataType: 'json',
+                success: function (data) {         
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log(data);
+                },
+            });
+        }
+    });
+</script>
 {% endblock %}

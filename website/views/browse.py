@@ -1,13 +1,22 @@
 from django.views.generic import ListView
 from products.models.merchant import Merchant
 from products.models.product import Product
+from django.http import JsonResponse
+from django.core import serializers
 
 
 class BrowseListView(ListView):
     model = Product
     template_name = 'browse.html'
     context_object_name = 'products'
-    # paginate_by = 40
+    # paginate_by = 10
+
+    # def get(self, request, *args, **kwargs):
+    #     queryset = self.get_queryset()
+    #     if request.is_ajax():
+    #         data = serializers.serialize("json", queryset)
+    #         return JsonResponse(data, status=200, safe=False)
+    #     return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         qs = super(BrowseListView, self).get_queryset()
@@ -24,11 +33,13 @@ class BrowseListView(ListView):
             if param in filter_fields and self.request.GET.get(param):
                 param_value_list = self.request.GET.get(param).split(',')
                 if param == 'brand':
-                    query_dict['brand__iregex'] = r'(' + '|'.join(param_value_list) + ')'
+                    query_dict['brand__iregex'] = r'(' + \
+                        '|'.join(param_value_list) + ')'
                 elif param == 'store':
                     query_dict['merchant__name__in'] = param_value_list
                 elif param == 'color':
-                    query_dict['color__iregex'] = r'(' + '|'.join(param_value_list) + ')'
+                    query_dict['color__iregex'] = r'(' + \
+                        '|'.join(param_value_list) + ')'
 
         return qs.filter(**kwargs_filters, **query_dict)
 
@@ -55,3 +66,8 @@ class BrowseListView(ListView):
             'color', flat=True).filter(**kwargs_filters).distinct()
 
         return context
+
+
+
+    
+

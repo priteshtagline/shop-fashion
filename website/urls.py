@@ -14,8 +14,8 @@ urlpatterns = [
         template_name='terms_conditions.html'), name='terms_conditions'),
     path('product/<slug:slug>/<int:pk>',
          ProductDeatilView.as_view(), name='product'),
-    path('browse/<department>/<category>/<subcategory>',
+    path('browse/<department>/<category>/<subcategory>/',
          BrowseListView.as_view(), name='browse'),
-    path('browse/<department>/<category>',
+    path('browse/<department>/<category>/',
          BrowseListView.as_view(), name='browse_category'),
 ]
