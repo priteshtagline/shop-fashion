@@ -23,27 +23,11 @@
                             aria-labelledby="panelsStayOpen-headingOne">
                             <div class="accordion-body">
                                 <ul class="collections">
+                                    {% for brand in filter_brands %}
                                     <li class="collections-item">
-                                        <a href="#">Adidas</a>
+                                        <a href="?brand={{brand}}">{{brand|title}}</a>
                                     </li>
-                                    <li class="collections-item">
-                                        <a href="#">Aldo</a>
-                                    </li>
-                                    <li class="collections-item">
-                                        <a href="#">Tommy Hilfiger</a>
-                                    </li>
-                                    <li class="collections-item">
-                                        <a href="#">United Color Of Beneton</a>
-                                    </li>
-                                    <li class="collections-item">
-                                        <a href="#">U.S. Polo</a>
-                                    </li>
-                                    <li class="collections-item">
-                                        <a href="#">H & M</a>
-                                    </li>
-                                    <li class="collections-item">
-                                        <a href="#">Jack Daniels</a>
-                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -60,15 +44,11 @@
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="collections">
+                                    {% for store in filter_stors %}
                                     <li class="collections-item">
-                                        <a href="#">Macy’s</a>
+                                        <a href="?store={{store}}">{{store|title}}</a>
                                     </li>
-                                    <li class="collections-item">
-                                        <a href="#">Saks</a>
-                                    </li>
-                                    <li class="collections-item">
-                                        <a href="#">Neiman Marcus</a>
-                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -86,46 +66,14 @@
                             aria-labelledby="panelsStayOpen-headingThree">
                             <div class="accordion-body">
                                 <ul class="colors-list d-flex">
+                                    {% for color in filter_colors %}
                                     <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-1.png' %}" alt="color-1"></a>
-                                        </div>
+                                        <a href="?color={{color|slice:'1:'}}">
+                                            <div class="color color-circle" style="background:{{color}}">
+                                            </div>
+                                        </a>
                                     </li>
-                                    <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-2.png' %}" alt="color-2"></a>
-                                        </div>
-                                    </li>
-                                    <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-3.png' %}" alt="color-3"></a>
-                                        </div>
-                                    </li>
-                                    <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-4.png' %}" alt="color-4"></a>
-                                        </div>
-                                    </li>
-                                    <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-2.png' %}" alt="color-2"></a>
-                                        </div>
-                                    </li>
-                                    <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-3.png' %}" alt="color-3"></a>
-                                        </div>
-                                    </li>
-                                    <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-4.png' %}" alt="color-4"></a>
-                                        </div>
-                                    </li>
-                                    <li class="color-item">
-                                        <div class="color">
-                                            <a href="#"><img src="{% static 'images/color-1.png' %}" alt="color-1"></a>
-                                        </div>
-                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -147,16 +95,6 @@
                         class="fas fa-filter pe-2"></i>Filter</a>
                 <div id="overlay"></div>
                 <div class="browse-content">
-                    <div class="campaign position-relative">
-                        <div class="campaign-img position-relative">
-                            <img src="{% static 'images/image-3.jpeg' %}" alt="slider-image-1">
-                        </div>
-                        <div class="campaign-content position-absolute text-center">
-                            <h2 class="text-uppercase">easy styles for every day</h2>
-                            <a href="#" class="btn btn-outline-dark text-uppercase">Shop Now</a>
-                        </div>
-                    </div>
-
                     <div class="product-catalouge mt-5">
                         <h4 class="fw-bold">Women's Dresses</h4>
                         <p>{{products|length}} item{{ products|pluralize }}</p>
@@ -164,7 +102,7 @@
                             <ul class="product-list d-flex justify-content-evenly">
                                 {% for product in products %}
                                 <li class="product-item">
-                                    <a href="{% url 'website:product' product.id %}">
+                                    <a href="{% url 'website:product' product.title|slugify product.id %}">
                                         <div class="card" style="width: 18rem;">
                                             <img src="{{product.image1.url}}" class="card-img-top" alt="...">
                                             <div class="card-body">
@@ -182,11 +120,13 @@
         </div>
         <nav aria-label="#" class="my-5">
             <ul class="pagination pagination-sm justify-content-center">
+                {% for page in page_obj.paginator.page_range %} {% if page == page_obj.number %}
                 <li class="page-item active" aria-current="page">
-                    <span class="page-link">1</span>
+                    <span class="page-link">{{ page }}</span>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                 {% endif %} {% endfor %}
             </ul>
         </nav>
     </div>

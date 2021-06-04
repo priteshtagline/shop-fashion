@@ -9,12 +9,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav m-auto left-menu">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="{% url 'website:home' %}" target="_self">
-                            Home
-                        </a>
-                    </li>
-
                     {% for department in departments %}
                     <li class="nav-item dropdown megamenu-li">
                         <a class="nav-link dropdown-toggle" id="dropdown01" href="#" data-bs-toggle="dropdown">
@@ -24,7 +18,7 @@
                                 {% for category in department.category_set.all %}
                                 <div class="col-lg-3 col-6 mt-lg-0 mt-md-3 mt-sm-3 mt-3">
                                     <div class="col-megamenu">
-                                        <h6 class="title"><strong>{{category}}</strong></h6>
+                                        <h6 class="title"><strong><a href="{% url 'website:browse_category' department=department|lower category=category|lower %}">{{category}}</a></strong></h6>
                                         <ul class="list-unstyled">
                                             {% for subcategory in category.subcategory_set.all %}
                                             <li><a
