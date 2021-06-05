@@ -1,22 +1,13 @@
 from django.views.generic import ListView
 from products.models.merchant import Merchant
 from products.models.product import Product
-from django.http import JsonResponse
-from django.core import serializers
 
 
 class BrowseListView(ListView):
     model = Product
     template_name = 'browse.html'
     context_object_name = 'products'
-    # paginate_by = 10
-
-    # def get(self, request, *args, **kwargs):
-    #     queryset = self.get_queryset()
-    #     if request.is_ajax():
-    #         data = serializers.serialize("json", queryset)
-    #         return JsonResponse(data, status=200, safe=False)
-    #     return super().dispatch(request, *args, **kwargs)
+    # paginate_by = 24
 
     def get_queryset(self):
         qs = super(BrowseListView, self).get_queryset()
@@ -43,10 +34,8 @@ class BrowseListView(ListView):
 
         return qs.filter(**kwargs_filters, **query_dict)
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         kwargs_filters = {
             'department__name__iexact': self.kwargs['department'],
             'category__name__iexact': self.kwargs['category'],
@@ -66,8 +55,3 @@ class BrowseListView(ListView):
             'color', flat=True).filter(**kwargs_filters).distinct()
 
         return context
-
-
-
-    
-

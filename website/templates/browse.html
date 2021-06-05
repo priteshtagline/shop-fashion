@@ -25,7 +25,8 @@
                                 <ul class="collections">
                                     {% for brand in filter_brands %}
                                     <li class="collections-item">
-                                        <input type="checkbox" class="filter_checkbox" name="brand" id="{{brand}}" value="{{brand}}"><label for="{{brand}}"> {{brand|title}}</label>
+                                        <input type="checkbox" class="filter_checkbox" name="brand" id="{{brand}}"
+                                            value="{{brand}}"><label for="{{brand}}"> {{brand|title}}</label>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -46,7 +47,8 @@
                                 <ul class="collections">
                                     {% for store in filter_stors %}
                                     <li class="collections-item">
-                                        <input type="checkbox" class="ml-1 filter_checkbox" name="store" value="{{store}}"> <a href="?store={{store}}">{{store|title}}</a>
+                                        <input type="checkbox" class="filter_checkbox" name="store" id="{{store}}"
+                                            value="{{store}}"> <label for="{{store}}"> {{store|title}}</label>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -68,10 +70,10 @@
                                 <ul class="colors-list d-flex">
                                     {% for color in filter_colors %}
                                     <li class="color-item">
-                                        <a href="?color={{color|slice:'1:'}}">
-                                            <div class="color color-circle" style="background:{{color}}">
-                                            </div>
-                                        </a>
+                                        <input type="checkbox" class="filter_checkbox" name="color" id="{{color|slice:'1:'}}"
+                                                value="{{color|slice:'1:'}}">
+                                        <div class="color color-circle" style="background:{{color}}">
+                                        </div>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -85,9 +87,10 @@
             <div class="col-md-10 browse-page">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'website:home' %}">Home</a></li>
                         <li class="breadcrumb-item"><a href="browse.html">Women</a></li>
                         <li class="breadcrumb-item"><a href="browse.html">Clothing</a></li>
-                        <li class="breadcrumb-item active text-capitalize" aria-current="page">Dress</li>
+                        <li class="breadcrumb-item active">Dress</li>
                     </ol>
                 </nav>
 
@@ -126,7 +129,7 @@
                 </li>
                 {% else %}
                 <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
-                 {% endif %} {% endfor %}
+                {% endif %} {% endfor %}
             </ul>
         </nav>
     </div>
@@ -137,40 +140,45 @@
 {% block custom_js %}
 <script type="text/javascript">
     $(document).ready(function () {
-        var current_url = window.location.href;
-        aa(current_url);
-        var base_url = current_url.substr(0,current_url.lastIndexOf('/'));
         const filter_json_object = {}
-        function createURLQuery (o) {
+        var current_url = window.location.href;
+        var base_url = current_url.substr(0, current_url.lastIndexOf('/'));
+
+        function createURLQueryToJson(url) {
+            let _url = new URL(url);
+            let _params = new URLSearchParams(_url.search);
+            let json_data = Array.from(_params.keys()).reduce((sum, value) => {
+                return Object.assign({
+                    [value]: _params.get(value).split(',')
+                }, sum);
+            }, {});
+            return json_data;
+        }
+
+        function createJsonToURLQuery(o) {
             return Object.keys(o)
-                .map(key => `${encodeURIComponent(key)}=`
-                    + o[key].map(v => encodeURIComponent(v)).join(','))
+                .map(key => `${encodeURIComponent(key)}=` +
+                    o[key].map(v => encodeURIComponent(v)).join(','))
                 .join('&')
         }
 
-        $('.filter_checkbox').on('change', function() {
-            filter_name = this.name
-            var filter_value = $(':checkbox[name='+filter_name+']:checked').map(function() {
-                return this.value;
-            }).get();
-            filter_json_object[filter_name] = filter_value;
-            new_url = base_url+'/?'+createURLQuery(filter_json_object);
-            aa(new_url);
+        $.each(createURLQueryToJson(current_url), function (key, val) {
+            $.each(val, function(index, fileter_val) {
+                $(":checkbox[class='filter_checkbox'][name='" + key + "'][value='" + fileter_val + "']")
+                    .attr("checked", true);
+            });
         });
 
-        function aa(url){
-            $.ajax({
-                url: url,
-                method: 'get',
-                dataType: 'json',
-                success: function (data) {         
-                    console.log(data);
-                },
-                error: function(data) {
-                    console.log(data);
-                },
+        $('.filter_checkbox').on('change', function () {
+            $(".filter_checkbox:checked").each(function () {
+                var filter_value = $(':checkbox[name=' + this.name + ']:checked').map(
+                function () {
+                    return this.value;
+                }).get();
+                filter_json_object[this.name] = filter_value;
             });
-        }
+            window.location.href = base_url + '/?' + createJsonToURLQuery(filter_json_object);
+        });
     });
 </script>
 {% endblock %}
