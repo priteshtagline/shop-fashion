@@ -2,7 +2,7 @@
 {% load static %}
 {% load static admin_tags %}
 
-{% block title %} Home | {{block.super}} {% endblock %}
+{% block title %} {{ view.kwargs.department|title }}'s {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %} | {{block.super}} {% endblock %}
 
 {% block body %}
 <main>
@@ -11,15 +11,62 @@
             <div class="col-md-2 filter side-nav fixed" id="slide-out">
                 <div class="accordion" id="accordionExample">
                     <h2 class="fw-light fs-5 heading-filter">Filter by</h2>
+
+                    {% if not view.kwargs.category %}
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-category" aria-expanded="false"
+                                aria-controls="panelsStayOpen-category">
+                                Categories
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-category" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for category in categories_list %}
+                                    <li class="collections-item">
+                                       <label> <a href="{{ request.path }}{{ category|lower }}?{{request.GET.urlencode}}">{{category|title}}</a></label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if not view.kwargs.subcategory and view.kwargs.category %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-subcategory" aria-expanded="false"
+                                aria-controls="panelsStayOpen-subcategory">
+                                Sub Categories
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-subcategory" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for sub_category in subcategories_list %}
+                                    <li class="collections-item">
+                                         <label> <a href="{{ request.path }}{{ sub_category|lower }}?{{request.GET.urlencode}}">{{sub_category|title}}</a></label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="accordion-item brand">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
                                 aria-controls="panelsStayOpen-collapseOne">
                                 Brands
                             </button>
                         </h2>
-                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
                             aria-labelledby="panelsStayOpen-headingOne">
                             <div class="accordion-body">
                                 <ul class="collections">
@@ -34,7 +81,7 @@
                         </div>
                     </div>
 
-                    <div class="accordion-item">
+                    <div class="accordion-item store">
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -56,7 +103,7 @@
                         </div>
                     </div>
 
-                    <div class="accordion-item">
+                    <div class="accordion-item color">
                         <h2 class="accordion-header" id="headingThree">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
@@ -88,9 +135,13 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'website:home' %}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="browse.html">Women</a></li>
-                        <li class="breadcrumb-item"><a href="browse.html">Clothing</a></li>
-                        <li class="breadcrumb-item active">Dress</li>
+                        <li class="breadcrumb-item"><a href="{% url 'website:browse_department' view.kwargs.department %}">{{ view.kwargs.department|title }}</a></li>
+                        {% if view.kwargs.category %}
+                        <li class="breadcrumb-item"><a href="{% url 'website:browse_category' view.kwargs.department view.kwargs.category %}">{{ view.kwargs.category|title }}</a></li>
+                        {% endif %}
+                        {% if view.kwargs.subcategory %}
+                        <li class="breadcrumb-item"><a href="{% url 'website:browse' view.kwargs.department view.kwargs.category view.kwargs.subcategory %}">{{ view.kwargs.subcategory|title }}</a></li>
+                        {% endif %}
                     </ol>
                 </nav>
 
@@ -99,7 +150,7 @@
                 <div id="overlay"></div>
                 <div class="browse-content">
                     <div class="product-catalouge mt-5">
-                        <h4 class="fw-bold">Women's Dresses</h4>
+                        <h4 class="fw-bold">{{ view.kwargs.department|title }}'s {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %}</h4>
                         <p>{{products|length}} item{{ products|pluralize }}</p>
                         <div class="products">
                             <ul class="product-list d-flex justify-content-evenly">
@@ -120,7 +171,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
         <nav aria-label="#" class="my-5">
             <ul class="pagination pagination-sm justify-content-center">
                 {% for page in page_obj.paginator.page_range %} {% if page == page_obj.number %}
@@ -145,6 +196,7 @@
         var base_url = current_url.substr(0, current_url.lastIndexOf('/'));
 
         function createURLQueryToJson(url) {
+            // given url to find all parameters and return json object.
             let _url = new URL(url);
             let _params = new URLSearchParams(_url.search);
             let json_data = Array.from(_params.keys()).reduce((sum, value) => {
@@ -156,6 +208,7 @@
         }
 
         function createJsonToURLQuery(o) {
+            // given parameters json object and return encoded url.
             return Object.keys(o)
                 .map(key => `${encodeURIComponent(key)}=` +
                     o[key].map(v => encodeURIComponent(v)).join(','))
@@ -163,6 +216,12 @@
         }
 
         $.each(createURLQueryToJson(current_url), function (key, val) {
+            // on window load to get current url and checkbox checked if parameter in value give.
+            var fecture_filter_html_block = $(".accordion-item."+key);
+            if({{products|length}}){
+                fecture_filter_html_block.find("button").removeClass('collapsed');
+                fecture_filter_html_block.find("div.accordion-collapse.collapse").addClass('show');
+            }
             $.each(val, function(index, fileter_val) {
                 $(":checkbox[class='filter_checkbox'][name='" + key + "'][value='" + fileter_val + "']")
                     .attr("checked", true);
@@ -170,6 +229,7 @@
         });
 
         $('.filter_checkbox').on('change', function () {
+            // on filter any chcekbox checked or uncheck then genrate new url and window current location change to new url.
             $(".filter_checkbox:checked").each(function () {
                 var filter_value = $(':checkbox[name=' + this.name + ']:checked').map(
                 function () {

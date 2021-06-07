@@ -18,4 +18,6 @@ urlpatterns = [
          BrowseListView.as_view(), name='browse'),
     path('browse/<department>/<category>/',
          BrowseListView.as_view(), name='browse_category'),
+    path('browse/<department>/',
+         BrowseListView.as_view(), name='browse_department'),
 ]
