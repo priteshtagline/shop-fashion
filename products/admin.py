@@ -24,7 +24,7 @@ class DepartmentAdmin(SortableAdminMixin, admin.ModelAdmin):
 class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ('name', 'department', )
     list_filter = ('department',)
-    search_fields = ('name', 'department')
+    search_fields = ('name', 'department__name')
 
 
 class SubCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
@@ -33,8 +33,7 @@ class SubCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
 
     list_display = ('name', 'category', 'department')
     list_filter = ('department', 'category')
-    search_fields = ('name', 'department', 'category')
-
+    search_fields = ('name', 'department__name', 'category__name')
 
 
 class ProductAdmin(SortableAdminMixin, admin.ModelAdmin):
@@ -43,6 +42,11 @@ class ProductAdmin(SortableAdminMixin, admin.ModelAdmin):
 
     list_display = ('title', 'department', 'category', 'subcategory', 'merchant', 'brand', 'color_view',
                     'redirect_url_view', 'price', 'image1_view', 'image2_view')
+
+    list_filter = ('department', 'category',
+                   'subcategory', 'merchant', 'brand',)
+
+    search_fields = ('title', 'merchant__name', 'brand',)
 
     readonly_fields = ('image1_view', 'image2_view')
 

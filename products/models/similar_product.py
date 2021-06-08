@@ -18,4 +18,3 @@ class SimilarProduct(models.Model):
         db_table = 'similar_products'
         ordering = ['display_order']
 
-
