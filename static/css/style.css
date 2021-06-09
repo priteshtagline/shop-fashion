@@ -130,6 +130,13 @@ select {
     -moz-box-shadow: 0px 0px 30px -3px rgba(0, 0, 0, 0.13);
 }
 
+.search-product input[type=submit]{
+    border: 0;
+    margin: auto 5px;
+    background-color: var(--primary-color);
+    color: var(--slider-white-color);
+}
+
 .search-product .search-link:hover+#search-box,
 #search-box:hover {
     display: block;
@@ -150,16 +157,16 @@ select {
 }
 
 .megamenu-li {
-	position: static;
+    position: static;
 }
 
 .megamenu {
-	position: absolute;
-	width: 100%;
+    position: absolute;
+    width: 100%;
     top: 70px;
-	left: 0;
-	right: 0;
-	padding: 15px;
+    left: 0;
+    right: 0;
+    padding: 15px;
     border-radius: 0;
     border: none;
 }
@@ -376,15 +383,6 @@ select {
     border: 1px solid var(--filter-color-selector-border-color);
 }
 
-.color-circle {
-    width: 30px;
-    height: 30px;
-    -webkit-border-radius: 25px;
-    -moz-border-radius: 25px;
-    border-radius: 25px;
-    border: 2px solid black;
-}
-
 .size input {
     width: 15px;
     height: 15px;
@@ -397,6 +395,101 @@ select {
 .heading-filter {
     border-bottom: 1px solid var(--form-input-outline-color);
     padding-bottom: 12px;
+}
+
+/* new added css */
+
+.styled-checkbox {
+    position: absolute;
+    opacity: 0;
+}
+
+.styled-checkbox+label {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+}
+
+.styled-checkbox+label:before {
+    content: "";
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-top;
+    width: 22px;
+    height: 22px;
+    background: var(--slider-white-color);
+    border: 1px solid var(--primary-color);
+}
+
+.styled-checkbox:checked+label:before {
+    background: var(--slider-white-color);
+}
+
+.styled-checkbox:checked+label:after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 7px;
+    background: var(--primary-color);
+    width: 10px;
+    height: 10px;
+}
+
+.styled-checkbox:hover+label:before {
+    background: var(--slider-white-color);
+    border: 1px solid var(--primary-color);
+}
+
+.c-color-swatch {
+    width: 100%;
+    max-width: 250px;
+}
+
+.c-color-swatch__item {
+    display: block;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.c-color-swatch__item span {
+    position: relative;
+    left: 30px;
+}
+
+.c-color-swatch__item:hover {
+    outline: var(--form-input-outline-color) solid 2px;
+    height: 25px;
+    width: 25px;
+}
+
+.c-color-swatch [type=checkbox]:checked+label:after {
+    content: "";
+    position: absolute;
+    vertical-align: center;
+    outline: var(--copyright-color) solid 2px;
+    height: 25px;
+    width: 25px;
+    left: 0;
+    top: 0;
+}
+
+/* new added css over */
+.side-nav {
+    background-color: var(--slider-white-color);
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    left: 8%;
+    overflow-x: hidden;
+    padding-top: 20px;
+    width: 300px;
+}
+
+.browse-page {
+    margin-left: 335px;
 }
 
 .accordion-button {

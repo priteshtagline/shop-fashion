@@ -17,7 +17,7 @@ class BrowseListView(ListView):
     model = Product
     template_name = 'browse.html'
     context_object_name = 'products'
-    paginate_by = 24
+    paginate_by = 100
 
     def get_queryset(self):
         """Override django generic listview get_queryset method because

@@ -2,7 +2,9 @@
 {% load static %}
 {% load static admin_tags %}
 
-{% block title %} {{ view.kwargs.department|title }}'s {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %} | {{block.super}} {% endblock %}
+{% block title %} {{ view.kwargs.department|title }}'s
+{% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %} |
+{{block.super}} {% endblock %}
 
 {% block body %}
 <main>
@@ -26,7 +28,8 @@
                                 <ul class="collections">
                                     {% for category in categories_list %}
                                     <li class="collections-item">
-                                       <label> <a href="{{ request.path }}{{ category|lower }}?{{request.GET.urlencode}}">{{category|title}}</a></label>
+                                        <label> <a
+                                                href="{{ request.path }}{{ category|lower }}?{{request.GET.urlencode}}">{{category|title}}</a></label>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -49,7 +52,8 @@
                                 <ul class="collections">
                                     {% for sub_category in subcategories_list %}
                                     <li class="collections-item">
-                                         <label> <a href="{{ request.path }}{{ sub_category|lower }}?{{request.GET.urlencode}}">{{sub_category|title}}</a></label>
+                                        <label> <a
+                                                href="{{ request.path }}{{ sub_category|lower }}?{{request.GET.urlencode}}">{{sub_category|title}}</a></label>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -72,7 +76,7 @@
                                 <ul class="collections">
                                     {% for brand in filter_brands %}
                                     <li class="collections-item">
-                                        <input type="checkbox" class="filter_checkbox" name="brand" id="{{brand}}"
+                                        <input type="checkbox" class="styled-checkbox" name="brand" id="{{brand}}"
                                             value="{{brand}}"><label for="{{brand}}"> {{brand|title}}</label>
                                     </li>
                                     {% endfor %}
@@ -94,7 +98,7 @@
                                 <ul class="collections">
                                     {% for store in filter_stors %}
                                     <li class="collections-item">
-                                        <input type="checkbox" class="filter_checkbox" name="store" id="{{store}}"
+                                        <input type="checkbox" class="styled-checkbox" name="store" id="{{store}}"
                                             value="{{store}}"> <label for="{{store}}"> {{store|title}}</label>
                                     </li>
                                     {% endfor %}
@@ -117,8 +121,8 @@
                                 <ul class="colors-list d-flex">
                                     {% for color in filter_colors %}
                                     <li class="color-item">
-                                        <input type="checkbox" class="filter_checkbox" name="color" id="{{color|slice:'1:'}}"
-                                                value="{{color|slice:'1:'}}">
+                                        <input type="checkbox" class="styled-checkbox" name="color"
+                                            id="{{color|slice:'1:'}}" value="{{color|slice:'1:'}}">
                                         <div class="color color-circle" style="background:{{color}}">
                                         </div>
                                     </li>
@@ -135,12 +139,18 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'website:home' %}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{% url 'website:browse_department' view.kwargs.department %}">{{ view.kwargs.department|title }}</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{% url 'website:browse_department' view.kwargs.department %}">{{ view.kwargs.department|title }}</a>
+                        </li>
                         {% if view.kwargs.category %}
-                        <li class="breadcrumb-item"><a href="{% url 'website:browse_category' view.kwargs.department view.kwargs.category %}">{{ view.kwargs.category|title }}</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{% url 'website:browse_category' view.kwargs.department view.kwargs.category %}">{{ view.kwargs.category|title }}</a>
+                        </li>
                         {% endif %}
                         {% if view.kwargs.subcategory %}
-                        <li class="breadcrumb-item"><a href="{% url 'website:browse' view.kwargs.department view.kwargs.category view.kwargs.subcategory %}">{{ view.kwargs.subcategory|title }}</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="{% url 'website:browse' view.kwargs.department view.kwargs.category view.kwargs.subcategory %}">{{ view.kwargs.subcategory|title }}</a>
+                        </li>
                         {% endif %}
                     </ol>
                 </nav>
@@ -150,7 +160,9 @@
                 <div id="overlay"></div>
                 <div class="browse-content">
                     <div class="product-catalouge mt-5">
-                        <h4 class="fw-bold">{{ view.kwargs.department|title }}'s {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %}</h4>
+                        <h4 class="fw-bold">{{ view.kwargs.department|title }}'s
+                            {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %}
+                        </h4>
                         <p>{{products|length}} item{{ products|pluralize }}</p>
                         <div class="products">
                             <ul class="product-list d-flex justify-content-evenly">
@@ -170,19 +182,49 @@
                         </div>
                     </div>
                 </div>
+                <nav aria-label="#" class="my-5">
+                    <ul class="pagination pagination-sm justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="me-auto">
+                            <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo; Prev</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for n in page_obj.paginator.page_range %}
+                            {% if page_obj.number|add:'-3' == n %}
+                                {# First page #}
+                                <li class="page-item"><a class="page-link" href="?page={{ n }}">1</a></li>
+                                {% if n != 1 %}
+                                    <li class="page-item"><a>&#8943;</a></li>
+                                {% endif %}
+                            {% elif page_obj.number == n %}
+                                {# Current page #}
+                                <li class="page-item active"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                            {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
+                                {# Pages around current page #}
+                                <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                            {% elif page_obj.number|add:'3' == n %}
+                                {# Last page #}
+                                {% if n != num_pages %}
+                                    <li class="page-item"><a>&#8943;</a></li>
+                                {% endif %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <li class="ms-auto">
+                            <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                <span aria-hidden="true">Next &raquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
-        </div>  
-        <nav aria-label="#" class="my-5">
-            <ul class="pagination pagination-sm justify-content-center">
-                {% for page in page_obj.paginator.page_range %} {% if page == page_obj.number %}
-                <li class="page-item active" aria-current="page">
-                    <span class="page-link">{{ page }}</span>
-                </li>
-                {% else %}
-                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
-                {% endif %} {% endfor %}
-            </ul>
-        </nav>
+        </div>
     </div>
 </main>
 
@@ -217,24 +259,29 @@
 
         $.each(createURLQueryToJson(current_url), function (key, val) {
             // on window load to get current url and checkbox checked if parameter in value give.
-            var fecture_filter_html_block = $(".accordion-item."+key);
-            if({{products|length}}){
+            var fecture_filter_html_block = $(".accordion-item." + key);
+            if ({
+                    {
+                        products | length
+                    }
+                }) {
                 fecture_filter_html_block.find("button").removeClass('collapsed');
                 fecture_filter_html_block.find("div.accordion-collapse.collapse").addClass('show');
             }
-            $.each(val, function(index, fileter_val) {
-                $(":checkbox[class='filter_checkbox'][name='" + key + "'][value='" + fileter_val + "']")
+            $.each(val, function (index, fileter_val) {
+                $(":checkbox[class='styled-checkbox'][name='" + key + "'][value='" +
+                        fileter_val + "']")
                     .attr("checked", true);
             });
         });
 
-        $('.filter_checkbox').on('change', function () {
+        $('.styled-checkbox').on('change', function () {
             // on filter any chcekbox checked or uncheck then genrate new url and window current location change to new url.
-            $(".filter_checkbox:checked").each(function () {
+            $(".styled-checkbox:checked").each(function () {
                 var filter_value = $(':checkbox[name=' + this.name + ']:checked').map(
-                function () {
-                    return this.value;
-                }).get();
+                    function () {
+                        return this.value;
+                    }).get();
                 filter_json_object[this.name] = filter_value;
             });
             window.location.href = base_url + '/?' + createJsonToURLQuery(filter_json_object);
