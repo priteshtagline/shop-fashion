@@ -14,7 +14,7 @@ class Product(models.Model):
         Merchant, blank=True, null=True, on_delete=models.SET_NULL)
     brand = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
-    redirect_url = models.URLField(max_length=1000)
+    redirect_url = models.URLField(max_length=2000)
     price = models.FloatField(blank=True, null=True,)
     color = ColorField(format='hexa')
     description = models.TextField()
