@@ -45,11 +45,26 @@ class User(AbstractUser):
         unique=True,
     )
 
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
+    email = models.EmailField(verbose_name='email address', max_length=255, unique=True, error_messages={
+                              'unique': 'A user with that email already exists.'})
+    username = models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150,
+                                verbose_name='username', blank=True, null=True, default=None, unique=True)
+    phone_number = models.CharField(
+        verbose_name='phone number', max_length=20, blank=True, null=True)
+    gender = models.CharField(verbose_name='gender', blank=True, default='M', max_length=1, choices=GENDER_CHOICES, error_messages={
+                              'invalid_choice': 'Choise any one gender.'})
+
     objects = UserManager()
 
     username = None
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+class Meta:
+    db_table = 'user'
 
-    def __str__(self):
-        return self.email
+def __str__(self):
+    return self.email
