@@ -6,11 +6,6 @@ from .models import User
 
 
 class UserSignupForm(SignupFrom):
-    """
-    A form that lets a user signup form.
-    The form is extend form django auth UserCreationForm and customize to 
-    remove password2 field in signup form.
-    """
     def __init__(self, *args, **kwargs):
         super(UserSignupForm, self).__init__(*args, **kwargs)
         del self.fields['password2']
@@ -19,14 +14,16 @@ class UserSignupForm(SignupFrom):
         model = User
         fields = ('email', 'first_name', 'last_name', 'password1')
 
+
 class UserPersonalInfoChnageForm(forms.ModelForm):
-    """
-    A form that lets a user change their personl informattion like first name and last name.
-    """
     class Meta:
         model = User
         fields = ('first_name', 'last_name',)
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> parent of e1b3d7d... User profile page changes
 
 class UserEmailChnageForm(forms.Form):
     """
@@ -49,7 +46,7 @@ class UserEmailChnageForm(forms.Form):
         
     def clean_password(self):
         """
-        Validates that the user password field is correct.
+        Validates that the password field is correct.
         """
         password = self.cleaned_data["password"]
         if not self.user.check_password(password):
@@ -80,12 +77,8 @@ class UserEmailChnageForm(forms.Form):
                     self.error_messages['email_mismatch'], code='email_mismatch',)
         return confirm_email
 
-    def save(self, commit=True):
-        self.user.email = self.cleaned_data["new_email"]
-        if commit:
-            self.user.save()
-        return self.user
 
+<<<<<<< HEAD
     # def save(self, commit=True):
     #     self.user.email = self.cleaned_data['email']
     #     if commit:
@@ -100,3 +93,26 @@ class UserPasswordChnageForm(forms.Form):
 
 
 
+=======
+class UserPasswordChnageForm(forms.Form):
+    error_messages = {
+        'password_incorrect': _("Incorrect password."),
+    }
+    
+    current_password = forms.CharField(widget=forms.PasswordInput, required=True)
+    new_password = forms.CharField(widget=forms.PasswordInput, required=True)
+    
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserPasswordChnageForm, self).__init__(*args, **kwargs)
+    
+    def clean_current_password(self):
+        """
+        Validates that the current password field is correct.
+        """
+        current_password = self.cleaned_data["current_password"]
+        if not self.user.check_password(current_password):
+            raise forms.ValidationError(
+                self.error_messages['password_incorrect'], code='password_incorrect',)
+        return current_password
+>>>>>>> parent of e1b3d7d... User profile page changes

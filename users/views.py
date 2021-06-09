@@ -1,15 +1,27 @@
 from django.views.generic import CreateView, TemplateView
+from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+<<<<<<< HEAD
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.shortcuts import render
+=======
+from .forms import UserSignupForm, UserPersonalInfoChnageForm, UserPasswordChnageForm, UserEmailChnageForm
+from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect, HttpResponse
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import User
+
+>>>>>>> parent of e1b3d7d... User profile page changes
+
 
 class UserSignUpView(CreateView):
-    """This view is for the sign up page which display signup form.
-    If user is already login in website then user automatically redirect to home page 
-    otherwise display signup form.
+    """This view is for the sign up page which displays signup form.
     After successful registration, it will automatically login the user in the system and
     redirect user to the home page.
     """
@@ -34,17 +46,16 @@ class UserSignUpView(CreateView):
 
 
 class ProfileUpdateView(LoginRequiredMixin, TemplateView):
-    """This view is for the user profile page which displays email, password and personal info chnage form.
-    The view extend for TempletView django metohd then three form pass in single profile templet and render to html.
-    Post method in check wiche form fill by user then perfome oprtaion and apropriate change to user profile data
-    and send response.
-    """
     login_url = 'user:login'
     template_name = 'profile.html'
     
     def get_context_data(self, **kwargs):
         kwargs['personal_info_change_form'] = UserPersonalInfoChnageForm()
+<<<<<<< HEAD
         kwargs['password_change_form'] = UserPasswordChnageForm()
+=======
+        kwargs['password_change_form'] = UserPasswordChnageForm(self.request.user)
+>>>>>>> parent of e1b3d7d... User profile page changes
         kwargs['email_change_form'] = UserEmailChnageForm(self.request.user)
         return kwargs
             
@@ -52,6 +63,7 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, self.get_context_data())
     
     def post(self, request, *args, **kwargs):
+<<<<<<< HEAD
         ctxt = {}
         if 'personal_info_change_form' in request.POST:
             personal_info_change_form = UserPersonalInfoChnageForm(request.POST)
@@ -72,6 +84,30 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
             print(email_change_form)
             if email_change_form.is_valid():
                 print(email_change_form)
+=======
+        if 'personal_info_change_form' in request.POST:
+            personal_info_change_form = UserPersonalInfoChnageForm(request.POST)
+            if personal_info_change_form.is_valid():
+                request.user.first_name = request.POST['first_name']
+                request.user.last_name = request.POST['last_name']
+                request.user.save()
+            else:
+                return JsonResponse({'form': False, 'errors': personal_info_change_form.errors})
+
+        elif 'password_change_form' in request.POST:
+            password_change_form = UserPasswordChnageForm(request.user, request.POST)
+            if password_change_form.is_valid():
+                self.request.user.set_password(request.POST['new_password'])
+                self.request.user.save()
+            else:
+                return JsonResponse({'form': False, 'errors': password_change_form.errors})
+
+        else:
+            email_change_form = UserEmailChnageForm(request.user, request.POST)
+            if email_change_form.is_valid():
+                self.request.user.email = request.POST['new_email']
+                self.request.user.save()
+>>>>>>> parent of e1b3d7d... User profile page changes
             else:
                 ctxt['email_change_form'] = email_change_form
 
