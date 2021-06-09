@@ -82,13 +82,11 @@
     .side-nav {
         background-color: var(--slider-white-color);
         height: 100%;
-        position: fixed;
+        position: sticky;
         z-index: 1;
-        /* top: 0; */
-        left: 10%;
+        top: 0;
         overflow-x: hidden;
         padding-top: 20px;
-        width: 230px;
     }
 }
 
@@ -753,7 +751,7 @@
 
     .side-nav {
         top: 75px;
-        max-width: 40%;
+        max-width: 50%;
     }
 
     .campaign-content {
