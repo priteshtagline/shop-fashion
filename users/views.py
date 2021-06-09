@@ -1,12 +1,10 @@
 from django.views.generic import CreateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect, JsonResponse
-from django.contrib.auth import authenticate, login, update_session_auth_hash
-from django.shortcuts import render, redirect
-from .forms import UserSignupForm, UserPersonalInfoChnageForm, UserPasswordChnageForm, UserEmailChnageForm
-from .models import User
-
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login
+from django.shortcuts import redirect
+from django.shortcuts import render
 
 class UserSignUpView(CreateView):
     """This view is for the sign up page which display signup form.
@@ -43,40 +41,38 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
     """
     login_url = 'user:login'
     template_name = 'profile.html'
-
+    
     def get_context_data(self, **kwargs):
-        user = self.request.user
-        kwargs['personal_info_change_form'] = UserPersonalInfoChnageForm(user, initial={'first_name': user.first_name, 'last_name': user.last_name})
-        kwargs['password_change_form'] = UserPasswordChnageForm(user)
-        kwargs['email_change_form'] = UserEmailChnageForm(user)
+        kwargs['personal_info_change_form'] = UserPersonalInfoChnageForm()
+        kwargs['password_change_form'] = UserPasswordChnageForm()
+        kwargs['email_change_form'] = UserEmailChnageForm(self.request.user)
         return kwargs
-
+            
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, self.get_context_data())
-
+    
     def post(self, request, *args, **kwargs):
-        form_data = request.POST
-        user = self.request.user
-        if 'first_name' in form_data and 'last_name' in form_data:
-            personal_info_change_form = UserPersonalInfoChnageForm(user, form_data)
+        ctxt = {}
+        if 'personal_info_change_form' in request.POST:
+            personal_info_change_form = UserPersonalInfoChnageForm(request.POST)
             if personal_info_change_form.is_valid():
-                personal_info_change_form.save()
+                print(personal_info_change_form)
             else:
-                return JsonResponse({'status': False, 'errors': personal_info_change_form.errors}, status=200)
+                ctxt['personal_info_change_form'] = personal_info_change_form
 
-        elif 'new_password' in form_data and 'current_password' in form_data:
-            password_change_form = UserPasswordChnageForm(user, form_data)
+        elif 'password_change_form' in request.POST:
+            password_change_form = UserPasswordChnageForm(request.POST)
             if password_change_form.is_valid():
-                password_change_form.save()
-                update_session_auth_hash(request, user)
+                print(request)
             else:
-                return JsonResponse({'status': False, 'errors': password_change_form.errors}, status=200)
-
+                ctxt['password_change_form'] = password_change_form
+                
         else:
-            email_change_form = UserEmailChnageForm(user, form_data)
+            email_change_form = UserEmailChnageForm(request.user, request.POST)
+            print(email_change_form)
             if email_change_form.is_valid():
-                email_change_form.save()
+                print(email_change_form)
             else:
-                return JsonResponse({'status': False, 'errors': email_change_form.errors})
+                ctxt['email_change_form'] = email_change_form
 
-        return JsonResponse({"status": True, "errors": ""}, status=200)
+        return render(request, self.template_name, self.get_context_data(**ctxt))

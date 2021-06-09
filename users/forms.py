@@ -26,17 +26,7 @@ class UserPersonalInfoChnageForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name',)
-
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(UserPersonalInfoChnageForm, self).__init__(*args, **kwargs)
-
-    def save(self, commit=True):
-        self.user.first_name = self.cleaned_data["first_name"]
-        self.user.last_name = self.cleaned_data["last_name"]
-        if commit:
-            self.user.save()
-        return self.user
+        
 
 class UserEmailChnageForm(forms.Form):
     """
@@ -49,14 +39,14 @@ class UserEmailChnageForm(forms.Form):
         'password_incorrect': _("Incorrect password."),
     }
 
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
-    new_email = forms.EmailField(max_length=254, required=True)
-    confirm_email = forms.EmailField(max_length=254, required=True)
+    password = forms.CharField(widget=forms.PasswordInput,required=True)
+    new_email = forms.EmailField(max_length=254,required=True)
+    confirm_email = forms.EmailField(max_length=254,required=True)
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(UserEmailChnageForm, self).__init__(*args, **kwargs)
-
+        
     def clean_password(self):
         """
         Validates that the user password field is correct.
@@ -66,6 +56,7 @@ class UserEmailChnageForm(forms.Form):
             raise forms.ValidationError(
                 self.error_messages['password_incorrect'], code='password_incorrect',)
         return password
+
 
     def clean_new_email(self):
         """
@@ -95,35 +86,17 @@ class UserEmailChnageForm(forms.Form):
             self.user.save()
         return self.user
 
-class UserPasswordChnageForm(forms.Form):
-    """
-    A form that lets a user change set their password while checking for a change in the
-    password.
-    """
+    # def save(self, commit=True):
+    #     self.user.email = self.cleaned_data['email']
+    #     if commit:
+    #         self.user.save()
+    #     return self.user
 
-    error_messages = {
-        'password_incorrect': _("Incorrect password."),
-    }
-    
+
+class UserPasswordChnageForm(forms.Form):
     current_password = forms.CharField(widget=forms.PasswordInput, required=True)
     new_password = forms.CharField(widget=forms.PasswordInput, required=True)
     
-    def __init__(self, user, *args, **kwargs):
-        self.user = user
-        super(UserPasswordChnageForm, self).__init__(*args, **kwargs)
-    
-    def clean_current_password(self):
-        """
-        Validates that the user current password field is correct.
-        """
-        current_password = self.cleaned_data["current_password"]
-        if not self.user.check_password(current_password):
-            raise forms.ValidationError(
-                self.error_messages['password_incorrect'], code='password_incorrect',)
-        return current_password
 
-    def save(self, commit=True):
-        self.user.set_password(self.cleaned_data["new_password"])
-        if commit:
-            self.user.save()
-        return self.user
+
+

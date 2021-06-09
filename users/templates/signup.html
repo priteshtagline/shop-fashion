@@ -1,28 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% load widget_tweaks %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-</head>
+{% block title %} Sign Up | {{block.super}} {% endblock %}
 
-<body>
-    <div class="container jumbotron">
-        {% if user.is_authenticated %}
-        <strong>You Are AllReady Signup with This Email {{ user.email }}.</strong><br>
-        <a href="{% url 'home' %}" class="btn-link btn">Return to the HomePage</a>
-        {% else %}
-        <strong class="display-3 mb-4">Sign In Here... </strong>
-        <form action="{% url 'signup' %}" class="pt-3" method="POST">
-            {% csrf_token %}
-            {{ signup_form.as_p }}
-            <input type="submit" name="submit" value="Signup" class="btn btn-success">
-            <p class="p-2 m-1">Already a Member? <a href="{% url 'login' %}">Sign In Here...</a></p>
-        </form>
-        {% endif %}
-    </div>
-</body>
+{% block body %}
+    <main>
+        <div class="registration-form">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <h3 class="mb-4">Create Acount</h3>
+                        <p><i class="fal fa-credit-card-blank pe-2"></i>Check out faster</p>
+                        <p><i class="fal fa-truck pe-2"></i>Track orders easily</p>
+                        <p><i class="far fa-cloud pe-2"></i>One account to shop our brands</p>
+                        <p><span class="required">*</span>Required</p>
+                        <form method="POST">
+                            {% csrf_token %}
 
-</html>
+                            {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ field.label }}</strong><span>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <label for="{{ form.email.id_for_label }}" class="fw-bold">Email<span class="required">*</span></label> 
+                            <br>
+                            {{form.email|add_class:"rounded-0"|remove_attr:"autocomplete"}}
+
+                            <label for="{{ form.first_name.id_for_label }}" class="mt-4 fw-bold">First Name<span class="required">*</span></label>
+                            <br>
+                            {{form.first_name|add_class:"rounded-0"|attr:"aria-describedby:nameError"}}
+
+                            <label for="{{ form.last_name.id_for_label }}" class="mt-4 fw-bold">Last Name<span class="required">*</span></label>
+                            <br>
+                            {{form.last_name|add_class:"rounded-0"|attr:"aria-describedby:nameError"}}
+
+                            <label for="{{ form.password.id_for_label }}" class="mt-4 fw-bold">Create password<spanclass="required">*</span></label> 
+                            <br>
+                            {{form.password1|add_class:"rounded-0"}}
+                            <span toggle="#{{ form.password1.id_for_label }}" class="field-icon toggle-password">Show</span>
+
+                            <p class="warning mt-2">By creating an account, you agree to our <span><a href="#">Privacy
+                                        Policy</a></span> and <span><a href="#">Terms & Conditions.</a></span></p>
+
+                            <input type="submit" name="submit" value="Create Account" class="btn btn-dark rounded-0">
+
+                            <p class="mt-2 mb-1">Already User? <a href="{% url 'user:login' %}"
+                                    class="text-decoration-underline">Sign In</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
