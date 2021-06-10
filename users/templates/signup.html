@@ -44,10 +44,13 @@
                             <br>
                             {{form.last_name|add_class:"rounded-0"|attr:"aria-describedby:nameError"}}
 
-                            <label for="{{ form.password.id_for_label }}" class="mt-4 fw-bold">Create password<spanclass="required">*</span></label> 
+                            <label for="{{ form.password1.id_for_label }}" class="mt-4 fw-bold">Create password<spanclass="required">*</span></label> 
                             <br>
+                            <div class="password position-relative">
                             {{form.password1|add_class:"rounded-0"}}
-                            <span toggle="#{{ form.password1.id_for_label }}" class="field-icon toggle-password">Show</span>
+                            <span toggle="#{{ form.password1.id_for_label }}"
+                               class="field-icon toggle-password position-absolute">Show</span>
+                            </div>
 
                             <p class="warning mt-2">By creating an account, you agree to our <span>
                                 <a href="{% url 'website:privacy_policy' %}">Privacy Policy</a></span> and <span>
