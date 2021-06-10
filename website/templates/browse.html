@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+{% load static admin_tags %}
+
+{% block title %} Home | {{block.super}} {% endblock %}
+
+{% block body %}
+<main>
+    <div class="browse">
+        <div class="row">
+            <div class="col-md-2 filter side-nav fixed" id="slide-out">
+                <div class="accordion" id="accordionExample">
+                    <h2 class="fw-light fs-5 heading-filter">Filter by</h2>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                aria-controls="panelsStayOpen-collapseOne">
+                                Brands
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+                            aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for brand in filter_brands %}
+                                    <li class="collections-item">
+                                        <a href="?brand={{brand}}">{{brand|title}}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Stores
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for store in filter_stors %}
+                                    <li class="collections-item">
+                                        <a href="?store={{store}}">{{store|title}}</a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapseThree">
+                                Color
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
+                            aria-labelledby="panelsStayOpen-headingThree">
+                            <div class="accordion-body">
+                                <ul class="colors-list d-flex">
+                                    {% for color in filter_colors %}
+                                    <li class="color-item">
+                                        <a href="?color={{color|slice:'1:'}}">
+                                            <div class="color color-circle" style="background:{{color}}">
+                                            </div>
+                                        </a>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-10 browse-page">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="browse.html">Women</a></li>
+                        <li class="breadcrumb-item"><a href="browse.html">Clothing</a></li>
+                        <li class="breadcrumb-item active text-capitalize" aria-current="page">Dress</li>
+                    </ol>
+                </nav>
+
+                <a href="#" data-activates="slide-out" class="button-collapse d-lg-none filter-btn"><i
+                        class="fas fa-filter pe-2"></i>Filter</a>
+                <div id="overlay"></div>
+                <div class="browse-content">
+                    <div class="product-catalouge mt-5">
+                        <h4 class="fw-bold">Women's Dresses</h4>
+                        <p>{{products|length}} item{{ products|pluralize }}</p>
+                        <div class="products">
+                            <ul class="product-list d-flex justify-content-evenly">
+                                {% for product in products %}
+                                <li class="product-item">
+                                    <a href="{% url 'website:product' product.title|slugify product.id %}">
+                                        <div class="card" style="width: 18rem;">
+                                            <img src="{{product.image1.url}}" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <p class="card-text">{{product.title}}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav aria-label="#" class="my-5">
+            <ul class="pagination pagination-sm justify-content-center">
+                {% for page in page_obj.paginator.page_range %} {% if page == page_obj.number %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ page }}</span>
+                </li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                 {% endif %} {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</main>
+{% endblock %}
