@@ -4,6 +4,14 @@ from .department import Department
 
 
 class Category(models.Model):
+    """Category model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [category name]
+    """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     display_order = models.PositiveIntegerField(

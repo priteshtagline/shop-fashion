@@ -5,6 +5,14 @@ from .category import Category
 
 
 class SubCategory(models.Model):
+    """SubCategory model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [sub category title]
+    """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)

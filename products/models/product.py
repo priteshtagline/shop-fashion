@@ -7,6 +7,14 @@ from .department import Department
 
 
 class Product(models.Model):
+    """Product model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [product title]
+    """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)

@@ -3,6 +3,14 @@ from .product import Product
 
 
 class VtovProduct(models.Model):
+    """VtovProduct model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [product title]
+    """
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     vtov_products = models.ManyToManyField(
         Product, related_name="vtov_products", verbose_name="Vtov Products")

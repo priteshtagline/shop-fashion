@@ -3,6 +3,14 @@ from .product import Product
 
 
 class SimilarProduct(models.Model):
+    """SimilarProduct model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [product title]
+    """
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     similar_products = models.ManyToManyField(
         Product, related_name="similar_products", verbose_name="Similar Products")

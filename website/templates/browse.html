@@ -263,11 +263,7 @@
         $.each(createURLQueryToJson(current_url), function (key, val) {
             // on window load to get current url and checkbox checked if parameter in value give.
             var fecture_filter_html_block = $(".accordion-item." + key);
-            if ({
-                    {
-                        products | length
-                    }
-                }) {
+            if ({{products|length}}) {
                 fecture_filter_html_block.find("button").removeClass('collapsed');
                 fecture_filter_html_block.find("div.accordion-collapse.collapse").addClass('show');
             }

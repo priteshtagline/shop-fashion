@@ -4,6 +4,14 @@ from .product import Product
 
 
 class ShopLook(models.Model):
+    """ShopLook model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [shoplook title]
+    """
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
     title = models.CharField(max_length=255)

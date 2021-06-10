@@ -3,6 +3,14 @@ from .product import Product
 
 
 class RecommendedProduct(models.Model):
+    """RecommendedProduct model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [product title]
+    """
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     recommended_products = models.ManyToManyField(
         Product, related_name="recommended_products", verbose_name="Recommended Products")

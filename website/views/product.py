@@ -6,10 +6,25 @@ from products.models.vtov_product import VtovProduct
 
 
 class ProductDeatilView(DetailView):
+    """Website product detail page
+
+    Args:
+        DetailView ([Django Method]): [Extend by django generic]
+
+    Returns:
+        [html/text]: [return render html for product detail page]
+    """
     model = Product
     template_name = 'product.html'
 
     def get_context_data(self, **kwargs):
+        """Override django generic detailview get_context_data method because
+           as per requrments to diaplay product detail with similar, recommended
+           and vtov product list carsole.
+
+        Returns:
+            [json object]: [product detail with similar, recommended and vtov product list]
+        """
         context = super().get_context_data(**kwargs)
         product_id = context['product'].id
 
