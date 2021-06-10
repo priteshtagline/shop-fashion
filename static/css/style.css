@@ -484,10 +484,6 @@ select {
     padding-top: 20px;
 }
 
-.browse-page {
-    margin-left: 335px;
-}
-
 .accordion-button {
     position: relative;
     display: flex;

@@ -75,6 +75,19 @@
         width: 100%;
     }
 
+    .browse-page {
+        margin-left: 210px;
+    }
+
+    .side-nav {
+        background-color: var(--slider-white-color);
+        height: 100%;
+        position: sticky;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
 }
 
 @media screen and (max-width: 991px) {
@@ -254,6 +267,13 @@
         display: none !important;
     }
 
+    .browse-page {
+        margin-left: 0 !important;
+    }
+
+    .side-nav {
+        top: 142px;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -579,7 +599,64 @@
     #myBtn span {
         display: none;
     }
-    
+
+    .accordion-body {
+        padding: 0rem 0.25rem;
+    }
+
+    .side-nav {
+        height: 100%;
+        font-size: 13px;
+    }
+
+    .styled-checkbox+label:before {
+        width: 18px;
+        height: 18px;
+    }
+
+    .styled-checkbox:checked+label:after {
+        left: 5px;
+        top: 6px;
+        width: 8px;
+        height: 8px;
+    }
+
+    .c-color-swatch {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .c-color-swatch__item {
+        display: block;
+        height: 18px;
+        width: 18px;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .c-color-swatch__item span {
+        position: relative;
+        left: 30px;
+    }
+
+    .c-color-swatch__item:hover {
+        outline: var(--form-input-outline-color) solid 2px;
+        height: 18px;
+        width: 18px;
+    }
+
+    .c-color-swatch [type=checkbox]:checked+label:after {
+        content: "";
+        position: absolute;
+        vertical-align: center;
+        outline: var(--copyright-color) solid 2px;
+        height: 25px;
+        width: 25px;
+        left: 0;
+        top: 0;
+    }
+
 }
 
 @media screen and (max-width: 430px) {
@@ -674,7 +751,7 @@
 
     .side-nav {
         top: 75px;
-        max-width: 40%;
+        max-width: 50%;
     }
 
     .campaign-content {
@@ -766,5 +843,9 @@
         height: 25px;
         width: 25px;
         line-height: 25px;
+    }
+
+    .search-place {
+        width: 75%;
     }
 }
