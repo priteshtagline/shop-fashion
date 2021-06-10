@@ -183,43 +183,47 @@
                 </div>
                 <nav aria-label="#" class="my-5">
                     <ul class="pagination pagination-sm justify-content-center">
-                        {% if page_obj.has_previous %}
-                        <li class="me-auto">
-                            <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                       
+                        <li class="me-auto" {%if not page_obj.has_previous %} style="visibility: hidden;" {% endif %}>
+                            <a href="?page=" aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
                         </li>
-                        {% endif %}
+                        
 
-                        {% for n in page_obj.paginator.page_range %}
-                            {% if page_obj.number|add:'-3' == n %}
+                        <li>
+                            <ul class="pagination pagination-sm mx-auto justify-content-center">
+                                {% for n in page_obj.paginator.page_range %}
+                                {% if page_obj.number|add:'-3' == n %}
                                 {# First page #}
                                 <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
                                 {% if n != 1 %}
-                                    <li class="page-item"><a>&#8943;</a></li>
+                                <li class="page-item"><a>&#8943;</a></li>
                                 {% endif %}
-                            {% elif page_obj.number == n %}
+                                {% elif page_obj.number == n %}
                                 {# Current page #}
                                 <li class="page-item active"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
-                            {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
+                                {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
                                 {# Pages around current page #}
                                 <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
-                            {% elif page_obj.number|add:'3' == n %}
+                                {% elif page_obj.number|add:'3' == n %}
                                 {# Last page #}
                                 {% if n != num_pages %}
-                                    <li class="page-item"><a>&#8943;</a></li>
+                                <li class="page-item"><a>&#8943;</a></li>
                                 {% endif %}
-                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a></li>
-                            {% endif %}
-                        {% endfor %}
+                                <li class="page-item"><a class="page-link"
+                                        href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
 
-                        {% if page_obj.has_next %}
-                        <li class="ms-auto">
-                            <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                         <li class="ms-auto"  {% if not page_obj.has_next %} style="visibility: hidden;" {% endif %}>
+                            <a href="?page={" aria-label="Next">
                                 <span aria-hidden="true">Next &raquo;</span>
                             </a>
                         </li>
-                        {% endif %}
                     </ul>
                 </nav>
             </div>
