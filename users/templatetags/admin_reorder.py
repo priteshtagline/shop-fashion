@@ -21,6 +21,7 @@ def render_model_list(app_list):
     model_ordering = {
         "Groups": 1,
         "Users": 2,
+        "Email subscribes": 3,
         "Merchants": 3,
         "Departments": 3,
         "Categories": 4,

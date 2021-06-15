@@ -3,6 +3,7 @@ from django.urls import include, path, reverse_lazy
 
 from users.views.profile import ProfileUpdateView
 from users.views.signup import UserSignUpView
+from users.views.email_subscribe import EmailSubscribeView
 
 app_name = 'user'
 urlpatterns = [
@@ -13,5 +14,6 @@ urlpatterns = [
         success_url=reverse_lazy('user:password_reset_complete')), name="password_reset_confirm"),
     path('', include('django.contrib.auth.urls',)),
     path('signup/', UserSignUpView.as_view(), name="signup"),
-    path('profile/', ProfileUpdateView.as_view(), name="profile")
+    path('profile/', ProfileUpdateView.as_view(), name="profile"),
+    path('email_subscribe/', EmailSubscribeView.as_view(), name="email_subscribe")
 ]

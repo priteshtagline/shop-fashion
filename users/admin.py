@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from users.models import User
+from users.models import EmailSubscribe
 
 
 class UserAdmin(BaseUserAdmin):
@@ -29,4 +30,9 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 
+class EmailSubscribeAdmin(admin.ModelAdmin):
+    search_fields = ('email',)
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(EmailSubscribe, EmailSubscribeAdmin)
