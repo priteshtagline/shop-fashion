@@ -35,6 +35,35 @@
     {% block custom_js %}
     {% endblock %}
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('submit', 'form.email-subscribe-form', function (e) {
+                form = $(this);
+                e.preventDefault();
+                $.ajax({
+                    url: "{% url 'user:email_subscribe' %}",
+                    method: 'POST',
+                    data: form.serialize(),
+                    dataType: 'JSON',
+                    headers: {
+                        "X-CSRFToken": form.find("[name=csrfmiddlewaretoken]").val()
+                    },
+                    success: function (data) {
+                        if (data.status) {
+                            form.find("p").empty().show().html('Successfully your email subscribed.').delay(1500).fadeOut(300);
+                            setTimeout(function () {
+                                form.find("input[type=email]").val("");
+                            }, 1500);
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    },
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

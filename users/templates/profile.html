@@ -107,10 +107,7 @@
                                                     <div class="modal-body flex-column">
                                                         <h5 class="mb-3">Change your email</h5>
 
-                                                        <form method="post" class="d-flex flex-column">
-                                                            <div class="error_message">
-
-                                                            </div>
+                                                        <form method="post" class="profile-form d-flex flex-column">
                                                             {% csrf_token %}
                                                             <label for="{{ email_change_form.new_email.id_for_label }}"
                                                                 class="">New Email</label>
@@ -160,11 +157,8 @@
                                                         <h5 class="mb-3">Change your password</h5>
                                                         <p>You will change the password for your Nordstrom
                                                             and Nordstrom Rack account.</p>
-                                                        <form method="post" class="d-flex flex-column">
+                                                        <form method="post" class="profile-form d-flex flex-column">
                                                             {% csrf_token %}
-                                                            <div class="error_message">
-
-                                                            </div>
                                                             <label
                                                                 for="{{ password_change_form.current_password.id_for_label }}"
                                                                 class="mt-4 ">Current Password</label>
@@ -213,10 +207,7 @@
                                                     </div>
                                                     <div class="modal-body flex-column pt-1">
                                                         {{personal_info_form.as_p}}
-                                                        <form method="post" class="d-flex flex-column">
-                                                            <div class="error_message">
-
-                                                            </div>
+                                                        <form method="post" class="profile-form d-flex flex-column">
                                                             {% csrf_token %}
                                                             <label
                                                                 for="{{ personal_info_change_form.first_name.id_for_label }}"
@@ -251,7 +242,7 @@
 {% block custom_js %}
 <script type="text/javascript">
     $(document).ready(function () {
-        $("form").submit(function (e) {
+        $(document).on('submit','form.profile-form',function(e){
             form = $(this);
             e.preventDefault();
             $.ajax({

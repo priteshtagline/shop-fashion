@@ -64,3 +64,21 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+
+class EmailSubscribe(models.Model):
+    """EmailSubscribe model
+
+    Args:
+        models (method): [django model method]
+
+    Returns:
+        [string]: [email]
+    """
+    email = models.EmailField(max_length=255)
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        db_table = 'email_subscribe'
