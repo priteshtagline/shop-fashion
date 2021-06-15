@@ -24,7 +24,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     redirect_url = models.URLField(max_length=2000)
     price = models.FloatField(blank=True, null=True,)
-    color = ColorField(format='hexa')
+    color = ColorField(format='hexa', blank=True, null=True)
     description = models.TextField()
     image1 = models.ImageField(upload_to='product/')
     image2 = models.ImageField(upload_to='product/')

@@ -106,6 +106,7 @@
                         </div>
                     </div>
 
+                    {% if filter_colors %}
                     <div class="accordion-item color">
                         <h2 class="accordion-header" id="headingThree">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -120,16 +121,15 @@
                                 <ul class="colors-list d-flex">
                                     {% for color in filter_colors %}
                                     <li class="color-item">
-                                        <input type="checkbox" class="styled-checkbox" name="color"
-                                            id="{{color|slice:'1:'}}" value="{{color|slice:'1:'}}">
-                                        <div class="color color-circle" style="background:{{color}}">
-                                        </div>
+                                        <input type="checkbox" class="styled-checkbox" name="color" id="{{color|slice:'1:'}}"
+                                            value="{{color|slice:'1:'}}"> <label for="{{color|slice:'1:'}}"> {{color}}</label>
                                     </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
 
                 </div>
             </div>
@@ -147,8 +147,8 @@
                         </li>
                         {% endif %}
                         {% if view.kwargs.subcategory %}
-                        <li class="breadcrumb-item"><a
-                                href="{% url 'website:browse' view.kwargs.department view.kwargs.category view.kwargs.subcategory %}">{{ view.kwargs.subcategory|title }}</a>
+                        <li class="breadcrumb-item active text-capitalize" aria-current="page">
+                            {{ view.kwargs.subcategory|title }}
                         </li>
                         {% endif %}
                     </ol>
@@ -181,6 +181,8 @@
                         </div>
                     </div>
                 </div>
+
+                {% if is_paginated %}
                 <nav aria-label="#" class="my-5">
                     <ul class="pagination pagination-sm justify-content-center">
                        
@@ -226,6 +228,8 @@
                         </li>
                     </ul>
                 </nav>
+                {% endif %}
+
             </div>
         </div>
     </div>
