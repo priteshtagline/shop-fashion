@@ -14,7 +14,7 @@ class ShopLookListView(ListView):
     model = ShopLook
     template_name = 'shoplook.html'
     context_object_name = 'shoplooks'
-    paginate_by = 30
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
