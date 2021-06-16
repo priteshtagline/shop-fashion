@@ -9,7 +9,7 @@ function filterProducts(val) {
             options = "";
             for (var i = 0; i < j.length; i++) {
                 options +=
-                    '<option value="' + j[i].id + '">' + j[i].title + "</option>";
+                    '<option value="' + j[i].id + '">' + j[i].title + ' | ' + j[i].category__name + ' | ' + j[i].subcategory__name + "</option>";
             }
             productsSelect.html(options);
             productsSelect.val(productsSelectVal);
