@@ -61,5 +61,5 @@ def get_products_by_department(request):
     """
     department_id = request.GET.get('id', '')
     result = list(Product.objects.filter(
-        department_id=department_id).values('id', 'title'))
+        department_id=department_id).values('id', 'title', 'category__name', 'subcategory__name').order_by('category__name', 'subcategory__name', 'title'))
     return HttpResponse(json.dumps(result), content_type="application/json")
