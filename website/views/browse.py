@@ -31,14 +31,6 @@ class BrowseListView(ListView):
             [queryset object]: [filter product queryset object data]
         """
         qs = super(BrowseListView, self).get_queryset()
-        kwargs_filters = {
-            'department__name__iexact': self.kwargs['department'],
-        }
-        if 'category' in self.kwargs:
-            kwargs_filters['category__name__iexact'] = self.kwargs['category']
-
-        if 'subcategory' in self.kwargs:
-            kwargs_filters['subcategory__name__iexact'] = self.kwargs['subcategory']
 
         filter_fields = ('brand', 'store', 'color')
         query_dict = {}
@@ -54,7 +46,7 @@ class BrowseListView(ListView):
                     query_dict['color__iregex'] = r'(' + \
                         '|'.join(param_value_list) + ')'
 
-        return qs.filter(**kwargs_filters, **query_dict)
+        return qs.filter(**query_dict)
 
     def get_context_data(self, **kwargs):
         """Override django generic listview get_context_data method because
@@ -84,8 +76,12 @@ class BrowseListView(ListView):
             context['subcategories_list'] = SubCategory.objects.values_list(
                 'name', flat=True).filter(**kwargs_filters)
 
-        context['filter_brands'] = Product.objects.values_list(
+        filter_brands_list = Product.objects.values_list(
             'brand', flat=True).filter(**kwargs_filters).distinct()
+
+        filter_brands = set()
+        context['filter_brands'] = [x for x in filter_brands_list
+              if x.lower() not in filter_brands and not filter_brands.add(x.lower())]
 
         merchant_id_list = Product.objects.values_list(
             'merchant', flat=True).filter(**kwargs_filters).distinct()
@@ -93,7 +89,9 @@ class BrowseListView(ListView):
         context['filter_stors'] = Merchant.objects.filter(
             id__in=merchant_id_list)
 
-        context['filter_colors'] = Product.objects.values_list(
+        color_list = Product.objects.values_list(
             'color', flat=True).filter(**kwargs_filters).distinct()
+
+        context['filter_colors'] = list(filter(None, color_list))
 
         return context

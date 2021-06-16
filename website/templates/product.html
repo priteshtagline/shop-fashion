@@ -9,11 +9,15 @@
         <div class="row">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="browse.html">{{product.department}}</a></li>
-                    <li class="breadcrumb-item text-capitalize" aria-current="page"><a
-                            href="browse.html">{{product.category}}</a></li>
+                    <li class="breadcrumb-item"><a
+                            href="{% url 'website:browse_department' product.department|lower %}">{{product.department}}</a>
                     </li>
-                    <li class="breadcrumb-item active text-capitalize" aria-current="page">{{product.subcategory}}</li>
+                    <li class="breadcrumb-item text-capitalize" aria-current="page"><a
+                            href="{% url 'website:browse_category' product.department|lower product.category|lower %}">{{product.category}}</a>
+                    </li>
+                    <li class="breadcrumb-item active text-capitalize" aria-current="page"><a
+                            href="{% url 'website:browse' product.department|lower product.category|lower product.subcategory|lower %}">{{product.subcategory}}</a>
+                    </li>
                 </ol>
             </nav>
             <div class="col-md-2 d-flex order-xl-0 order-lg-0 order-md-0 order-sm-2 order-2">
@@ -46,7 +50,7 @@
 
                 <p>{{product.description}}</p>
 
-                <div class="color my-4">
+                <!-- <div class="color my-4">
                     <ul class="colors-list d-flex">
                         <li class="color-item">
                             <div class="color">
@@ -69,7 +73,7 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> -->
 
                 <a href="{{product.redirect_url}}" target="_blank" class="btn btn-dark rounded-0 my-5 buy-now-btn">Buy
                     now from {{product.merchant}}</a>
@@ -140,8 +144,7 @@
                     <div class="recomended-item">
                         <a href="{% url 'website:product' vtov_product.title|slugify vtov_product.id %}">
                             <div class="card" style="width: 18rem;">
-                                <img src="{{vtov_product.image1.url}}" class="card-img-top img-fluid"
-                                    alt="product-1">
+                                <img src="{{vtov_product.image1.url}}" class="card-img-top img-fluid" alt="product-1">
                                 <div class="card-body">
                                     <p class="card-text">{{vtov_product.title}}</p>
                                 </div>
