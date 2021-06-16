@@ -36,8 +36,8 @@
                 </ul>
                 <div class="search-product">
                     <a class="nav-link search-link" href="#search-box"><i class="fal fa-search"></i> Search</a>
-                    <form action="search.html" id="search-box">
-                        <input type="search" name="search" class="rounded-0 border-0 search-place" placeholder="search">
+                    <form action="{% url 'website:search_product' %}" id="search-box">
+                        <input type="search" name="keyword" class="rounded-0 border-0 search-place" placeholder="search">
                         <input type="submit" value="Go" class="d-none">
                     </form>
                 </div>

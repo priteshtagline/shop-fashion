@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+{% load static admin_tags %}
+
+{% block title %} {{block.super}} {% endblock %}
+
+{% block body %}
+<main>
+    <div class="browse">
+        <div class="row">
+            <div class="col-md-3 filter side-nav" id="slide-out" data-spy="affix" data-offset-top="205">
+                <div class="accordion" id="accordionExample">
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-category" aria-expanded="false"
+                                aria-controls="panelsStayOpen-category">
+                                Categories
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-category" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for category in categories_list %}
+                                    <li class="collections-item">
+                                        <label> <a
+                                                href="{{ request.path }}{{ category|lower }}?{{request.GET.urlencode}}">{{category|title}}</a></label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-subcategory" aria-expanded="false"
+                                aria-controls="panelsStayOpen-subcategory">
+                                Sub Categories
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-subcategory" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for sub_category in subcategories_list %}
+                                    <li class="collections-item">
+                                        <label> <a
+                                                href="{{ request.path }}{{ sub_category|lower }}?{{request.GET.urlencode}}">{{sub_category|title}}</a></label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item brand">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapseOne">
+                                Brands
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
+                            aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for brand in filter_brands %}
+                                    <li class="collections-item">
+                                        <input type="checkbox" class="styled-checkbox" name="brand" id="{{brand}}"
+                                            value="{{brand}}"><label for="{{brand}}"> {{brand|title}}</label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item store">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Stores
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for store in filter_stors %}
+                                    <li class="collections-item">
+                                        <input type="checkbox" class="styled-checkbox" name="store" id="{{store}}"
+                                            value="{{store}}"> <label for="{{store}}"> {{store|title}}</label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item color">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapseThree">
+                                Color
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
+                            aria-labelledby="panelsStayOpen-headingThree">
+                            <div class="accordion-body">
+                                <ul class="colors-list d-flex">
+                                    {% for color in filter_colors %}
+                                    <li class="color-item">
+                                        <input type="checkbox" class="styled-checkbox" name="color"
+                                            id="{{color|slice:'1:'}}" value="{{color|slice:'1:'}}"> <label
+                                            for="{{color|slice:'1:'}}"> {{color}}</label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-9 browse-page">
+                <a href="#" data-activates="slide-out" class="button-collapse d-lg-none filter-btn"><i
+                        class="fas fa-filter pe-2"></i>Filter</a>
+                <div id="overlay"></div>
+                <div class="browse-content">
+                    <div class="product-catalouge mt-5">
+                        <p>{{products|length}} item{{ products|pluralize }}</p>
+                        <div class="products">
+                            <ul class="product-list d-flex justify-content-evenly">
+                                {% for product in products %}
+                                <li class="product-item">
+                                    <a href="{% url 'website:product' product.title|slugify product.id %}">
+                                        <div class="card" style="width: 18rem;">
+                                            <img src="{{product.image1.url}}" class="card-img-top" alt="...">
+                                            <div class="card-body">
+                                                <p class="card-text">{{product.title}}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                {% if is_paginated %}
+                <nav aria-label="#" class="my-5">
+                    <ul class="pagination pagination-sm justify-content-center">
+
+                        <li class="me-auto" {%if not page_obj.has_previous %} style="visibility: hidden;" {% endif %}>
+                            <a href="?page=" aria-label="Previous">
+                                <span aria-hidden="true">&laquo; Prev</span>
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <ul class="pagination pagination-sm mx-auto justify-content-center">
+                                {% for n in page_obj.paginator.page_range %}
+                                {% if page_obj.number|add:'-3' == n %}
+                                {# First page #}
+                                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                                {% if n != 1 %}
+                                <li class="page-item"><a>&#8943;</a></li>
+                                {% endif %}
+                                {% elif page_obj.number == n %}
+                                {# Current page #}
+                                <li class="page-item active"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
+                                {# Pages around current page #}
+                                <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                {% elif page_obj.number|add:'3' == n %}
+                                {# Last page #}
+                                {% if n != num_pages %}
+                                <li class="page-item"><a>&#8943;</a></li>
+                                {% endif %}
+                                <li class="page-item"><a class="page-link"
+                                        href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+
+                        <li class="ms-auto" {% if not page_obj.has_next %} style="visibility: hidden;" {% endif %}>
+                            <a href="?page={" aria-label="Next">
+                                <span aria-hidden="true">Next &raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
+
+{% block custom_js %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        const filter_json_object = {}
+        var current_url = window.location.href;
+        var base_url = current_url.substr(0, current_url.lastIndexOf('/'));
+
+        function createURLQueryToJson(url) {
+            // given url to find all parameters and return json object.
+            let _url = new URL(url);
+            let _params = new URLSearchParams(_url.search);
+            let json_data = Array.from(_params.keys()).reduce((sum, value) => {
+                return Object.assign({
+                    [value]: _params.get(value).split(',')
+                }, sum);
+            }, {});
+            return json_data;
+        }
+
+        function createJsonToURLQuery(o) {
+            // given parameters json object and return encoded url.
+            return Object.keys(o)
+                .map(key => `${encodeURIComponent(key)}=` +
+                    o[key].map(v => encodeURIComponent(v)).join(','))
+                .join('&')
+        }
+
+        $.each(createURLQueryToJson(current_url), function (key, val) {
+            // on window load to get current url and checkbox checked if parameter in value give.
+            var fecture_filter_html_block = $(".accordion-item." + key);
+            if ({{products|length}}) {
+                fecture_filter_html_block.find("button").removeClass('collapsed');
+                fecture_filter_html_block.find("div.accordion-collapse.collapse").addClass('show');
+            }
+            $.each(val, function (index, fileter_val) {
+                $(":checkbox[class='styled-checkbox'][name='" + key + "'][value='" +
+                        fileter_val + "']")
+                    .attr("checked", true);
+            });
+        });
+
+        $('.styled-checkbox').on('change', function () {
+            // on filter any chcekbox checked or uncheck then genrate new url and window current location change to new url.
+            $(".styled-checkbox:checked").each(function () {
+                var filter_value = $(':checkbox[name=' + this.name + ']:checked').map(
+                    function () {
+                        return this.value;
+                    }).get();
+                filter_json_object[this.name] = filter_value;
+            });
+            window.location.href = base_url + '/?' + createJsonToURLQuery(filter_json_object);
+        });
+    });
+</script>
+{% endblock %}
