@@ -5,7 +5,7 @@ from products.models.product import Product
 from products.models.sub_category import SubCategory
 
 
-class BrowseListView(ListView):
+class SearchListView(ListView):
     """Website browse product list page
 
     Args:
@@ -15,7 +15,7 @@ class BrowseListView(ListView):
         [html/text]: [return render html for browse product page]
     """
     model = Product
-    template_name = 'browse.html'
+    template_name = 'search_product.html'
     context_object_name = 'products'
     paginate_by = 100
 
@@ -30,9 +30,9 @@ class BrowseListView(ListView):
         Returns:
             [queryset object]: [filter product queryset object data]
         """
-        qs = super(BrowseListView, self).get_queryset()
+        qs = super(SearchListView, self).get_queryset()
 
-        filter_fields = ('brand', 'store', 'color')
+        filter_fields = ('keyword', 'department', 'category', 'subcategory', 'store', 'color')
         query_dict = {}
         for param in self.request.GET:
             if param in filter_fields and self.request.GET.get(param):
@@ -45,6 +45,8 @@ class BrowseListView(ListView):
                 elif param == 'color':
                     query_dict['color__iregex'] = r'(' + \
                         '|'.join(param_value_list) + ')'
+                elif param == 'keyword':
+                    query_dict['title__icontains'] = param_value_list[0]
 
         return qs.filter(**query_dict)
 
@@ -60,38 +62,5 @@ class BrowseListView(ListView):
             [json object]: [product and his filter object data]
         """
         context = super().get_context_data(**kwargs)
-        kwargs_filters = {
-            'department__name__iexact': self.kwargs['department'],
-        }
-
-        if 'category' in self.kwargs:
-            kwargs_filters['category__name__iexact'] = self.kwargs['category']
-        else:
-            context['categories_list'] = Category.objects.values_list(
-                'name', flat=True).filter(**kwargs_filters)
-
-        if 'subcategory' in self.kwargs:
-            kwargs_filters['subcategory__name__iexact'] = self.kwargs['subcategory']
-        else:
-            context['subcategories_list'] = SubCategory.objects.values_list(
-                'name', flat=True).filter(**kwargs_filters)
-
-        filter_brands_list = Product.objects.values_list(
-            'brand', flat=True).filter(**kwargs_filters).distinct()
-
-        filter_brands = set()
-        context['filter_brands'] = [x for x in filter_brands_list
-                                    if x.lower() not in filter_brands and not filter_brands.add(x.lower())]
-
-        merchant_id_list = Product.objects.values_list(
-            'merchant', flat=True).filter(**kwargs_filters).distinct()
-
-        context['filter_stors'] = Merchant.objects.filter(
-            id__in=merchant_id_list)
-
-        color_list = Product.objects.values_list(
-            'color', flat=True).filter(**kwargs_filters).distinct()
-
-        context['filter_colors'] = list(filter(None, color_list))
-
+        print(self.request.GET.get('keyword'))
         return context

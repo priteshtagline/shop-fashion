@@ -4,6 +4,7 @@ from django.views.generic.base import TemplateView
 from website.views.browse import BrowseListView
 from website.views.home import HomeView
 from website.views.product import ProductDeatilView
+from website.views.search_product import SearchListView
 
 app_name = 'website'
 urlpatterns = [
@@ -20,4 +21,6 @@ urlpatterns = [
          BrowseListView.as_view(), name='browse_category'),
     path('browse/<department>/',
          BrowseListView.as_view(), name='browse_department'),
+    path('search/',
+         SearchListView.as_view(), name='search_product'),
 ]
