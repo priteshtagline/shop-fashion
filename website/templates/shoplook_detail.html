@@ -15,91 +15,38 @@
                     <li class="breadcrumb-item active text-capitalize" aria-current="page">{{shoplook}}</li>
                 </ol>
             </nav>
-            <div class="col-md-2 d-flex order-xl-0 order-lg-0 order-md-0 order-sm-2 order-2">
-                {% comment %} <div class="product-images">
-                    <div class="thumbs">
-                        <div id="pr_item_gallery" class="product_gallery_item ">
-                            <a href="#" class="product_gallery_item active"
-                                data-image="assets/images/main-product-image-1.jpeg"
-                                data-zoom-image="assets/images/main-product-image-1.jpeg">
-                                <img src="assets/images/main-product-image-1.jpeg" alt="main-image" class="img-fluid">
-                            </a>
-                            <a href="#" class="product_gallery_item"
-                                data-image="assets/images/main-product-image-2.jpeg"
-                                data-zoom-image="assets/images/main-product-image-2.jpeg">
-                                <img src="assets/images/main-product-image-2.jpeg" alt="main-image" class="img-fluid">
-                            </a>
-                        </div>
-                    </div>
-                </div> {% endcomment %}
-            </div>
-            <div class="col-md-5 order-xl-2 order-lg-2 order-md-2 order-sm-0 order-0">
+
+            <div class="col-md-6 align-items-center">
                 <div class="text-center">
-                    <div class="col-md-12 order-xl-2 order-lg-2 order-md-0 order-sm-0 order-0 big-images">
+                    <div class="col-md-12 big-images">
                         <img id="product_img" src="{{shoplook.image.url}}"
                             data-zoom-image="{{shoplook.image.url}}" alt="{{shoplook}}" />
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 product-info order-xl-3 order-lg-3 order-md-3 order-sm-3 order-3">
-                <h4 class="fw-bold">Max Moccasin Slipper</h4>
-                <p>Shopfashion</p>
 
-                <a href="#" class="btn btn-dark rounded-0 my-5 buy-now-btn">Choose Your Item</a>
-
-                <div class="accordion" id="accordionExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button border-top" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <strong class="text-uppercase">product details</strong>
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <p>Price varies with currency exchange rates and may be different than in store.</p>
-                                <p>Supple suede is lined with plush faux shearling in this moccasin slipper that
-                                    will keep you
-                                    toasty all winter.</p>
+            <div class="col-md-6 look-details-explore">
+                {% for product in shoplook.products.all %}
+                <div class="item-1 my-lg-1 my-md-1 my-sm-3">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="look-item-image">
+                                <img src="{{product.image1.url}}" alt="{{product}}">
                             </div>
+                        </div>
+                        <div class="col-md-8 col-sm-6 col-12 look-item-info">
+                            <h4 class="fw-bold">{{product.title}}</h4>
+                            <p>Shopfashion</p>
+
+                            <a href="{% url 'website:product' product.title|slugify product.id %}"
+                                class="text-uppercase btn btn-dark rounded-0 mt-3">Explore More
+                                about this Product</a>
                         </div>
                     </div>
                 </div>
+                 {% endfor %}
             </div>
         </div>
     </div>
-
-    <div class="choosed-items">
-        <div class="row">
-            <div class="col-md-12 my-5 text-center">
-                <h6 class="text-uppercase fw-bolder">choose your items</h6>
-            </div>
-        </div>
-        {% for product in shoplook.products.all %}
-        <div class="item-1 py-5 border-top">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="look-item-image m-xl-0 m-lg-0 m-md-auto m-sm-auto m-auto">
-                        <img src="{{product.image1.url}}" alt="">
-                    </div>
-                </div>
-
-                <div class="col-md-8">
-                    <h4 class="fw-bold">{{product.title}}</h4>
-                    <p>Shopfashion</p>
-
-                    <a href="{% url 'website:product' product.title|slugify product.id %}" class="text-decoration-underline my-2">View All Product Details</a>
-
-                    {% comment %} <p class="my-5"><strong class="text-uppercase">color:</strong> Black</p> {% endcomment %}
-
-                    <a href="{% url 'website:product' product.title|slugify product.id %}" class="text-uppercase btn btn-dark rounded-0 mt-5">Explore More
-                        about this Product</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
 </main>
 {% endblock %}
