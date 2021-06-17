@@ -5,7 +5,7 @@ register = template.Library()
 
 
 @register.inclusion_tag('header.html')
-def header(user):
+def header(user, request):
     """Custome templet tag for header menu.
 
     Args:
@@ -15,4 +15,5 @@ def header(user):
     Returns:
         [json objects]: [return user information and all departments object]
     """
-    return {'user': user, 'departments': Department.objects.all()}
+    keyword_earch = "" if not 'keyword' in request.GET else request.GET['keyword']
+    return {'user': user, 'search_keyword': keyword_earch, 'departments': Department.objects.all()}

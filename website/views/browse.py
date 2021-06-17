@@ -32,6 +32,17 @@ class BrowseListView(ListView):
         """
         qs = super(BrowseListView, self).get_queryset()
 
+        kwargs_filters = {
+            'department__name__iexact': self.kwargs['department'],
+        }
+
+        if 'category' in self.kwargs:
+            kwargs_filters['category__name__iexact'] = self.kwargs['category']
+        
+        if 'subcategory' in self.kwargs:
+            kwargs_filters['subcategory__name__iexact'] = self.kwargs['subcategory']
+       
+
         filter_fields = ('brand', 'store', 'color')
         query_dict = {}
         for param in self.request.GET:
@@ -46,7 +57,7 @@ class BrowseListView(ListView):
                     query_dict['color__iregex'] = r'(' + \
                         '|'.join(param_value_list) + ')'
 
-        return qs.filter(**query_dict)
+        return qs.filter(**kwargs_filters, **query_dict)
 
     def get_context_data(self, **kwargs):
         """Override django generic listview get_context_data method because
