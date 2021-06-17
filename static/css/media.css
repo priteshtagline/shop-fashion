@@ -88,6 +88,17 @@
         overflow-x: hidden;
         padding-top: 20px;
     }
+
+    .look-details-explore .item-1 a,
+    .look-details-explore .item-2 a {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (min-width: 991px) and (max-width: 1170px) {
+    .zoomContainer {
+        left: 70px !important;
+    }
 }
 
 @media screen and (max-width: 991px) {
@@ -185,6 +196,7 @@
         opacity: 1;
         left: 0;
         visibility: visible;
+        width: 45%;
     }
 
     .main-image img {
@@ -353,7 +365,7 @@
 
     .side-nav {
         top: 85px;
-        max-width: 40%;
+        /* max-width: 40%; */
     }
 
     .product-info h4 {
@@ -434,6 +446,15 @@
 
     .breadcrumb {
         display: none;
+    }
+
+    .item-1 .row {
+        display: flex;
+    }
+
+    .look-details-explore {
+        height: auto;
+        overflow-y: none;
     }
 }
 
@@ -657,6 +678,20 @@
         top: 0;
     }
 
+    .look-details-explore .item-1,
+    .look-details-explore .item-2 {
+        margin-bottom: 10px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .look-details-explore .look-item-image,
+    .look-details-explore .look-item-info {
+        margin: auto;
+        text-align: center;
+    }
+
 }
 
 @media screen and (max-width: 430px) {
@@ -751,7 +786,7 @@
 
     .side-nav {
         top: 75px;
-        max-width: 50%;
+        width: 70%;
     }
 
     .campaign-content {
