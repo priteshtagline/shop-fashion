@@ -2,7 +2,7 @@
 {% load static %}
 {% load static admin_tags %}
 
-{% block title %} {{block.super}} {% endblock %}
+{% block title %} {{ request.GET.keyword }} | {{ block.super }} {% endblock %}
 
 {% block body %}
 <main>
@@ -11,56 +11,12 @@
             <div class="col-md-3 filter side-nav" id="slide-out" data-spy="affix" data-offset-top="205">
                 <div class="accordion" id="accordionExample">
 
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#panelsStayOpen-category" aria-expanded="false"
-                                aria-controls="panelsStayOpen-category">
-                                Categories
-                            </button>
-                        </h2>
-                        <div id="panelsStayOpen-category" class="accordion-collapse collapse">
-                            <div class="accordion-body">
-                                <ul class="collections">
-                                    {% for category in categories_list %}
-                                    <li class="collections-item">
-                                        <label> <a
-                                                href="{{ request.path }}{{ category|lower }}?{{request.GET.urlencode}}">{{category|title}}</a></label>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#panelsStayOpen-subcategory" aria-expanded="false"
-                                aria-controls="panelsStayOpen-subcategory">
-                                Sub Categories
-                            </button>
-                        </h2>
-                        <div id="panelsStayOpen-subcategory" class="accordion-collapse collapse">
-                            <div class="accordion-body">
-                                <ul class="collections">
-                                    {% for sub_category in subcategories_list %}
-                                    <li class="collections-item">
-                                        <label> <a
-                                                href="{{ request.path }}{{ sub_category|lower }}?{{request.GET.urlencode}}">{{sub_category|title}}</a></label>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="accordion-item brand">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
                                 aria-controls="panelsStayOpen-collapseOne">
-                                Brands
+                                Brands ({{ filter_brands|length }})
                             </button>
                         </h2>
                         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
@@ -82,7 +38,7 @@
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Stores
+                                Stores ({{ filter_stors|length }})
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
@@ -100,12 +56,13 @@
                         </div>
                     </div>
                     
+                    {% if filter_colors %}
                     <div class="accordion-item color">
                         <h2 class="accordion-header" id="headingThree">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
                                 aria-controls="panelsStayOpen-collapseThree">
-                                Color
+                                Color ({{ filter_colors|length }})
                             </button>
                         </h2>
                         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
@@ -114,15 +71,15 @@
                                 <ul class="colors-list d-flex">
                                     {% for color in filter_colors %}
                                     <li class="color-item">
-                                        <input type="checkbox" class="styled-checkbox" name="color"
-                                            id="{{color|slice:'1:'}}" value="{{color|slice:'1:'}}"> <label
-                                            for="{{color|slice:'1:'}}"> {{color}}</label>
+                                        <input type="checkbox" class="styled-checkbox" name="color" id="{{color|slice:'1:'}}"
+                                            value="{{color|slice:'1:'}}"> <label for="{{color|slice:'1:'}}"> {{color}}</label>
                                     </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    {% endif %}
 
                 </div>
             </div>
@@ -132,8 +89,11 @@
                         class="fas fa-filter pe-2"></i>Filter</a>
                 <div id="overlay"></div>
                 <div class="browse-content">
-                    <div class="product-catalouge mt-5">
-                        <p>{{products|length}} item{{ products|pluralize }}</p>
+                    <div class="product-catalouge mt-4">
+                        <h4 class="fw-bold">
+                            You searched for "{{ request.GET.keyword }}"
+                        </h4>
+                        <p>{{ page_obj.paginator.count }} item{{ page_obj.paginator.count|pluralize }}</p>
                         <div class="products">
                             <ul class="product-list d-flex justify-content-evenly">
                                 {% for product in products %}
@@ -213,7 +173,7 @@
     $(document).ready(function () {
         const filter_json_object = {}
         var current_url = window.location.href;
-        var base_url = current_url.substr(0, current_url.lastIndexOf('/'));
+        var base_url = current_url.substr(0, current_url.split('&', 1).join("&").length);
 
         function createURLQueryToJson(url) {
             // given url to find all parameters and return json object.
@@ -258,7 +218,7 @@
                     }).get();
                 filter_json_object[this.name] = filter_value;
             });
-            window.location.href = base_url + '/?' + createJsonToURLQuery(filter_json_object);
+            window.location.href = base_url + '&' + createJsonToURLQuery(filter_json_object);
         });
     });
 </script>
