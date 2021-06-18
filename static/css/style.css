@@ -563,6 +563,10 @@ select {
     border-color: var(--pagination-hover-border-color);
 }
 
+.page-link-number {
+    cursor: pointer;
+}
+
 .images-list li {
     padding: 10px 0px;
 }
