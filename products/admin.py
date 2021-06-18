@@ -1,16 +1,18 @@
+from adminsortable2.admin import SortableAdminMixin
 from django.contrib import admin
 from django.utils.html import format_html
-from adminsortable2.admin import SortableAdminMixin
-from products.models.department import Department
+
+from products.models.campaign import Campaign
 from products.models.category import Category
-from products.models.sub_category import SubCategory
+from products.models.department import Department
+from products.models.home_carousel import HomeCarousel
 from products.models.merchant import Merchant
 from products.models.product import Product
-from products.models.campaign import Campaign
+from products.models.recommended_product import RecommendedProduct
 from products.models.shop_look import ShopLook
 from products.models.similar_product import SimilarProduct
+from products.models.sub_category import SubCategory
 from products.models.vtov_product import VtovProduct
-from products.models.recommended_product import RecommendedProduct
 
 
 class MerchantAdmin(SortableAdminMixin, admin.ModelAdmin):
@@ -118,6 +120,27 @@ class RecommendedProductAdmin(SortableAdminMixin, admin.ModelAdmin):
         return ", ".join([p.title for p in obj.recommended_products.all()])
 
 
+class HomeCarouselAdmin(SortableAdminMixin, admin.ModelAdmin):
+
+    list_display = ('title', 'browse_url_view',
+                    'text_color_view', 'image_view',)
+
+    search_fields = ('title', )
+
+    readonly_fields = ('image_view', )
+
+    def text_color_view(self, obj):
+        return format_html('<span style="color: {0};">{0}</span>'.format(obj.text_color))
+    text_color_view.short_description = 'Text Color'
+
+    def browse_url_view(self, obj):
+        return format_html('<a href="{0}" target="_blank">{0}</a>'.format(obj.browse_url))
+
+    def image_view(self, obj):
+        return format_html('<img src="{}" width="auto" height="70px" />'.format(obj.image.url))
+    image_view.short_description = 'Image'
+
+
 admin.site.register(Merchant, MerchantAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(Category, CategoryAdmin)
@@ -128,3 +151,4 @@ admin.site.register(ShopLook, ShopLookAdmin)
 admin.site.register(SimilarProduct, SimilarProductAdmin)
 admin.site.register(VtovProduct, VtovProductAdmin)
 admin.site.register(RecommendedProduct, RecommendedProductAdmin)
+admin.site.register(HomeCarousel, HomeCarouselAdmin)
