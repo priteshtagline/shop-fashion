@@ -32,6 +32,7 @@ def render_model_list(app_list):
         "Vtov Products": 10,
         "Shop Looks": 11,
         "Campaigns": 12,
+        "Home Carousels": 13
     }
 
     for app in app_list:
