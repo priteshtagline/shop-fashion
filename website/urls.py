@@ -8,6 +8,7 @@ from website.views.product import ProductDeatilView
 from website.views.search_product import SearchListView
 from website.views.shoplook import ShopLookListView, ShopLookDetailView
 
+
 app_name = 'website'
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
