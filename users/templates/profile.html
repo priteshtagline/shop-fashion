@@ -36,46 +36,24 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="fetures-tab-content p-engement-fetures align-items-baseline">
-                                    <div class="wish-list-selector d-flex border-bottom pb-2">
-                                        <select id="different-wish-list" class="btn rounded-0" aria-expanded="false">
-                                            <option value="volvo">Wish List (1 item)</option>
-                                        </select>
-                                        <p class="mb-0 ms-5 align-self-center"><a href="#"
-                                                class="text-decoration-underline">Create new list</a></p>
-                                    </div>
-
                                     <div class="wishlist-products">
-                                        <h4>Wish list <span><a href="#"
-                                                    class="text-decoration-underline">Share</a></span></h4>
+                                        <h4>Wish list</h4>
                                         <ul class="product-list d-flex justify-content-evenly">
+                                            {% for wishlist_product in user.wishlist_product.all %}
                                             <li class="product-item">
-                                                <a href="details.html">
-                                                    <div class="card" style="width: 18rem;">
-                                                        <img src="{% static 'images/product-1.png' %}"
-                                                            class="card-img-top" alt="...">
+                                                <a href="{% url 'website:product' wishlist_product.title|slugify wishlist_product.id %}">
+                                                    <div class="card position-relative" style="width: 18rem;">
+                                                        <img src="{{wishlist_product.image1.url}}"
+                                                            class="card-img-top" alt="{{wishlist_product.image1.url}}">
                                                         <div class="card-body">
-                                                            <p class="card-text">Charles Henry Off the
-                                                                Shoulder
-                                                                Dress
+                                                            <a class="position-absolute remove-whishlist" value="{{wishlist_product.id}}"><i class="fal fa-trash-alt"></i></a>
+                                                            <p class="card-text text-center">{{ wishlist_product.title|title }}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </li>
-                                            <li class="product-item">
-                                                <a href="details.html">
-                                                    <div class="card" style="width: 18rem;">
-                                                        <img src="{% static 'images/product-2.png' %}"
-                                                            class="card-img-top" alt="...">
-                                                        <div class="card-body">
-                                                            <p class="card-text">Charles Henry Off the
-                                                                Shoulder
-                                                                Dress
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
+                                            {% endfor %}
                                         </ul>
                                     </div>
                                 </div>
@@ -268,6 +246,30 @@
                             }).after('<p class="error m-0">' + value + '</p>');
                         });
                     }
+                },
+                error: function (data) {
+                    console.log(data);
+                },
+            });
+        });
+
+        $(document).on('click', '.remove-whishlist', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'website:wishlist' %}",
+                method: 'POST',
+                data: {
+                    'product_id' : $(this).attr('value'),
+                    'wishlist_type' : 'remove'
+                },
+                dataType: 'JSON',
+                headers: {
+                    "X-CSRFToken": $("[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    if (data.status) {
+                       window.location.reload();
+                    }   
                 },
                 error: function (data) {
                     console.log(data);

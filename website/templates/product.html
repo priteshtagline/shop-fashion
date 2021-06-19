@@ -77,8 +77,10 @@
 
                 <a href="{{product.redirect_url}}" target="_blank" class="btn btn-dark rounded-0 my-5 buy-now-btn">Buy
                     now from {{product.merchant}}</a>
-                <a href="user.html" class="text-decoration-underline d-block">+ Add to Whish
+                <a class="wish-list-link text-decoration-underline d-block" value={{product.id}}>+ Add to Whish
                     List</a>
+                <p></p>
+                {% csrf_token %}
             </div>
         </div>
 
@@ -159,3 +161,38 @@
     </div>
 </main>
 {% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document).on('click', '.wish-list-link', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "{% url 'website:wishlist' %}",
+                    method: 'POST',
+                    data: {
+                        'product_id' : $(this).attr('value'),
+                        'wishlist_type' : 'add'
+                    },
+                    dataType: 'JSON',
+                    headers: {
+                        "X-CSRFToken": $("[name=csrfmiddlewaretoken]").val()
+                    },
+                    success: function (data) {
+                        if (data.status) {
+                            $(".wish-list-link").next("p").css('color','cadetblue').html(data.message).delay(2000).fadeOut(300);
+                        }else{
+                            if (data.message == 'login_required'){
+                                window.location = "{% url 'user:login' %}?next={{request.path}}";
+                            }
+                            $(".wish-list-link").next("p").css('color','red').html(data.message).delay(2000).fadeOut(300);
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    },
+                });
+            });
+        });
+    </script>
+{% endblock  %}

@@ -18,11 +18,13 @@
                                 {% for category in department.category_set.all %}
                                 <div class="col-lg-3 col-6 mt-lg-0 mt-md-3 mt-sm-3 mt-3">
                                     <div class="col-megamenu">
-                                        <h6 class="title"><strong><a href="{% url 'website:browse_category' department=department|lower category=category|lower %}">{{category}}</a></strong>
+                                        <h6 class="title"><strong><a
+                                                    href="{% url 'website:browse_category' department=department|lower category=category|lower %}">{{category}}</a></strong>
                                         </h6>
                                         <ul class="list-unstyled">
                                             {% for subcategory in category.subcategory_set.all %}
-                                            <li><a href="{% url 'website:browse' department=department|lower category=category|lower subcategory=subcategory|lower %}">{{subcategory}}</a>
+                                            <li><a
+                                                    href="{% url 'website:browse' department=department|lower category=category|lower subcategory=subcategory|lower %}">{{subcategory}}</a>
                                             </li>
                                             {% endfor %}
                                         </ul>
@@ -37,7 +39,8 @@
                 <div class="search-product">
                     <a class="nav-link search-link" href="#search-box"><i class="fal fa-search"></i> Search</a>
                     <form action="{% url 'website:search_product' %}" id="search-box">
-                        <input type="search" name="keyword" class="rounded-0 border-0 search-place" value="{{search_keyword}}" placeholder="search">
+                        <input type="search" name="keyword" class="rounded-0 border-0 search-place"
+                            value="{{search_keyword}}" placeholder="search">
                         <input type="submit" value="Go" class="d-none">
                     </form>
                 </div>
@@ -58,7 +61,6 @@
                         {% else %}
                         <li><a class="dropdown-item" href="{% url 'user:profile' %}" target="_self">Your Account</a>
                         </li>
-                        <li><a class="dropdown-item" href="user.html">Wish List</a></li>
                         <li><a class="dropdown-item" href="{% url 'user:logout' %}">Logout</a></li>
                         {% endif %}
                     </ul>

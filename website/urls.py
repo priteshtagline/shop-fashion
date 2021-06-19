@@ -1,4 +1,3 @@
-from website.views.shoplook import ShopLookListView, ShopLookDetailView
 from django.urls import path
 from django.views.generic.base import TemplateView
 
@@ -6,7 +5,8 @@ from website.views.browse import BrowseListView
 from website.views.home import HomeView
 from website.views.product import ProductDeatilView
 from website.views.search_product import SearchListView
-from website.views.shoplook import ShopLookListView, ShopLookDetailView
+from website.views.shoplook import ShopLookDetailView, ShopLookListView
+from website.views.wishlist import WishlistView
 
 app_name = 'website'
 urlpatterns = [
@@ -29,4 +29,6 @@ urlpatterns = [
          ShopLookListView.as_view(), name='shoplook'),
     path('shop-the-look/<slug:slug>/<int:pk>',
          ShopLookDetailView.as_view(), name='shoplook_detail'),
+    path('wishlist/',
+         WishlistView.as_view(), name='wishlist'),
 ]
