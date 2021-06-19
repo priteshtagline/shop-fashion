@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from products.models.product import Product
 
 
 class UserManager(BaseUserManager):
@@ -53,6 +54,8 @@ class User(AbstractUser):
         verbose_name='phone number', max_length=20, blank=True, null=True)
     gender = models.CharField(verbose_name='gender', blank=True, default='M', max_length=1, choices=GENDER_CHOICES, error_messages={
                               'invalid_choice': 'Choise any one gender.'})
+
+    wishlist_product = models.ManyToManyField(Product, blank=True)
 
     objects = UserManager()
 

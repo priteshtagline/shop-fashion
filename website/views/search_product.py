@@ -1,9 +1,7 @@
+from django.db.models import Q
 from django.views.generic import ListView
-from products.models.category import Category
 from products.models.merchant import Merchant
 from products.models.product import Product
-from products.models.sub_category import SubCategory
-from django.db.models import Q
 
 
 class SearchListView(ListView):
@@ -69,7 +67,7 @@ class SearchListView(ListView):
                     Q(category__name__iexact=value) |
                     Q(subcategory__name__iexact=value)
                 )
-        
+
         if not qs.filter(keyword_filter):
             for value in keyword.split(' '):
                 keyword_filter |= (

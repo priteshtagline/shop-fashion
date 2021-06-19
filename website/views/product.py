@@ -1,7 +1,7 @@
 from django.views.generic import DetailView
 from products.models.product import Product
-from products.models.similar_product import SimilarProduct
 from products.models.recommended_product import RecommendedProduct
+from products.models.similar_product import SimilarProduct
 from products.models.vtov_product import VtovProduct
 
 

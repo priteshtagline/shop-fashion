@@ -52,7 +52,9 @@
                     },
                     success: function (data) {
                         if (data.status) {
-                            form.find("p").empty().show().html('Successfully your email subscribed.').delay(1500).fadeOut(300);
+                            form.find("p").empty().show().html(
+                                    'Successfully your email subscribed.').delay(1500)
+                                .fadeOut(300);
                             setTimeout(function () {
                                 form.find("input[type=email]").val("");
                             }, 1500);
