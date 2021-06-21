@@ -38,30 +38,30 @@
         </div>
 
 
-        <div class="recomended my-5">
+        {% for campaign in campaigns %}
+        <div class="recomended my-5 mt-4">
+        <h2 class="text-center">{{campaign}}</h2>
             <div class="recomended-products">
                 <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
                     data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
                     data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
-
-                    {% for campaign in campaigns %}
-                        {% for product in campaign.products.all %}
-                        <div class="recomended-item">
-                            <a href="{% url 'website:product' product.title|slugify product.id %}">
-                                <div class="card" style="width: 18rem;">
-                                    <img src="{{product.image1.url}}" class="card-img-top img-fluid"
-                                        alt="{{product}}">
-                                    <div class="card-body">
-                                        <p class="card-text">{{product}}</p>
-                                    </div>
+                    {% for product in campaign.products.all %}
+                    <div class="recomended-item">
+                        <a href="{% url 'website:product' product.title|slugify product.id %}">
+                            <div class="card" style="width: 18rem;">
+                                <img src="{{product.image1.url}}" class="card-img-top img-fluid"
+                                    alt="{{product}}">
+                                <div class="card-body">
+                                    <p class="card-text">{{product}}</p>
                                 </div>
-                            </a>
-                        </div>
-                        {% endfor %}
+                            </div>
+                        </a>
+                    </div>
                     {% endfor %}
-
                 </div>
             </div>
         </div>
+        {% endfor %}
+
     </main>
 {% endblock %}
