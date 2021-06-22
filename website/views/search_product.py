@@ -1,7 +1,8 @@
-from django.db.models import Q
 from django.views.generic import ListView
 from products.models.merchant import Merchant
 from products.models.product import Product
+from collections import Counter
+from django.db.models import Count, Q
 
 
 class SearchListView(ListView):
@@ -128,21 +129,16 @@ class SearchListView(ListView):
             product_id_list.append(product.id)
 
         filter_brands_list = Product.objects.values_list(
-            'brand', flat=True).filter(id__in=product_id_list).distinct()
+            'brand', flat=True).filter(id__in=product_id_list).order_by('brand')
+        context['filter_brands'] = dict(
+            Counter(x.lower() for x in filter_brands_list))
 
-        filter_brands = set()
-        context['filter_brands'] = [x for x in filter_brands_list
-                                    if x.lower() not in filter_brands and not filter_brands.add(x.lower())]
+        filter_color_list = Product.objects.values_list(
+            'color', flat=True).filter(id__in=product_id_list).order_by('color')
+        context['filter_colors'] = dict(
+            Counter(x.lower() for x in list(filter(None, filter_color_list))))
 
-        merchant_id_list = Product.objects.values_list(
-            'merchant', flat=True).filter(id__in=product_id_list).distinct()
-
-        context['filter_stors'] = Merchant.objects.filter(
-            id__in=merchant_id_list)
-
-        color_list = Product.objects.values_list(
-            'color', flat=True).filter(id__in=product_id_list).distinct()
-
-        context['filter_colors'] = list(filter(None, color_list))
+        context['filter_stors'] = Merchant.objects.annotate(total_product=Count(
+            'product', filter=Q(product__id__in=product_id_list))).filter(total_product__gt=1).order_by('name')
 
         return context
