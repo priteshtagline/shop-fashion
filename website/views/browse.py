@@ -3,6 +3,8 @@ from products.models.category import Category
 from products.models.merchant import Merchant
 from products.models.product import Product
 from products.models.sub_category import SubCategory
+from collections import Counter
+from django.db.models import Count, Q
 
 
 class BrowseListView(ListView):
@@ -71,6 +73,7 @@ class BrowseListView(ListView):
             [json object]: [product and his filter object data]
         """
         context = super().get_context_data(**kwargs)
+
         kwargs_filters = {
             'department__name__iexact': self.kwargs['department'],
         }
@@ -78,31 +81,26 @@ class BrowseListView(ListView):
         if 'category' in self.kwargs:
             kwargs_filters['category__name__iexact'] = self.kwargs['category']
         else:
-            context['categories_list'] = Category.objects.values_list(
-                'name', flat=True).filter(**kwargs_filters)
+            context['categories_list'] = Category.objects.annotate(
+                total_product=Count('product', distinct=True)).filter(**kwargs_filters).order_by('name')
 
         if 'subcategory' in self.kwargs:
             kwargs_filters['subcategory__name__iexact'] = self.kwargs['subcategory']
         else:
-            context['subcategories_list'] = SubCategory.objects.values_list(
-                'name', flat=True).filter(**kwargs_filters)
-
+            context['subcategories_list'] = SubCategory.objects.annotate(total_product=Count('product', distinct=True)).filter(**kwargs_filters).order_by('name')
+            
         filter_brands_list = Product.objects.values_list(
-            'brand', flat=True).filter(**kwargs_filters).distinct()
+            'brand', flat=True).filter(**kwargs_filters).order_by('brand')
+        context['filter_brands'] = dict(
+            Counter(x.lower() for x in filter_brands_list))
 
-        filter_brands = set()
-        context['filter_brands'] = [x for x in filter_brands_list
-                                    if x.lower() not in filter_brands and not filter_brands.add(x.lower())]
-
-        merchant_id_list = Product.objects.values_list(
-            'merchant', flat=True).filter(**kwargs_filters).distinct()
-
-        context['filter_stors'] = Merchant.objects.filter(
-            id__in=merchant_id_list)
-
-        color_list = Product.objects.values_list(
-            'color', flat=True).filter(**kwargs_filters).distinct()
-
-        context['filter_colors'] = list(filter(None, color_list))
+        filter_color_list = Product.objects.values_list(
+            'color', flat=True).filter(**kwargs_filters).order_by('color')
+        context['filter_colors'] = dict(
+            Counter(x.lower() for x in list(filter(None, filter_color_list))))
+        
+        product_ids = [obj.id for obj in Product.objects.filter(**kwargs_filters)]
+        context['filter_stors'] = Merchant.objects.annotate(total_product=Count(
+            'product', filter=Q(product__id__in=product_ids))).filter(total_product__gt=1).order_by('name')
 
         return context
