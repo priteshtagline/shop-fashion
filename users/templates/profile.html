@@ -41,7 +41,7 @@
                                         <ul class="product-list d-flex justify-content-evenly">
                                             {% for wishlist_product in user.wishlist_product.all %}
                                             <li class="product-item">
-                                                <a href="{% url 'website:product' wishlist_product.title|slugify wishlist_product.id %}">
+                                                <a href="{% url 'website:product' wishlist_product.title|slugify wishlist_product.id %}" target="_blank">
                                                     <div class="card position-relative" style="width: 18rem;">
                                                         <img src="{{wishlist_product.image1.url}}"
                                                             class="card-img-top" alt="{{wishlist_product.image1.url}}">
