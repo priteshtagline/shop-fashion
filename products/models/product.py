@@ -27,7 +27,7 @@ class Product(models.Model):
     color = ColorField(format='hexa', blank=True, null=True)
     description = models.TextField()
     image1 = models.ImageField(upload_to='product/')
-    image2 = models.ImageField(upload_to='product/')
+    image2 = models.ImageField(upload_to='product/', null=True, blank=True)
     display_order = models.PositiveIntegerField(
         default=0, blank=False, null=False)
 

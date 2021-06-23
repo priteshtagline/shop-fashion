@@ -47,7 +47,7 @@
                     data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for product in campaign.products.all %}
                     <div class="recomended-item">
-                        <a href="{% url 'website:product' product.title|slugify product.id %}">
+                        <a href="{% url 'website:product' product.title|slugify product.id %}" target="_blank">
                             <div class="card" style="width: 18rem;">
                                 <img src="{{product.image1.url}}" class="card-img-top img-fluid"
                                     alt="{{product}}">

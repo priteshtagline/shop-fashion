@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from products.models.merchant import Merchant
 from products.models.product import Product
+from products.models.department import Department
 from collections import Counter
 from django.db.models import Count, Q
 
@@ -17,7 +18,7 @@ class SearchListView(ListView):
     model = Product
     template_name = 'search_product.html'
     context_object_name = 'products'
-    paginate_by = 36
+    paginate_by = 80
 
     def get_queryset(self):
         """Override django generic listview get_queryset method because
@@ -58,26 +59,33 @@ class SearchListView(ListView):
                 Q(category__name__iexact=keyword) |
                 Q(subcategory__name__iexact=keyword)
             )
+        department_list = Department.objects.values_list('name', flat=True)
+        department_list_lower = [x.lower() for x in department_list]
 
-        if not qs.filter(keyword_filter):
+        if Product.objects.filter(keyword_filter):
+            return qs.filter(keyword_filter).filter(**query_dict)
+        else:
+            keyword_filter = Q()
             for value in keyword.split(' '):
-                keyword_filter |= (
-                    Q(title__iexact=value) |
-                    Q(merchant__name__iexact=value) |
-                    Q(brand__iexact=value) |
-                    Q(category__name__iexact=value) |
-                    Q(subcategory__name__iexact=value)
-                )
+                if value.lower() not in department_list_lower:
+                    keyword_filter &= (
+                        Q(title__iregex=fr"[[:<:]]{value}[[:>:]]") |
+                        Q(merchant__name__iexact=value) |
+                        Q(brand__iexact=value) |
+                        Q(category__name__iexact=value) |
+                        Q(subcategory__name__iexact=value)
+                    )
 
-        if not qs.filter(keyword_filter):
+        if Product.objects.filter(keyword_filter):
+            return qs.filter(keyword_filter).filter(**query_dict)
+        else:
+            keyword_filter = Q()
             for value in keyword.split(' '):
-                keyword_filter |= (
-                    Q(title__icontains=value) |
-                    Q(merchant__name__icontains=value) |
-                    Q(brand__icontains=value) |
-                    Q(category__name__icontains=value) |
-                    Q(subcategory__name__icontains=value)
-                )
+                if value.lower() not in department_list_lower:
+                    keyword_filter &= (
+                        Q(description__iregex=fr"[[:<:]]{value}[[:>:]]")
+                    )
+
         return qs.filter(keyword_filter).filter(**query_dict)
 
     def get_context_data(self, **kwargs):
@@ -93,39 +101,8 @@ class SearchListView(ListView):
         """
         context = super().get_context_data(**kwargs)
         product_id_list = []
-        keyword_filter = Q()
-        if 'keyword' in self.request.GET:
-            keyword = self.request.GET.get('keyword').strip()
-            keyword_filter &= (
-                Q(title__iexact=keyword) |
-                Q(description__iexact=keyword) |
-                Q(merchant__name__iexact=keyword) |
-                Q(brand__iexact=keyword) |
-                Q(department__name__iexact=keyword) |
-                Q(category__name__iexact=keyword) |
-                Q(subcategory__name__iexact=keyword)
-            )
-
-        if not Product.objects.filter(keyword_filter):
-            for value in keyword.split(' '):
-                keyword_filter |= (
-                    Q(title__iexact=value) |
-                    Q(merchant__name__iexact=value) |
-                    Q(brand__iexact=value) |
-                    Q(category__name__iexact=value) |
-                    Q(subcategory__name__iexact=value)
-                )
-
-        if not Product.objects.filter(keyword_filter):
-            for value in keyword.split(' '):
-                keyword_filter |= (
-                    Q(title__icontains=value) |
-                    Q(merchant__name__icontains=value) |
-                    Q(brand__icontains=value) |
-                    Q(category__name__icontains=value) |
-                    Q(subcategory__name__icontains=value)
-                )
-        for product in Product.objects.filter(keyword_filter):
+        
+        for product in self.get_queryset():
             product_id_list.append(product.id)
 
         filter_brands_list = Product.objects.values_list(

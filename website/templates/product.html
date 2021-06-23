@@ -28,10 +28,12 @@
                                 data-zoom-image="{{product.image1.url}}">
                                 <img src="{{product.image1.url}}" alt="main-image" class="img-fluid">
                             </a>
+                            {% if product.image2 %}
                             <a href="#" class="product_gallery_item" data-image="{{product.image2.url}}"
                                 data-zoom-image="{{product.image2.url}}">
                                 <img src="{{product.image2.url}}" alt="main-image" class="img-fluid">
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -46,7 +48,7 @@
             </div>
             <div class="col-md-5 product-info order-xl-3 order-lg-3 order-md-3 order-sm-3 order-3">
                 <h4 class="fw-bold">{{product.title}}</h4>
-                <p>Shopfashion</p>
+                <p>{{product.brand}}</p>
 
                 <p>{{product.description|linebreaks}}</p>
 
@@ -93,7 +95,8 @@
                     data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for similer_product in similer_products%}
                     <div class="recomended-item">
-                        <a href="{% url 'website:product' similer_product.title|slugify similer_product.id %}">
+                        <a href="{% url 'website:product' similer_product.title|slugify similer_product.id %}"
+                            target="_blank">
                             <div class="card" style="width: 18rem;">
                                 <img src="{{similer_product.image1.url}}" class="card-img-top img-fluid"
                                     alt="product-1">
@@ -119,7 +122,8 @@
                     data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for recommended_product in recommended_products%}
                     <div class="recomended-item">
-                        <a href="{% url 'website:product' recommended_product.title|slugify recommended_product.id %}">
+                        <a href="{% url 'website:product' recommended_product.title|slugify recommended_product.id %}"
+                            target="_blank">
                             <div class="card" style="width: 18rem;">
                                 <img src="{{recommended_product.image1.url}}" class="card-img-top img-fluid"
                                     alt="product-1">
@@ -144,7 +148,8 @@
                     data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for vtov_product in vtov_products%}
                     <div class="recomended-item">
-                        <a href="{% url 'website:product' vtov_product.title|slugify vtov_product.id %}">
+                        <a href="{% url 'website:product' vtov_product.title|slugify vtov_product.id %}"
+                            target="_blank">
                             <div class="card" style="width: 18rem;">
                                 <img src="{{vtov_product.image1.url}}" class="card-img-top img-fluid" alt="product-1">
                                 <div class="card-body">

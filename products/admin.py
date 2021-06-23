@@ -64,7 +64,7 @@ class ProductAdmin(SortableAdminMixin, admin.ModelAdmin):
     image1_view.short_description = 'Image1'
 
     def image2_view(self, obj):
-        return format_html('<img src="{}" width="auto" height="70px" />'.format(obj.image2.url))
+        return format_html('<img src="{}" width="auto" height="70px" />'.format(obj.image2.url)) if obj.image2 else ''
     image2_view.short_description = 'Image2'
 
 

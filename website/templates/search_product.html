@@ -102,7 +102,8 @@
                             <ul class="product-list d-flex justify-content-evenly">
                                 {% for product in products %}
                                 <li class="product-item">
-                                    <a href="{% url 'website:product' product.title|slugify product.id %}">
+                                    <a href="{% url 'website:product' product.title|slugify product.id %}"
+                                        target="_blank">
                                         <div class="card" style="width: 18rem;">
                                             <img src="{{product.image1.url}}" class="card-img-top" alt="...">
                                             <div class="card-body">
