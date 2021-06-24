@@ -93,6 +93,11 @@ select {
     margin: 0;
 }
 
+.navbar-light{
+    background-color: white !important;
+    padding: 0 160px !important;
+}
+
 .nav-link.active {
     color: var(--secondary-color) !important;
 }
@@ -147,7 +152,7 @@ select {
 }
 
 .col-megamenu li {
-    padding-bottom: 10px;
+    padding-bottom: 6px;
     font-size: var(--common-font-size);
 }
 
@@ -162,13 +167,15 @@ select {
 
 .megamenu {
     position: absolute;
-    width: 100%;
-    top: 70px;
+    width: 85%;
+    top: 60px;
     left: 0;
     right: 0;
     padding: 15px;
     border-radius: 0;
     border: none;
+    margin: auto;
+    height: max-content;
 }
 
 .owl-theme .owl-nav [class*=owl-] {
@@ -476,12 +483,13 @@ select {
 /* new added css over */
 .side-nav {
     background-color: var(--slider-white-color);
-    height: 100%;
-    position: sticky;
+    height: calc(100% - 116px);
+    position: fixed;
     z-index: 1;
-    top: 0;
-    overflow-x: hidden;
-    padding-top: 20px;
+    top: 85px;
+    overflow-y: scroll;
+    /* padding-top: 20px; */
+    width: 18%;
 }
 
 .accordion-button {
@@ -710,6 +718,7 @@ select {
 
 .user-page {
     background-color: var(--form-input-outline-color);
+    margin-top: 80px;
 }
 
 .user-page-content {
@@ -788,4 +797,41 @@ select {
     transition: all .5s ease-in-out 0s;
     z-index: 999;
     margin-left: auto;
+}
+
+.zoomContainer{
+    display: none !important;
+}
+
+.side-nav::-webkit-scrollbar {
+    background-color: transparent;
+    width: 5px
+}
+
+.side-nav::-webkit-scrollbar-track {
+    background-color: transparent
+}
+
+.side-nav::-webkit-scrollbar-track:hover {
+    background-color: transparent
+}
+
+.side-nav::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 16px;
+    width: 5px;
+}
+
+.browse-page{
+    margin-left: auto;
+    margin-right: 50px;
+    margin-top: 80px;
+}
+
+.product-details {
+    margin-top: 80px;
+}
+
+.shoplook{
+    margin-top: 80px;
 }

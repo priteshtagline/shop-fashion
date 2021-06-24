@@ -116,7 +116,7 @@
     .navbar-toggler {
         position: absolute;
         top: 25px;
-        right: 0%;
+        right: 5%;
     }
 
     header,
@@ -285,6 +285,14 @@
 
     .side-nav {
         top: 142px;
+    }
+
+    .navbar-light{
+        padding: 0 45px !important;
+    }
+
+    .go-btn{
+        display: inline-block !important;
     }
 }
 

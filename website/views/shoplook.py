@@ -14,7 +14,7 @@ class ShopLookListView(ListView):
     model = ShopLook
     template_name = 'shoplook.html'
     context_object_name = 'shoplooks'
-    paginate_by = 5
+    paginate_by = 12
 
 class ShopLookDetailView(DetailView):
     """Website product detail page
