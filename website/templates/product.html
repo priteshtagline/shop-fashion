@@ -23,7 +23,7 @@
             <div class="col-md-2 d-flex order-xl-0 order-lg-0 order-md-0 order-sm-2 order-2">
                 <div class="product-images">
                     <div class="thumbs">
-                        <div id="pr_item_gallery" class="product_gallery_item ">
+                        <div id="pr_item_gallery" class="product_gallery_item">
                             <a href="#" class="product_gallery_item active" data-image="{{product.image1.url}}"
                                 data-zoom-image="{{product.image1.url}}">
                                 <img src="{{product.image1.url}}" alt="main-image" class="img-fluid">
@@ -116,7 +116,7 @@
         {% if recommended_products %}
         <div class="recomended my-5">
             <div class="recomended-products">
-                <h4 class="fw-bold text-center">Similar Products</h4>
+                <h4 class="fw-bold text-center">Recommended Products</h4>
                 <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
                     data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
                     data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
@@ -165,6 +165,10 @@
         {% endif %}
     </div>
 </main>
+{% endblock %}
+
+{% block exrta-js-file %}
+<script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
 {% endblock %}
 
 {% block custom_js %}

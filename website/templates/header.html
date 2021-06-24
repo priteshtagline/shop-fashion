@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light md-bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light md-bg-light fixed-top">
         <div class="container-fluid px-0">
             <a class="navbar-brand order-0" href="{% url 'website:home' %}">Shopfashion</a>
             <button class="navbar-toggler order-xl-1 order-lg-2 order-md-2 order-sm-2 order-2" type="button"
@@ -35,13 +35,16 @@
                         </div> <!-- dropdown-mega-menu.// -->
                     </li>
                     {% endfor %}
+                    <li class="nav-item dropdown megamenu-li">
+                        <a class="nav-link dropdown-toggle" id="dropdown01" href="{% url 'website:shoplook' %}">ShopLook</a>
+                    </li>        
                 </ul>
                 <div class="search-product">
                     <a class="nav-link search-link" href="#search-box"><i class="fal fa-search"></i> Search</a>
                     <form action="{% url 'website:search_product' %}" id="search-box">
                         <input type="search" name="keyword" class="rounded-0 border-0 search-place"
                             value="{{search_keyword}}" placeholder="search">
-                        <input type="submit" value="Go" class="d-none">
+                        <input type="submit" value="Go" class="d-none go-btn">
                     </form>
                 </div>
             </div>

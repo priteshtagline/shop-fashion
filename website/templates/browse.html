@@ -10,8 +10,10 @@
 <main>
     <div class="browse">
         <div class="row">
-            <div class="col-md-3 filter side-nav" id="slide-out" data-spy="affix" data-offset-top="205">
+
+            <div class="col-md-3 filter side-nav" id="slide-out sidebarwrapper" data-spy="affix" data-offset-top="205">
                 <div class="accordion" id="accordionExample">
+                    <h5 class="mx-3">Filters</h5>
 
                     {% if not view.kwargs.category %}
                     <div class="accordion-item">
@@ -62,6 +64,7 @@
                         </div>
                     </div>
                     {% endif %}
+
                     <div class="accordion-item brand">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -139,31 +142,27 @@
                 </div>
             </div>
 
-            <div class="col-md-9 browse-page">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'website:home' %}">Home</a></li>
-                        <li class="breadcrumb-item"><a
-                                href="{% url 'website:browse_department' view.kwargs.department %}">{{ view.kwargs.department|title }}</a>
-                        </li>
-                        {% if view.kwargs.category %}
-                        <li class="breadcrumb-item"><a
-                                href="{% url 'website:browse_category' view.kwargs.department view.kwargs.category %}">{{ view.kwargs.category|title }}</a>
-                        </li>
-                        {% endif %}
-                        {% if view.kwargs.subcategory %}
-                        <li class="breadcrumb-item active text-capitalize" aria-current="page">
-                            {{ view.kwargs.subcategory|title }}
-                        </li>
-                        {% endif %}
-                    </ol>
-                </nav>
-
-                <a href="#" data-activates="slide-out" class="button-collapse d-lg-none filter-btn"><i
-                        class="fas fa-filter pe-2"></i>Filter</a>
-                <div id="overlay"></div>
+            <div class="col-md-9 browse-page ms-auto">
                 <div class="browse-content">
-                    <div class="product-catalouge mt-4">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'website:home' %}">Home</a></li>
+                            <li class="breadcrumb-item"><a
+                                    href="{% url 'website:browse_department' view.kwargs.department %}">{{ view.kwargs.department|title }}</a>
+                            </li>
+                            {% if view.kwargs.category %}
+                            <li class="breadcrumb-item"><a
+                                    href="{% url 'website:browse_category' view.kwargs.department view.kwargs.category %}">{{ view.kwargs.category|title }}</a>
+                            </li>
+                            {% endif %}
+                            {% if view.kwargs.subcategory %}
+                            <li class="breadcrumb-item active text-capitalize" aria-current="page">
+                                {{ view.kwargs.subcategory|title }}
+                            </li>
+                            {% endif %}
+                        </ol>
+                    </nav>
+                    <div class="product-catalouge">
                         <h4 class="fw-bold">{{ view.kwargs.department|title }}'s
                             {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %}
                         </h4>
