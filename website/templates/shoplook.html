@@ -14,7 +14,8 @@
 
     <div class="grid">
         {% for shoplook in shoplooks %}
-        <div class="grid-item grid-sizer"><a href="{% url 'website:shoplook_detail' shoplook.title|slugify shoplook.id %}"><img src="{{shoplook.image.url}}"
+        <div class="grid-item grid-sizer"><a href="{% url 'website:shoplook_detail' shoplook.title|slugify shoplook.id %}">
+            <img class="lazy" src="{% static 'images/white-background.png' %}" data-src="{{shoplook.image.url}}"
                     alt="{{ shoplook.title }}"></a></div>
         {% endfor %}
     </div>

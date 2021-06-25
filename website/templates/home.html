@@ -49,8 +49,8 @@
                     <div class="recomended-item">
                         <a href="{% url 'website:product' product.title|slugify product.id %}" target="_blank">
                             <div class="card" style="width: 18rem;">
-                                <img src="{{product.image1.url}}" class="card-img-top img-fluid"
-                                    alt="{{product}}">
+                                <img class="card-img-top img-fluid" src="{{product.image1.url}}"
+                                    alt="{{product.image1.url}}">
                                 <div class="card-body">
                                     <p class="card-text">{{product}}</p>
                                 </div>

@@ -31,7 +31,9 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-6 col-12">
                             <div class="look-item-image">
-                                <img src="{{product.image1.url}}" alt="{{product}}">
+                                <img class="lazy" src="{% static 'images/white-background.png' %}"
+                                    data-src="{{product.image1.url}}" 
+                                    alt="{{product.image1.url}}">
                             </div>
                         </div>
                         <div class="col-md-8 col-sm-6 col-12 look-item-info">

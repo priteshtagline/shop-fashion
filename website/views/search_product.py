@@ -1,9 +1,9 @@
+from django.db.models import Count, Q
+from django.db.models.functions import Lower
 from django.views.generic import ListView
+from products.models.department import Department
 from products.models.merchant import Merchant
 from products.models.product import Product
-from products.models.department import Department
-from collections import Counter
-from django.db.models import Count, Q
 
 
 class SearchListView(ListView):
@@ -31,23 +31,22 @@ class SearchListView(ListView):
         Returns:
             [queryset object]: [filter product queryset object data]
         """
-        qs = super(SearchListView, self).get_queryset()
 
         filter_fields = ('brand', 'store', 'color')
-        query_dict = {}
-        keyword_filter = Q()
+        query_dict = Q()
         for param in self.request.GET:
             if param in filter_fields and self.request.GET.get(param):
                 param_value_list = self.request.GET.get(param).split(',')
-                if param == 'brand':
-                    query_dict['brand__iregex'] = r'(' + \
-                        '|'.join(param_value_list) + ')'
-                elif param == 'store':
-                    query_dict['merchant__name__in'] = param_value_list
-                elif param == 'color':
-                    query_dict['color__iregex'] = r'(' + \
-                        '|'.join(param_value_list) + ')'
-
+                for param_value in param_value_list:
+                    print(param_value)
+                    if param == 'brand':
+                        query_dict |= (Q(brand__iexact=param_value))
+                    elif param == 'store':
+                        query_dict |= Q(merchant__name__iexact=param_value)
+                    elif param == 'color':
+                        query_dict |= (Q(color__iexact=param_value))
+        
+        keyword_filter = Q()
         if 'keyword' in self.request.GET:
             keyword = self.request.GET.get('keyword').strip()
             keyword_filter &= (
@@ -59,34 +58,98 @@ class SearchListView(ListView):
                 Q(category__name__iexact=keyword) |
                 Q(subcategory__name__iexact=keyword)
             )
+
+        filter_object_list = Product.objects.filter(
+            keyword_filter).filter(query_dict)
+        if filter_object_list:
+            return filter_object_list
+
         department_list = Department.objects.values_list('name', flat=True)
         department_list_lower = [x.lower() for x in department_list]
+        keyword_filter = Q()
 
-        if Product.objects.filter(keyword_filter):
-            return qs.filter(keyword_filter).filter(**query_dict)
-        else:
-            keyword_filter = Q()
-            for value in keyword.split(' '):
-                if value.lower() not in department_list_lower:
-                    keyword_filter &= (
-                        Q(title__iregex=fr"[[:<:]]{value}[[:>:]]") |
-                        Q(merchant__name__iexact=value) |
-                        Q(brand__iexact=value) |
-                        Q(category__name__iexact=value) |
-                        Q(subcategory__name__iexact=value)
-                    )
+        for value in keyword.split(' '):
+            if value.lower() not in department_list_lower:
+                keyword_filter &= (
+                    Q(title__iregex=fr"[[:<:]]{value}[[:>:]]") |
+                    Q(merchant__name__iexact=value) |
+                    Q(brand__iexact=value) |
+                    Q(category__name__iexact=value) |
+                    Q(subcategory__name__iexact=value)
+                )
 
-        if Product.objects.filter(keyword_filter):
-            return qs.filter(keyword_filter).filter(**query_dict)
-        else:
-            keyword_filter = Q()
-            for value in keyword.split(' '):
-                if value.lower() not in department_list_lower:
-                    keyword_filter &= (
-                        Q(description__iregex=fr"[[:<:]]{value}[[:>:]]")
-                    )
+        filter_object_list = Product.objects.filter(
+            keyword_filter).filter(query_dict)
+        if filter_object_list:
+            return filter_object_list
 
-        return qs.filter(keyword_filter).filter(**query_dict)
+        keyword_filter = Q()
+        for value in keyword.split(' '):
+            if value.lower() not in department_list_lower:
+                keyword_filter &= (
+                    Q(description__iregex=fr"[[:<:]]{value}[[:>:]]")
+                )
+
+        return Product.objects.filter(keyword_filter).filter(query_dict)
+
+
+    def get_queryset2(self):
+        """Override django generic listview get_queryset method because
+           as per requrments to diaplay product data by department, category and sub category so,
+           pass keyword arguments to the url and hear filter by given keywords arguments.
+
+           If user more product filter by brand, store and color then pass in query parameter and
+           hear filter product by given querystring parameter.
+
+        Returns:
+            [queryset object]: [filter product queryset object data]
+        """
+
+        keyword_filter = Q()
+        if 'keyword' in self.request.GET:
+            keyword = self.request.GET.get('keyword').strip()
+            keyword_filter &= (
+                Q(title__iexact=keyword) |
+                Q(description__iexact=keyword) |
+                Q(merchant__name__iexact=keyword) |
+                Q(brand__iexact=keyword) |
+                Q(department__name__iexact=keyword) |
+                Q(category__name__iexact=keyword) |
+                Q(subcategory__name__iexact=keyword)
+            )
+
+        filter_object_list = Product.objects.filter(keyword_filter).filter()
+        if filter_object_list:
+            return filter_object_list
+
+        department_list = Department.objects.values_list('name', flat=True)
+        department_list_lower = [x.lower() for x in department_list]
+        keyword_filter = Q()
+
+        for value in keyword.split(' '):
+            if value.lower() not in department_list_lower:
+                keyword_filter &= (
+                    Q(title__iregex=fr"[[:<:]]{value}[[:>:]]") |
+                    Q(merchant__name__iexact=value) |
+                    Q(brand__iexact=value) |
+                    Q(category__name__iexact=value) |
+                    Q(subcategory__name__iexact=value)
+                )
+
+        filter_object_list = Product.objects.filter(keyword_filter)
+        if filter_object_list:
+            return filter_object_list
+
+        keyword_filter = Q()
+        for value in keyword.split(' '):
+            if value.lower() not in department_list_lower:
+                keyword_filter &= (
+                    Q(description__iregex=fr"[[:<:]]{value}[[:>:]]")
+                )
+
+        return Product.objects.filter(keyword_filter)
+
+
 
     def get_context_data(self, **kwargs):
         """Override django generic listview get_context_data method because
@@ -100,20 +163,13 @@ class SearchListView(ListView):
             [json object]: [product and his filter object data]
         """
         context = super().get_context_data(**kwargs)
-        product_id_list = []
-        
-        for product in self.get_queryset():
-            product_id_list.append(product.id)
+        product_id_list = [product.id for product in self.get_queryset2()]
 
-        filter_brands_list = Product.objects.values_list(
-            'brand', flat=True).filter(id__in=product_id_list).order_by('brand')
-        context['filter_brands'] = dict(
-            Counter(x.lower() for x in filter_brands_list))
+        context['filter_brands'] = Product.objects.annotate(brand_name=Lower('brand')).values('brand_name').filter(
+            id__in=product_id_list).annotate(product_count=Count('brand_name')).order_by('brand_name')
 
-        filter_color_list = Product.objects.values_list(
-            'color', flat=True).filter(id__in=product_id_list).order_by('color')
-        context['filter_colors'] = dict(
-            Counter(x.lower() for x in list(filter(None, filter_color_list))))
+        context['filter_colors'] = Product.objects.annotate(color_name=Lower('color')).values('color_name').filter(
+            id__in=product_id_list).annotate(product_count=Count('color_name')).filter(product_count__gt=1).exclude(color_name__exact='').order_by('color_name')
 
         context['filter_stors'] = Merchant.objects.annotate(total_product=Count(
             'product', filter=Q(product__id__in=product_id_list))).filter(total_product__gt=1).order_by('name')
