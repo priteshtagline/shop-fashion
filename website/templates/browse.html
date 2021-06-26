@@ -201,7 +201,8 @@
 
                         <li class="me-auto" {%if not page_obj.has_previous %} style="visibility: hidden;" {% endif %}>
                             {%if page_obj.has_previous %}
-                            <a href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
+                            <a class="page-link-number" value="{{page_obj.previous_page_number}}"
+                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
                             {% endif %}
@@ -212,23 +213,25 @@
                                 {% for n in page_obj.paginator.page_range %}
                                 {% if page_obj.number|add:'-3' == n %}
                                 {# First page #}
-                                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                                <li class="page-item"><a class="page-link page-link-number" value="1">1</a></li>
                                 {% if n != 1 %}
                                 <li class="page-item"><a>&#8943;</a></li>
                                 {% endif %}
                                 {% elif page_obj.number == n %}
                                 {# Current page #}
-                                <li class="page-item active"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                <li class="page-item active"><a class="page-link page-link-number"
+                                        value="{{ n }}">{{ n }}</a></li>
                                 {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
                                 {# Pages around current page #}
-                                <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                <li class="page-item"><a class="page-link page-link-number"
+                                       value="{{ n }}">{{ n }}</a></li>
                                 {% elif page_obj.number|add:'3' == n %}
                                 {# Last page #}
                                 {% if n != num_pages %}
                                 <li class="page-item"><a>&#8943;</a></li>
                                 {% endif %}
                                 <li class="page-item"><a class="page-link"
-                                        href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a>
+                                        value="{{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a>
                                 </li>
                                 {% endif %}
                                 {% endfor %}
@@ -237,7 +240,7 @@
 
                         <li class="ms-auto" {% if not page_obj.has_next %} style="visibility: hidden;" {% endif %}>
                             {%if page_obj.has_next %}
-                            <a href="?page={{page_obj.next_page_number}}" aria-label="Next">
+                            <a class="page-link-number" value="{{page_obj.next_page_number}}" aria-label="Next">
                                 <span aria-hidden="true">Next &raquo;</span>
                             </a>
                             {% endif %}
@@ -303,6 +306,20 @@
                     }).get();
                 filter_json_object[this.name] = filter_value;
             });
+            window.location.href = base_url + '/?' + createJsonToURLQuery(filter_json_object);
+        });
+
+        $('.page-link-number').on('click', function () {
+            // on filter by page number
+            $(".styled-checkbox:checked").each(function () {
+                var filter_value = $(':checkbox[name=' + this.name + ']:checked').map(
+                function () {
+                    return this.value;
+                }).get();
+                filter_json_object[this.name] = filter_value;
+            });
+            filter_json_object['page'] = [$(this).attr('value')];
+            console.log(filter_json_object);
             window.location.href = base_url + '/?' + createJsonToURLQuery(filter_json_object);
         });
     });
