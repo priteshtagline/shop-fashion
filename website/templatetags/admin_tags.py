@@ -17,3 +17,9 @@ def header(user, request):
     """
     keyword_earch = "" if not 'keyword' in request.GET else request.GET['keyword']
     return {'user': user, 'search_keyword': keyword_earch, 'departments': Department.objects.all()}
+
+
+@register.filter_function
+def order_by(queryset, args):
+    args = [x.strip() for x in args.split(',')]
+    return queryset.order_by(*args)
