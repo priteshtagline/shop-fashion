@@ -6,6 +6,8 @@ from products.models.product import Product
 from products.models.sub_category import SubCategory
 
 
+
+
 class BrowseListView(ListView):
     """Website browse product list page
 
@@ -51,7 +53,6 @@ class BrowseListView(ListView):
             if param in filter_fields and self.request.GET.get(param):
                 param_value_list = self.request.GET.get(param).split(',')
                 for param_value in param_value_list:
-                    print(param_value)
                     if param == 'brand':
                         query_dict |= (Q(brand__iexact=param_value))
                     elif param == 'store':
