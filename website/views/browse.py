@@ -2,7 +2,6 @@ from django.db.models import Count, Q
 from django.db.models.functions import Lower
 from django.views.generic import ListView
 from products.models.category import Category
-from products.models.merchant import Merchant
 from products.models.product import Product
 from products.models.sub_category import SubCategory
 
@@ -20,6 +19,7 @@ class BrowseListView(ListView):
     template_name = 'browse.html'
     context_object_name = 'products'
     paginate_by = 80
+    browse_filter_data = {}
 
     def get_queryset(self):
         """Override django generic listview get_queryset method because
@@ -43,6 +43,8 @@ class BrowseListView(ListView):
         if 'subcategory' in self.kwargs:
             kwargs_filters['subcategory__name__iexact'] = self.kwargs['subcategory']
 
+        self.browse_filter_data = Product.objects.filter(**kwargs_filters)
+
         filter_fields = ('brand', 'store', 'color')
         query_dict = Q()
         for param in self.request.GET:
@@ -56,8 +58,8 @@ class BrowseListView(ListView):
                         query_dict |= Q(merchant__name__iexact=param_value)
                     elif param == 'color':
                         query_dict |= (Q(color__iexact=param_value))
-                        
-        return Product.objects.filter(**kwargs_filters).filter(query_dict)
+
+        return self.browse_filter_data.filter(query_dict)
 
     def get_context_data(self, **kwargs):
         """Override django generic listview get_context_data method because
@@ -81,24 +83,21 @@ class BrowseListView(ListView):
             kwargs_filters['category__name__iexact'] = self.kwargs['category']
         else:
             context['categories_list'] = Category.objects.annotate(
-                total_product=Count('product', distinct=True)).filter(**kwargs_filters).order_by('name')
+                total_product=Count('product', distinct=True)).filter(**kwargs_filters)
 
         if 'subcategory' in self.kwargs:
             kwargs_filters['subcategory__name__iexact'] = self.kwargs['subcategory']
         else:
             context['subcategories_list'] = SubCategory.objects.annotate(total_product=Count(
-                'product', distinct=True)).filter(**kwargs_filters).order_by('name')
+                'product', distinct=True)).filter(**kwargs_filters)
 
-        product_ids = [
-            product.id for product in Product.objects.filter(**kwargs_filters)]
+        context['filter_brands'] = self.browse_filter_data.annotate(brand_name=Lower(
+            'brand')).values('brand_name').annotate(product_count=Count('brand_name'))
 
-        context['filter_brands'] = Product.objects.annotate(brand_name=Lower('brand')).values('brand_name').filter(
-            id__in=product_ids).annotate(product_count=Count('brand_name')).order_by('brand_name')
+        context['filter_colors'] = self.browse_filter_data.annotate(color_name=Lower('color')).values(
+            'color_name').annotate(product_count=Count('color_name')).filter(product_count__gt=1).exclude(color_name__exact='')
 
-        context['filter_colors'] = Product.objects.annotate(color_name=Lower('color')).values('color_name').filter(
-            id__in=product_ids).annotate(product_count=Count('color_name')).filter(product_count__gt=1).exclude(color_name__exact='').order_by('color_name')
-
-        context['filter_stors'] = Merchant.objects.annotate(total_product=Count(
-            'product', filter=Q(product__id__in=product_ids))).filter(total_product__gt=1).order_by('name')
+        context['filter_stors'] = self.browse_filter_data.annotate(brand_name=Lower(
+            'merchant__name')).values('merchant__name').annotate(product_count=Count('merchant__name'))
 
         return context

@@ -11,6 +11,7 @@
             <div class="col-md-3 filter side-nav" id="slide-out sidebarwrapper" data-spy="affix" data-offset-top="205">
                 <h5 class="mx-3">Filters</h5>
                 <div class="accordion" id="accordionExample">
+
                     <div class="accordion-item brand">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -19,22 +20,23 @@
                                 Brands ({{ filter_brands|length }})
                             </button>
                         </h2>
-                       <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
-                           aria-labelledby="panelsStayOpen-headingOne">
-                           <div class="accordion-body">
-                               <ul class="collections">
-                                   {% for brand in filter_brands %}
-                                   <li class="collections-item">
-                                       <input type="checkbox" class="styled-checkbox" name="brand"
-                                           id="{{ brand.brand_name|title }}" value="{{ brand.brand_name|title }}"><label
-                                           for="{{ brand.brand_name|title }}">
-                                           {{ brand.brand_name|title }}
-                                           ({{ brand.product_count }})</label>
-                                   </li>
-                                   {% endfor %}
-                               </ul>
-                           </div>
-                       </div>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
+                            aria-labelledby="panelsStayOpen-headingOne">
+                            <div class="accordion-body">
+                                <ul class="collections">
+                                    {% for brand in filter_brands|order_by:'brand_name' %}
+                                    <li class="collections-item">
+                                        <input type="checkbox" class="styled-checkbox" name="brand"
+                                            id="{{ brand.brand_name|title }}"
+                                            value="{{ brand.brand_name|title }}"><label
+                                            for="{{ brand.brand_name|title }}">
+                                            {{ brand.brand_name|title }}
+                                            ({{ brand.product_count }})</label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="accordion-item store">
@@ -48,32 +50,34 @@
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="collections">
-                                    {% for store in filter_stors %}
+                                    {% for store in filter_stors|order_by:'merchant__name' %}
                                     <li class="collections-item">
-                                        <input type="checkbox" class="styled-checkbox" name="store" id="{{ store }}"
-                                            value="{{ store }}"> <label for="{{ store }}"> {{ store|title }}
-                                                ({{ store.total_product }})</label>
+                                        <input type="checkbox" class="styled-checkbox" name="store"
+                                            id="{{ store.merchant__name }}" value="{{ store.merchant__name }}"> <label
+                                            for="{{ store.merchant__name }}">
+                                            {{ store.merchant__name|title }}
+                                            ({{ store.product_count }})</label>
                                     </li>
                                     {% endfor %}
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    
+
                     {% if filter_colors %}
                     <div class="accordion-item color">
                         <h2 class="accordion-header" id="headingThree">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
                                 aria-controls="panelsStayOpen-collapseThree">
-                                Color ({{ filter_colors|length }})
+                                Color ({{filter_colors|length}})
                             </button>
                         </h2>
                         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse"
                             aria-labelledby="panelsStayOpen-headingThree">
                             <div class="accordion-body">
                                 <ul class="colors-list d-flex">
-                                    {% for color in filter_colors %}
+                                    {% for color in filter_colors|order_by:'color_name' %}
                                     <li class="color-item">
                                         <input type="checkbox" class="styled-checkbox" name="color"
                                             id="{{color.color_name|slice:'1:'}}"

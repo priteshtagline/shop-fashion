@@ -27,7 +27,7 @@
                         <div id="panelsStayOpen-category" class="accordion-collapse collapse">
                             <div class="accordion-body">
                                 <ul class="collections">
-                                    {% for category in categories_list %}
+                                    {% for category in categories_list|order_by:'name' %}
                                     <li class="collections-item">
                                         <label> <a
                                                 href="{{ request.path }}{{ category|lower }}?{{request.GET.urlencode}}">{{category|title}}
@@ -52,7 +52,7 @@
                         <div id="panelsStayOpen-subcategory" class="accordion-collapse collapse">
                             <div class="accordion-body">
                                 <ul class="collections">
-                                    {% for sub_category in subcategories_list %}
+                                    {% for sub_category in subcategories_list|order_by:'name' %}
                                     <li class="collections-item">
                                         <label> <a
                                                 href="{{ request.path }}{{ sub_category|lower }}?{{request.GET.urlencode}}">{{sub_category|title}}
@@ -77,7 +77,7 @@
                             aria-labelledby="panelsStayOpen-headingOne">
                             <div class="accordion-body">
                                 <ul class="collections">
-                                    {% for brand in filter_brands %}
+                                    {% for brand in filter_brands|order_by:'brand_name' %}
                                     <li class="collections-item">
                                         <input type="checkbox" class="styled-checkbox" name="brand"
                                             id="{{ brand.brand_name|title }}"
@@ -103,11 +103,13 @@
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="collections">
-                                    {% for store in filter_stors %}
+                                    {% for store in filter_stors|order_by:'merchant__name' %}
                                     <li class="collections-item">
-                                        <input type="checkbox" class="styled-checkbox" name="store" id="{{ store }}"
-                                            value="{{ store }}"> <label for="{{ store }}"> {{ store|title }}
-                                            ({{ store.total_product }})</label>
+                                        <input type="checkbox" class="styled-checkbox" name="store"
+                                            id="{{ store.merchant__name }}"
+                                            value="{{ store.merchant__name }}"> <label for="{{ store.merchant__name }}">
+                                                {{ store.merchant__name|title }}
+                                            ({{ store.product_count }})</label>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -128,7 +130,7 @@
                             aria-labelledby="panelsStayOpen-headingThree">
                             <div class="accordion-body">
                                 <ul class="colors-list d-flex">
-                                    {% for color in filter_colors %}
+                                    {% for color in filter_colors|order_by:'color_name' %}
                                     <li class="color-item">
                                         <input type="checkbox" class="styled-checkbox" name="color"
                                             id="{{color.color_name|slice:'1:'}}"
