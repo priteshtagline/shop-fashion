@@ -7,13 +7,14 @@ from website.views.product import ProductDeatilView
 from website.views.search_product import SearchListView
 from website.views.shoplook import ShopLookDetailView, ShopLookListView
 from website.views.wishlist import WishlistView
+from website.views.like_product import LikeProductView
 
 app_name = 'website'
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-    path('privacy_policy', TemplateView.as_view(
+    path('privacy-policy', TemplateView.as_view(
         template_name='privacy_policy.html'), name='privacy_policy'),
-    path('terms_conditions', TemplateView.as_view(
+    path('terms-conditions', TemplateView.as_view(
         template_name='terms_conditions.html'), name='terms_conditions'),
     path('product/<slug:slug>/<int:pk>',
          ProductDeatilView.as_view(), name='product'),
@@ -31,4 +32,6 @@ urlpatterns = [
          ShopLookDetailView.as_view(), name='shoplook_detail'),
     path('wishlist/',
          WishlistView.as_view(), name='wishlist'),
+    path('like-product/',
+         LikeProductView.as_view(), name='like_product'),
 ]

@@ -56,6 +56,8 @@ class User(AbstractUser):
                               'invalid_choice': 'Choise any one gender.'})
 
     wishlist_product = models.ManyToManyField(Product, blank=True)
+    like_product = models.ManyToManyField(
+        Product, blank=True, related_name="like_products", verbose_name="Like Products")
 
     objects = UserManager()
 
