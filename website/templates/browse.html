@@ -82,8 +82,8 @@
                                         <input type="checkbox" class="styled-checkbox" name="brand"
                                             id="{{ brand.brand_name|title }}"
                                             value="{{ brand.brand_name|title }}"><label
-                                                for="{{ brand.brand_name|title }}">
-                                                {{ brand.brand_name|title }}
+                                            for="{{ brand.brand_name|title }}">
+                                            {{ brand.brand_name|title }}
                                             ({{ brand.product_count }})</label>
                                     </li>
                                     {% endfor %}
@@ -106,9 +106,9 @@
                                     {% for store in filter_stors|order_by:'merchant__name' %}
                                     <li class="collections-item">
                                         <input type="checkbox" class="styled-checkbox" name="store"
-                                            id="{{ store.merchant__name }}"
-                                            value="{{ store.merchant__name }}"> <label for="{{ store.merchant__name }}">
-                                                {{ store.merchant__name|title }}
+                                            id="{{ store.merchant__name }}" value="{{ store.merchant__name }}"> <label
+                                            for="{{ store.merchant__name }}">
+                                            {{ store.merchant__name|title }}
                                             ({{ store.product_count }})</label>
                                     </li>
                                     {% endfor %}
@@ -179,14 +179,14 @@
                                 <li class="product-item">
                                     <a href="{% url 'website:product' product.title|slugify product.id %}"
                                         target="_blank">
-                                        <div class="card" style="width: 18rem;">
-                                            <img
-                                                src="{% static 'images/white-background.png' %}"
-                                                data-src="{{product.image1.url}}"
-                                                class="card-img-top lazy"
+                                        <div class="card position-relative" style="width: 18rem;">
+                                            <img src="{% static 'images/white-background.png' %}"
+                                                data-src="{{product.image1.url}}" class="card-img-top lazy"
                                                 alt="{{product.image1.url}}">
                                             <div class="card-body">
-                                                <p class="card-text text-center">{{product.title}}</p>
+                                                <a class="position-absolute like-product" value="{{product.id}}"><i
+                                                        class="{% if product in user_liked_product %}fa{% else %}far{% endif %} fa-heart"></i></a>
+                                                <p class="card-text text-center">{{product}}</p>
                                             </div>
                                         </div>
                                     </a>
@@ -203,8 +203,7 @@
 
                         <li class="me-auto" {%if not page_obj.has_previous %} style="visibility: hidden;" {% endif %}>
                             {%if page_obj.has_previous %}
-                            <a class="page-link-number" value="{{page_obj.previous_page_number}}"
-                                aria-label="Previous">
+                            <a class="page-link-number" value="{{page_obj.previous_page_number}}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
                             {% endif %}
@@ -225,8 +224,8 @@
                                         value="{{ n }}">{{ n }}</a></li>
                                 {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
                                 {# Pages around current page #}
-                                <li class="page-item"><a class="page-link page-link-number"
-                                       value="{{ n }}">{{ n }}</a></li>
+                                <li class="page-item"><a class="page-link page-link-number" value="{{ n }}">{{ n }}</a>
+                                </li>
                                 {% elif page_obj.number|add:'3' == n %}
                                 {# Last page #}
                                 {% if n != num_pages %}
@@ -315,9 +314,9 @@
             // on filter by page number
             $(".styled-checkbox:checked").each(function () {
                 var filter_value = $(':checkbox[name=' + this.name + ']:checked').map(
-                function () {
-                    return this.value;
-                }).get();
+                    function () {
+                        return this.value;
+                    }).get();
                 filter_json_object[this.name] = filter_value;
             });
             filter_json_object['page'] = [$(this).attr('value')];
