@@ -891,4 +891,9 @@
     .search-place {
         width: 75%;
     }
+
+    .wish-list-info input[type=text] {
+        padding: 5px;
+        font-size: 14px;
+    }
 }

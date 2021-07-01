@@ -79,10 +79,101 @@
 
                 <a href="{{product.redirect_url}}" target="_blank" class="btn btn-dark rounded-0 my-5 buy-now-btn">Buy
                     now from {{product.merchant}}</a>
-                <a class="wish-list-link text-decoration-underline d-block" value={{product.id}}>+ Add to Whish
-                    List</a>
-                <p></p>
-                {% csrf_token %}
+                <!-- <a class="wish-list-link text-decoration-underline d-block" value={{product.id}}>+ Add to Whish
+                    List</a> -->
+
+                <button type="button" class="btn btn-primary d-block wishlist-btn" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    + Add to Wish list
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog position-relative">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h5 class="modal-title" id="exampleModalLabel">Added To Wish List</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="tab-content fade show active" id="pills-tabContent">
+                                    <div class="tab-pane fade show active text-center py-0" id="nav-home"
+                                        role="tabpanel"
+                                        aria-labelledby="nav-home-tab">
+                                        <div class="wishlist-modal-product-img text-center">
+                                            <img src="{{product.image1.url}}" alt="{{product.image1.url}}">
+                                        </div>
+                                        <h6>{{product.title}}</h6>
+                                    </div>
+                                    <div class="tab-pane fade py-0" id="pills-contact" role="tabpanel"
+                                        aria-labelledby="pills-contact-tab">
+
+                                        <div class="wishlist-modal-product-img">
+                                            <img src="{{product.image1.url}}" alt="{{product.image1.url}}">
+                                        </div>
+                                        <p>Choose wish list</p>
+                                        <form class="wish-list-info flex-column p-1">
+                                            {% csrf_token %}
+                                            {% for wishlist in customer_wishlits %}
+                                                <div class="form-group">
+                                                    <input type="radio" class="styled-radio" name="wish-list-name"
+                                                        id="{{wishlist.name}}" value="{{wishlist.name}}">
+                                                    <label for="{{wishlist.name}}">{{wishlist.name|title}}</label>
+                                                </div>
+                                            {% endfor %}
+                                            <div class="form-group">
+                                                <input type="radio" class="styled-radio" name="wish-list-name"
+                                                    id="create-new-list" value="0">
+                                                <label for="create-new-list">Create New list</label>
+                                                <input type="text" name="new-wish-list-name" id="new-wish-list-name"
+                                                    placeholder="List Name">
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <ul class="nav nav-pills mb-3 flex-column text-center w-100 move-wish-list-btn"
+                                    id="pills-tab" role="tablist">
+                                    <li>
+                                        <button class="active position-absolute back-modal-btn" style="visibility:hidden" id="nav-home-tab"
+                                            data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab"
+                                            aria-controls="nav-home" aria-selected="true"><i
+                                                class="fal fa-chevron-left"></i>  Back</button>
+                                    </li>
+                                    <div class="move-diffrent-wishlist">
+                                        <li class="nav-item py-1">
+                                            <button class="btn btn-dark w-100 rounded-0"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </li>
+                                        <li class="nav-item py-1" role="presentation">
+                                            <button class="btn btn-outline-dark w-100 rounded-0 move-diffrent-wishlist-btn"
+                                                id="pills-contact-tab"
+                                                data-bs-toggle="pill" data-bs-target="#pills-contact" type="button"
+                                                role="tab" aria-controls="pills-contact" aria-selected="false">Move to a
+                                                different wish list</button>
+                                        </li>
+                                    </div>
+                                </ul>
+
+                                <ul class="nav nav-pills mb-3 text-center wish-list-info-btn" role="tablist" style="display: none;">
+                                    <li class="nav-item py-1 px-2" role="presentation">
+                                        <button class="btn btn-outline-dark rounded-0 wishlist-btn-move" data-bs-toggle="pill"
+                                            data-bs-target="#pills-contact" type="button" role="tab"
+                                            aria-controls="pills-contact" aria-selected="false">Move</button>
+                                    </li>
+                                    <li class="nav-item py-1 px-2">
+                                        <button class="btn btn-dark rounded-0" data-bs-dismiss="modal">Close</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -173,15 +264,16 @@
 
 {% block custom_js %}
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(document).on('click', '.wish-list-link', function (e) {
-                e.preventDefault();
+        $(document).ready(function () { 
+            function wishlist_update(product_id,wishlist_name,remove_wishlist){
                 $.ajax({
                     url: "{% url 'website:wishlist' %}",
                     method: 'POST',
                     data: {
-                        'product_id' : $(this).attr('value'),
-                        'wishlist_type' : 'add'
+                        'wishlist_type' : 'add',
+                        'product_id' : product_id,
+                        'wishlist_name' : wishlist_name,
+                        'remove_wishlist' : remove_wishlist,
                     },
                     dataType: 'JSON',
                     headers: {
@@ -189,19 +281,50 @@
                     },
                     success: function (data) {
                         if (data.status) {
-                            $(".wish-list-link").next("p").css('color','cadetblue').html(data.message).delay(2000).fadeOut(300);
+                            $("#exampleModal").modal("hide");
                         }else{
                             if (data.message == 'login_required'){
                                 window.location = "{% url 'user:login' %}?next={{request.path}}";
                             }
-                            $(".wish-list-link").next("p").css('color','red').html(data.message).delay(2000).fadeOut(300);
                         }
                     },
                     error: function (data) {
                         console.log(data);
                     },
                 });
+            }
+            
+            $(document).on('click', '.move-diffrent-wishlist-btn', function (e) {
+                $('.move-diffrent-wishlist').css('display', 'none');
+                $('.wish-list-info-btn').css('display', 'block');
+                $('.back-modal-btn').css('visibility', 'visible');
             });
+            $(document).on('click', '.back-modal-btn', function (e) {
+                $('.move-diffrent-wishlist').css('display', 'block');
+                $('.wish-list-info-btn').css('display', 'none');
+                $('.back-modal-btn').css('visibility', 'hidden');
+            });
+
+            
+            $(document).on('click', '.wishlist-btn', function (e) {
+                product_id = {{product.id}}
+                wishlist_update(product_id, 'wish list', 'False');
+            });
+
+            $(document).on('click', '.wishlist-btn-move', function (e) {
+                product_id = {{product.id}}
+                wish_list_name = $('input[name="wish-list-name"]:checked').val();
+                if(wish_list_name === undefined){
+                    $('#wish-list-name').css('border','1px solid red');
+                }
+                else if(wish_list_name == 0){
+                    wish_list_name = $("#new-wish-list-name").val();
+                    wish_list_name == ''  ? $("#new-wish-list-name").css('border','1px solid red') : wish_list_name
+                }else{
+                    wishlist_update(product_id, wish_list_name, 'True');
+                }
+            });
+            
         });
     </script>
 {% endblock  %}

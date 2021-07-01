@@ -3,6 +3,7 @@ from products.models.product import Product
 from products.models.recommended_product import RecommendedProduct
 from products.models.similar_product import SimilarProduct
 from products.models.vtov_product import VtovProduct
+from users.models import UserWishlist
 
 
 class ProductDeatilView(DetailView):
@@ -27,6 +28,9 @@ class ProductDeatilView(DetailView):
         """
         context = super().get_context_data(**kwargs)
         product_id = context['product'].id
+
+        context['customer_wishlits'] = UserWishlist.objects.filter(
+            user_id=self.request.user.id).exclude(name='wish list')
 
         similer_product_id_list = SimilarProduct.objects.values_list('similar_products', flat=True).filter(
             product__id=product_id)

@@ -14,7 +14,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('privacy-policy', TemplateView.as_view(
         template_name='privacy_policy.html'), name='privacy_policy'),
-    path('terms-conditions', TemplateView.as_view(
+    path('terms-and-conditions', TemplateView.as_view(
         template_name='terms_conditions.html'), name='terms_conditions'),
     path('product/<slug:slug>/<int:pk>',
          ProductDeatilView.as_view(), name='product'),

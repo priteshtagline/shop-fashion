@@ -18,6 +18,7 @@ class Product(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
+    label = models.CharField(max_length=255, null=True, blank=True)
     merchant = models.ForeignKey(
         Merchant, blank=True, null=True, on_delete=models.SET_NULL)
     brand = models.CharField(max_length=255)
