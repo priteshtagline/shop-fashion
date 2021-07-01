@@ -173,6 +173,7 @@
                             {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %}
                         </h4>
                         <p>{{ page_obj.paginator.count }} item{{ page_obj.paginator.count|pluralize }}</p>
+                        <!-- <i class="{% if product in user_liked_product %}fa{% else %}far{% endif %}fa-heart"></i> -->
                         <div class="products">
                             <ul class="product-list d-flex justify-content-evenly">
                                 {% for product in products %}
@@ -185,6 +186,9 @@
                                                 alt="{{product.image1.url}}">
                                             <div class="card-body">
                                                 <a class="position-absolute like-product" value="{{product.id}}"><i
+                                                        style="-webkit-text-fill-color: rgba(253, 0, 0, 0.822);
+                                                        -webkit-text-stroke-width: 0.6px;-webkit-text-stroke-color:
+                                                        black;"
                                                         class="{% if product in user_liked_product %}fa{% else %}far{% endif %} fa-heart"></i></a>
                                                 <p class="card-text text-center">{{product}}</p>
                                             </div>

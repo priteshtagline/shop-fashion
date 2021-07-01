@@ -75,9 +75,7 @@
                     },
                     success: function (data) {
                         if (data.status) {
-                            form.find("p").empty().show().html(
-                                    'Successfully your email subscribed.').delay(1500)
-                                .fadeOut(300);
+                            form.find("p").empty().show().html(data.message).delay(1500).fadeOut(300);
                             setTimeout(function () {
                                 form.find("input[type=email]").val("");
                             }, 1500);
@@ -93,13 +91,13 @@
         $(document).on('click', '.like-product', function (e) {
             e.preventDefault();
             selector_heart = $(this).find('i')
-            like_type = $.inArray('far', selector_heart.attr('class').split(' ')) != -1 ? 'add' : 'remove'
+            like_action = $.inArray('far', selector_heart.attr('class').split(' ')) != -1 ? 'add' : 'remove'
             $.ajax({
                 url: "{% url 'website:like_product' %}",
                 method: 'POST',
                 data: {
                     'product_id' : $(this).attr('value'),
-                    'like_type' : like_type
+                    'like_action' : like_action
                 },
                 dataType: 'JSON',
                 headers: {
@@ -109,6 +107,10 @@
                     if (data.status) {
                         selector_heart.toggleClass('fa');
                         selector_heart.toggleClass('far');
+                    }else{
+                        if (data.message == 'login_required'){
+                            window.location = "{% url 'user:login' %}?next={{request.path}}";
+                        }
                     }
                 },
                 error: function (data) {

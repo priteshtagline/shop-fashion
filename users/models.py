@@ -55,7 +55,7 @@ class User(AbstractUser):
     gender = models.CharField(verbose_name='gender', blank=True, default='M', max_length=1, choices=GENDER_CHOICES, error_messages={
                               'invalid_choice': 'Choise any one gender.'})
 
-    wishlist_product = models.ManyToManyField(Product, blank=True)
+    # wishlist_product = models.ManyToManyField(Product, blank=True)
     like_product = models.ManyToManyField(
         Product, blank=True, related_name="like_products", verbose_name="Like Products")
 
@@ -80,10 +80,33 @@ class EmailSubscribe(models.Model):
     Returns:
         [string]: [email]
     """
-    email = models.EmailField(max_length=255)
+    email = models.EmailField(max_length=255, unique=True)
 
     def __str__(self):
         return self.email
 
     class Meta:
         db_table = 'email_subscribe'
+
+
+class UserWishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        db_table = 'wishlist'
+        unique_together = ('user', 'name')
+
+    def __str__(self):
+        return self.name
+
+class UserWihslistProduct(models.Model):
+    wishlist = models.ForeignKey(UserWishlist, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'wishlist_product'
+        unique_together = ('wishlist', 'product')
+
+    def __str__(self):
+        return self.product.name
