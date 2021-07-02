@@ -26,5 +26,5 @@ class SubCategory(models.Model):
         verbose_name = "Sub Category"
         verbose_name_plural = "Sub Categories"
         db_table = 'sub_category'
-        unique_together = ('department', 'category', 'name')
+        unique_together = ('category', 'name')
         ordering = ['display_order']

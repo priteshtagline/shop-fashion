@@ -1,5 +1,4 @@
 from django.db import models
-from colorfield.fields import ColorField
 
 
 class HomeCarousel(models.Model):
@@ -14,7 +13,7 @@ class HomeCarousel(models.Model):
     title = models.CharField(max_length=255)
     browse_url = models.URLField(max_length=2000)
     image = models.ImageField(upload_to='carousel/')
-    text_color = ColorField(format='hexa', default='#000000FF')
+    text_color = models.CharField(max_length=255, default='black')
     display_order = models.PositiveIntegerField(
         default=0, blank=False, null=False)
 
