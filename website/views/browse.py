@@ -98,7 +98,7 @@ class BrowseListView(ListView):
         context['filter_colors'] = self.browse_filter_data.annotate(color_name=Lower('color')).values(
             'color_name').annotate(product_count=Count('color_name')).filter(product_count__gt=1).exclude(color_name__exact='')
 
-        context['filter_stors'] = self.browse_filter_data.annotate(brand_name=Lower(
+        context['filter_stors'] = self.browse_filter_data.annotate(merchant_name=Lower(
             'merchant__name')).values('merchant__name').annotate(product_count=Count('merchant__name'))
 
         return context

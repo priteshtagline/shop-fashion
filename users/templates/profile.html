@@ -36,24 +36,37 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="fetures-tab-content p-engement-fetures align-items-baseline">
+                                    <div class="wish-list-selector d-flex border-bottom pb-2">
+                                        <select id="different-wish-list" class="btn rounded-0" aria-expanded="false">
+                                        {% for wishlist in user_wishlist %}
+                                            <option id="{{wishlist.name|title}}" value="{{wishlist.id}}">{{wishlist.name|title}} ({{wishlist.product_count}} item{{ wishlist.product_count|pluralize }})</option>
+                                        {% endfor %}
+                                        </select>
+                                        <!-- <p class="mb-0 ms-5 align-self-center"><a href="#"
+                                                class="text-decoration-underline">Create new list</a></p> -->
+                                    </div>
+
                                     <div class="wishlist-products">
-                                        <h4>Wish list</h4>
+                                        <h4 class="d-inline-block" id="wish-list-title" style="padding-right:10px;"></h4> 
+                                        <a id="remove-wishlist" style="display:none;"><i class="fal fa-trash-alt"></i></a>
                                         <ul class="product-list d-flex justify-content-evenly">
-                                            {% for wishlist_product in user.wishlist_product.all %}
-                                            <li class="product-item">
-                                                <a href="{% url 'website:product' wishlist_product.title|slugify wishlist_product.id %}" target="_blank">
+
+                                            {% for wishlist_product in user_wishlist_product %}
+                                            <li class="product-item wishlist_{{wishlist_product.wishlist_id}} wishlist_record_{{wishlist_product.id}}" style="display:none">
+                                                <a href="{% url 'website:product' wishlist_product.product.title|slugify wishlist_product.product.id %}" target="_blank">
                                                     <div class="card position-relative" style="width: 18rem;">
-                                                        <img src="{{wishlist_product.image1.url}}"
-                                                            class="card-img-top" alt="{{wishlist_product.image1.url}}">
+                                                        <img src="{{wishlist_product.product.image1.url}}"
+                                                            class="card-img-top" alt="{{wishlist_product.product.image1.url}}">
                                                         <div class="card-body">
                                                             <a class="position-absolute remove-whishlist" value="{{wishlist_product.id}}"><i class="fal fa-trash-alt"></i></a>
-                                                            <p class="card-text text-center">{{ wishlist_product.title|title }}
+                                                            <p class="card-text text-center">{{ wishlist_product.product.title|title }}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </li>
                                             {% endfor %}
+
                                         </ul>
                                     </div>
                                 </div>
@@ -255,11 +268,12 @@
 
         $(document).on('click', '.remove-whishlist', function (e) {
             e.preventDefault();
+            wishlist_record_id = $(this).attr('value');
             $.ajax({
                 url: "{% url 'website:wishlist' %}",
                 method: 'POST',
                 data: {
-                    'product_id' : $(this).attr('value'),
+                    'wishlist_record_id' : wishlist_record_id,
                     'wishlist_type' : 'remove'
                 },
                 dataType: 'JSON',
@@ -268,13 +282,58 @@
                 },
                 success: function (data) {
                     if (data.status) {
-                       window.location.reload();
+                        $('.wishlist_record_'+wishlist_record_id).html('');
                     }   
                 },
                 error: function (data) {
                     console.log(data);
                 },
             });
+        });
+
+        $(document).on('click', '#remove-wishlist', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{% url 'website:wishlist' %}",
+                method: 'POST',
+                data: {
+                    'wishlist_id' : $('#different-wish-list').val(),
+                    'wishlist_type' : 'remove_wishlist'
+                },
+                dataType: 'JSON',
+                headers: {
+                    "X-CSRFToken": $("[name=csrfmiddlewaretoken]").val()
+                },
+                success: function (data) {
+                    if (data.status) {
+                        window.location.reload();
+                    }   
+                },
+                error: function (data) {
+                    console.log(data);
+                },
+            });
+        });
+
+    
+        function customer_wishlist_change(wishlist_id, wishlist_name){
+            $('.product-item').hide();
+            $('.wishlist_'+wishlist_id).show();
+            $('#wish-list-title').html('<u>'+ wishlist_name +'</u>');
+        }
+
+        $(document).ready(function() {
+            customer_wishlist_change($('#different-wish-list').val(), 'Wish List')
+        });
+
+        $(document).on('change', '#different-wish-list', function (e) {
+            wishlist_name = $(this).find("option:selected").attr('id');
+            if(wishlist_name == 'Wish List'){
+                $('#remove-wishlist').hide();
+            }else{
+                $('#remove-wishlist').show();
+            }
+            customer_wishlist_change(this.value, wishlist_name);
         });
     });
 </script>
