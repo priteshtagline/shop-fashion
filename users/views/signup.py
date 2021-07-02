@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from users.forms.signup import UserSignupForm
+from users.models import UserWishlist
 
 
 class UserSignUpView(CreateView):
@@ -30,4 +31,5 @@ class UserSignUpView(CreateView):
             self.request, email=form.cleaned_data['email'], password=form.cleaned_data['password1'])
         if user:
             login(self.request, user)
+            UserWishlist.objects.create(user=user, name='wish list')
             return HttpResponseRedirect(self.get_success_url())
