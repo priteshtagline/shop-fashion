@@ -81,7 +81,7 @@
                                     <div action="#" class="d-flex flex-column">
                                         <h5 class="text-uppercase">Sign-In Info</h5>
                                         <label for="email" class="fw-bold mb-2">Email</label>
-                                        <p id="email" class="m-0">{{user.email}}</p>
+                                        <p id="personl-email" class="m-0">{{user.email}}</p>
                                         <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
                                             data-bs-target="#emailModel">Change
                                             email</a>
@@ -181,7 +181,7 @@
 
                                         <h5 class="text-uppercase mt-5">Personal Info</h5>
                                         <label for="name" class="fw-bold mb-2">Name</label>
-                                        <p id="name" class="m-0">{{user.first_name|default:""}}
+                                        <p id="personl-info" class="m-0">{{user.first_name|default:""}}
                                             {{user.last_name|default:""}}</p>
                                         <a href="#" class="text-decoration-underline fs-6" data-bs-toggle="modal"
                                             data-bs-target="#nameModal">Edit</a>
@@ -245,8 +245,17 @@
                     "X-CSRFToken": form.find("[name=csrfmiddlewaretoken]").val()
                 },
                 success: function (data) {
+                    console.log(data);
                     if (data.status) {
-                        location.reload();
+                        if(form.find("input[name='personal_info_change_form']").length){
+                            $('#nameModal').modal("hide");
+                            $('#personl-info').html(data.massage);
+                        }else if (form.find("input[name='email_change_form']").length){
+                            $('#emailModel').modal("hide");
+                            $('#personl-email').html(data.massage);
+                        }else{
+                            $('#passwordModal').modal("hide");
+                        }
                     } else {
                         form.find(":input").each(function () {
                             $(this).css({

@@ -38,11 +38,13 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         form_data = request.POST
         user = self.request.user
+        massage = ''
         if 'first_name' in form_data and 'last_name' in form_data:
             personal_info_change_form = UserPersonalInfoChnageForm(
                 user, form_data)
             if personal_info_change_form.is_valid():
                 personal_info_change_form.save()
+                massage = form_data['first_name']+" "+form_data['last_name']
             else:
                 return JsonResponse({'status': False, 'errors': personal_info_change_form.errors}, status=200)
 
@@ -58,7 +60,8 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
             email_change_form = UserEmailChnageForm(user, form_data)
             if email_change_form.is_valid():
                 email_change_form.save()
+                massage = form_data['new_email']
             else:
                 return JsonResponse({'status': False, 'errors': email_change_form.errors})
 
-        return JsonResponse({"status": True, "errors": ""}, status=200)
+        return JsonResponse({"status": True, "massage": massage}, status=200)
