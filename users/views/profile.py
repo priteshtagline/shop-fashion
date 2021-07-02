@@ -6,6 +6,8 @@ from django.views.generic import TemplateView
 from users.forms.email_change import UserEmailChnageForm
 from users.forms.password_change import UserPasswordChnageForm
 from users.forms.personal_info_chnage import UserPersonalInfoChnageForm
+from users.models import UserWishlist, UserWihslistProduct
+from django.db.models import Count
 
 
 class ProfileUpdateView(LoginRequiredMixin, TemplateView):
@@ -23,6 +25,11 @@ class ProfileUpdateView(LoginRequiredMixin, TemplateView):
             user, initial={'first_name': user.first_name, 'last_name': user.last_name})
         kwargs['password_change_form'] = UserPasswordChnageForm(user)
         kwargs['email_change_form'] = UserEmailChnageForm(user)
+        user_wishlist = UserWishlist.objects.filter(user=user)
+        kwargs['user_wishlist'] = user_wishlist.values(
+            'name', 'id').annotate(product_count=Count('userwihslistproduct'))
+        user_wishlist_ids = [wishlist.id for wishlist in user_wishlist]
+        kwargs['user_wishlist_product'] = UserWihslistProduct.objects.filter(wishlist_id__in=user_wishlist_ids)
         return kwargs
 
     def get(self, request, *args, **kwargs):

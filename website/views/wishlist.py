@@ -1,8 +1,7 @@
 from django.http import JsonResponse
 from django.views import View
-from users.models import UserWishlist
-from users.models import UserWihslistProduct
 from products.models.product import Product
+from users.models import UserWihslistProduct, UserWishlist
 
 
 class WishlistView(View):
@@ -13,6 +12,7 @@ class WishlistView(View):
             user = self.request.user
             get_request = request.POST.get
             wish_list_type = get_request('wishlist_type')
+
             if wish_list_type == 'add':
                 product_id = get_request('product_id')
                 wishlist_name = get_request('wishlist_name').lower()
@@ -28,12 +28,19 @@ class WishlistView(View):
                     UserWihslistProduct.objects.get(
                         wishlist_id=default_wish_list.id, product_id=product_id).delete()
 
-                return JsonResponse({'status': True, 'message': 'Product add in wish list'}, status=200)
+                return JsonResponse({'status': True, 'message': 'Product add in wishlist'}, status=200)
+
             elif wish_list_type == 'remove':
-                UserWihslistProduct.objects.get(id=2).delete()
-                return JsonResponse({'status': True, 'message': 'Product remove for wish list'}, status=200)
+                UserWihslistProduct.objects.get(
+                    id=get_request('wishlist_record_id')).delete()
+                return JsonResponse({'status': True, 'message': 'Product remove for wishlist'}, status=200)
+
+            elif wish_list_type == 'remove_wishlist':
+                UserWishlist.objects.get(
+                    id=get_request('wishlist_id')).delete()
+                return JsonResponse({'status': True, 'message': 'Remove wishlist'}, status=200)
+                
             else:
-                UserWishlist.objects.get(id=5).delete()
-                return JsonResponse({'status': True, 'message': 'Delete wish list'}, status=200)
+                return JsonResponse({'status': False, 'message': 'Something went wrong.'}, status=200)
         except:
             return JsonResponse({'status': False, 'message': 'Product or wishlist not found.'}, status=200)
