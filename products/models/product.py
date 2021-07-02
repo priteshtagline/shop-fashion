@@ -1,5 +1,4 @@
 from django.db import models
-from colorfield.fields import ColorField
 from .merchant import Merchant
 from .category import Category
 from .sub_category import SubCategory
@@ -25,7 +24,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     redirect_url = models.URLField(max_length=2000)
     price = models.FloatField(blank=True, null=True,)
-    color = ColorField(format='hexa', blank=True, null=True)
+    color = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField()
     image1 = models.ImageField(upload_to='product/')
     image2 = models.ImageField(upload_to='product/', null=True, blank=True)
