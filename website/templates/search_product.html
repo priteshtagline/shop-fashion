@@ -64,6 +64,7 @@
                         </div>
                     </div>
 
+                
                     {% if filter_colors %}
                     <div class="accordion-item color">
                         <h2 class="accordion-header" id="headingThree">
@@ -80,9 +81,9 @@
                                     {% for color in filter_colors|order_by:'color_name' %}
                                     <li class="color-item">
                                         <input type="checkbox" class="styled-checkbox" name="color"
-                                            id="{{color.color_name|slice:'1:'}}"
-                                            value="{{color.color_name|slice:'1:'}}"> <label
-                                            for="{{color.color_name|slice:'1:'}}"> {{ color.color_name }}
+                                            id="{{color.color_name}}"
+                                            value="{{color.color_name}}"> <label
+                                            for="{{color.color_name}}"> {{ color.color_name|title }}
                                             ({{ color.product_count }})</label>
                                     </li>
                                     {% endfor %}

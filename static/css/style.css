@@ -123,7 +123,7 @@ select {
     position: absolute;
     z-index: 2;
     top: 35px;
-    left: -20px;
+    left: -160px;
     display: none;
 }
 
@@ -133,6 +133,8 @@ select {
     box-shadow: 0px 0px 30px -3px rgba(0, 0, 0, 0.13);
     -webkit-box-shadow: 0px 0px 30px -3px rgba(0, 0, 0, 0.13);
     -moz-box-shadow: 0px 0px 30px -3px rgba(0, 0, 0, 0.13);
+    height: 50px;
+    width: 360px;
 }
 
 .search-product input[type=submit] {
@@ -941,4 +943,10 @@ select {
 
 .shoplook{
     margin-top: 80px;
+}
+
+.fa-heart{
+    -webkit-text-fill-color: rgba(253, 0, 0, 0.822);
+    -webkit-text-stroke-width: 0.6px;
+    -webkit-text-stroke-color:black;
 }

@@ -59,40 +59,35 @@ class SearchListView(ListView):
                 Q(subcategory__name__iexact=keyword)
             )
 
-        filter_object_list = Product.objects.filter(keyword_filter)
-        if filter_object_list:
+            department_list = Department.objects.values_list('name', flat=True)
+            department_list_lower = [x.lower() for x in department_list]
+
+            for value in keyword.split(' '):
+                if value.lower() not in department_list_lower:
+                    keyword_filter |= (
+                        Q(title__icontains=fr"[[:<:]]{value}[[:>:]]") |
+                        Q(merchant__name__icontains=fr"[[:<:]]{value}[[:>:]]") |
+                        Q(brand__icontains=fr"[[:<:]]{value}[[:>:]]") |
+                        Q(category__name__icontains=fr"[[:<:]]{value}[[:>:]]") |
+                        Q(subcategory__name__icontains=fr"[[:<:]]{value}[[:>:]]")
+                    )
+           
+            filter_object_list = Product.objects.filter(keyword_filter)
+            print(filter_object_list)
+            if filter_object_list:
+                self.search_filter_data = filter_object_list
+                return self.search_filter_data.filter(query_dict)
+
+            keyword_filter = Q()
+            for value in keyword.split(' '):
+                if value.lower() not in department_list_lower:
+                    keyword_filter &= (
+                        Q(description__iregex=fr"[[:<:]]{value}[[:>:]]")
+                    )
+
+            filter_object_list = Product.objects.filter(keyword_filter)
             self.search_filter_data = filter_object_list
             return self.search_filter_data.filter(query_dict)
-
-        department_list = Department.objects.values_list('name', flat=True)
-        department_list_lower = [x.lower() for x in department_list]
-        keyword_filter = Q()
-
-        for value in keyword.split(' '):
-            if value.lower() not in department_list_lower:
-                keyword_filter &= (
-                    Q(title__iregex=fr"[[:<:]]{value}[[:>:]]") |
-                    Q(merchant__name__iexact=value) |
-                    Q(brand__iexact=value) |
-                    Q(category__name__iexact=value) |
-                    Q(subcategory__name__iexact=value)
-                )
-
-        filter_object_list = Product.objects.filter(keyword_filter)
-        if filter_object_list:
-            self.search_filter_data = filter_object_list
-            return self.search_filter_data.filter(query_dict)
-
-        keyword_filter = Q()
-        for value in keyword.split(' '):
-            if value.lower() not in department_list_lower:
-                keyword_filter &= (
-                    Q(description__iregex=fr"[[:<:]]{value}[[:>:]]")
-                )
-
-        filter_object_list = Product.objects.filter(keyword_filter)
-        self.search_filter_data = filter_object_list
-        return self.search_filter_data.filter(query_dict)
 
     def get_context_data(self, **kwargs):
         """Override django generic listview get_context_data method because
