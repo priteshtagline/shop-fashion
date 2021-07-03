@@ -19,6 +19,10 @@
                         aria-controls="wish-list" aria-selected="true">Wish List</a>
                 </li>
                 <li class="nav-item w-100">
+                    <a class="nav-link" id="pills-like-tab" data-toggle="pill" href="#like-list" role="tab"
+                        aria-controls="like-list" aria-selected="false">Like Product List</a>
+                </li>
+                <li class="nav-item w-100">
                     <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#personal-info" role="tab"
                         aria-controls="personal-info" aria-selected="false">Password &
                         Personal Info.</a>
@@ -60,6 +64,41 @@
                                                         <div class="card-body">
                                                             <a class="position-absolute remove-whishlist" value="{{wishlist_product.id}}"><i class="fal fa-trash-alt"></i></a>
                                                             <p class="card-text text-center">{{ wishlist_product.product.title|title }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="tab-pane fade" id="like-list" role="tabpanel"
+                        aria-labelledby="pills-like-tab">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="fetures-tab-content p-engement-fetures align-items-baseline">
+                                    <div class="wish-list-selector d-flex border-bottom">
+                                        <h4>Like Product List</h4>
+                                    </div>
+
+                                    <div class="wishlist-products pt-1">
+                                        <ul class="product-list d-flex justify-content-evenly">
+
+                                            {% for like_product in user.like_product.all %}
+                                            <li>
+                                                <a href="{% url 'website:product' like_product.title|slugify like_product.id %}" target="_blank">
+                                                    <div class="card position-relative" style="width: 18rem;">
+                                                        <img src="{{like_product.image1.url}}"
+                                                            class="card-img-top" alt="{{like_product.image1.url}}">
+                                                        <div class="card-body">
+                                                            <p class="card-text text-center">{{ like_product.title|title }}
                                                             </p>
                                                         </div>
                                                     </div>
