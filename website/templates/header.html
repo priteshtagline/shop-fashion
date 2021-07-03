@@ -42,7 +42,7 @@
                 <div class="search-product">
                     <a class="nav-link search-link" href="#search-box"><i class="fal fa-search"></i> Search</a>
                     <form action="{% url 'website:search_product' %}" id="search-box">
-                        <input type="search" name="keyword" class="rounded-0 border-0 search-place"
+                        <input type="search" name="keyword" required class="rounded-0 border-0 search-place"
                             value="{{search_keyword}}" placeholder="search">
                         <input type="submit" value="Go" class="d-none go-btn">
                     </form>
