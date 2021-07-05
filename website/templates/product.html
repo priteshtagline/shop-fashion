@@ -52,37 +52,12 @@
 
                 <p>{{product.description|linebreaks}}</p>
 
-                <!-- <div class="color my-4">
-                    <ul class="colors-list d-flex">
-                        <li class="color-item">
-                            <div class="color">
-                                <a href="#"><img src="{% static 'images/color-1.png' %}" alt="color-1"></a>
-                            </div>
-                        </li>
-                        <li class="color-item">
-                            <div class="color">
-                                <a href="#"><img src="{% static 'images/color-2.png' %}" alt="color-2"></a>
-                            </div>
-                        </li>
-                        <li class="color-item">
-                            <div class="color">
-                                <a href="#"><img src="{% static 'images/color-3.png' %}" alt="color-3"></a>
-                            </div>
-                        </li>
-                        <li class="color-item">
-                            <div class="color">
-                                <a href="#"><img src="{% static 'images/color-4.png' %}" alt="color-4"></a>
-                            </div>
-                        </li>
-                    </ul>
-                </div> -->
-
                 <a href="{{product.redirect_url}}" target="_blank" class="btn btn-dark rounded-0 my-5 buy-now-btn">Buy
                     now from {{product.merchant}}</a>
-                <!-- <a class="wish-list-link text-decoration-underline d-block" value={{product.id}}>+ Add to Whish
-                    List</a> -->
 
-                <button type="button" class="btn btn-primary d-block wishlist-btn" data-bs-toggle="modal"
+                <button type="button"
+                    class="btn btn-primary d-block wish-list-link text-decoration-underline wishlist-btn"
+                    data-bs-toggle="modal"
                     data-bs-target="#exampleModal">
                     + Add to Wish list
                 </button>
