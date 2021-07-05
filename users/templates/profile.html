@@ -42,28 +42,38 @@
                                 <div class="fetures-tab-content p-engement-fetures align-items-baseline">
                                     <div class="wish-list-selector d-flex border-bottom pb-2">
                                         <select id="different-wish-list" class="btn rounded-0" aria-expanded="false">
-                                        {% for wishlist in user_wishlist %}
-                                            <option id="{{wishlist.name|title}}" value="{{wishlist.id}}">{{wishlist.name|title}} ({{wishlist.product_count}} item{{ wishlist.product_count|pluralize }})</option>
-                                        {% endfor %}
+                                            {% for wishlist in user_wishlist %}
+                                            <option id="{{wishlist.name|title}}" value="{{wishlist.id}}">
+                                                {{wishlist.name|title}} ({{wishlist.product_count}}
+                                                item{{ wishlist.product_count|pluralize }})</option>
+                                            {% endfor %}
                                         </select>
                                         <!-- <p class="mb-0 ms-5 align-self-center"><a href="#"
                                                 class="text-decoration-underline">Create new list</a></p> -->
                                     </div>
 
                                     <div class="wishlist-products">
-                                        <h4 class="d-inline-block" id="wish-list-title" style="padding-right:10px;"></h4> 
-                                        <a id="remove-wishlist" style="display:none;"><i class="fal fa-trash-alt"></i></a>
+                                        <h4 class="d-inline-block" id="wish-list-title" style="padding-right:10px;">
+                                        </h4>
+                                        <a id="remove-wishlist" style="display:none;"><i
+                                                class="fal fa-trash-alt"></i></a>
                                         <ul class="product-list d-flex justify-content-evenly">
 
                                             {% for wishlist_product in user_wishlist_product %}
-                                            <li class="product-item wishlist_{{wishlist_product.wishlist_id}} wishlist_record_{{wishlist_product.id}}" style="display:none">
-                                                <a href="{% url 'website:product' wishlist_product.product.title|slugify wishlist_product.product.id %}" target="_blank">
+                                            <li class="product-item wishlist_{{wishlist_product.wishlist_id}} wishlist_record_{{wishlist_product.id}}"
+                                                style="display:none">
+                                                <a href="{% url 'website:product' wishlist_product.product.title|slugify wishlist_product.product.id %}"
+                                                    target="_blank">
                                                     <div class="card position-relative" style="width: 18rem;">
                                                         <img src="{{wishlist_product.product.image1.url}}"
-                                                            class="card-img-top" alt="{{wishlist_product.product.image1.url}}">
+                                                            class="card-img-top"
+                                                            alt="{{wishlist_product.product.image1.url}}">
                                                         <div class="card-body">
-                                                            <a class="position-absolute remove-whishlist" value="{{wishlist_product.id}}"><i class="fal fa-trash-alt"></i></a>
-                                                            <p class="card-text text-center">{{ wishlist_product.product.title|title }}
+                                                            <a class="position-absolute remove-whishlist-product"
+                                                                value="{{wishlist_product.id}}"><i
+                                                                    class="fal fa-trash-alt"></i></a>
+                                                            <p class="card-text text-center">
+                                                                {{ wishlist_product.product.title|title }}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -79,8 +89,7 @@
                     </div>
 
 
-                    <div class="tab-pane fade" id="like-list" role="tabpanel"
-                        aria-labelledby="pills-like-tab">
+                    <div class="tab-pane fade" id="like-list" role="tabpanel" aria-labelledby="pills-like-tab">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="fetures-tab-content p-engement-fetures align-items-baseline">
@@ -93,12 +102,14 @@
 
                                             {% for like_product in user.like_product.all %}
                                             <li>
-                                                <a href="{% url 'website:product' like_product.title|slugify like_product.id %}" target="_blank">
+                                                <a href="{% url 'website:product' like_product.title|slugify like_product.id %}"
+                                                    target="_blank">
                                                     <div class="card position-relative" style="width: 18rem;">
-                                                        <img src="{{like_product.image1.url}}"
-                                                            class="card-img-top" alt="{{like_product.image1.url}}">
+                                                        <img src="{{like_product.image1.url}}" class="card-img-top"
+                                                            alt="{{like_product.image1.url}}">
                                                         <div class="card-body">
-                                                            <p class="card-text text-center">{{ like_product.title|title }}
+                                                            <p class="card-text text-center">
+                                                                {{ like_product.title|title }}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -270,119 +281,9 @@
 {% endblock %}
 
 {% block custom_js %}
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(document).on('submit','form.profile-form',function(e){
-            form = $(this);
-            e.preventDefault();
-            $.ajax({
-                url: "{% url 'user:profile' %}",
-                method: 'post',
-                data: form.serialize(),
-                dataType: 'json',
-                headers: {
-                    "X-CSRFToken": form.find("[name=csrfmiddlewaretoken]").val()
-                },
-                success: function (data) {
-                    console.log(data);
-                    if (data.status) {
-                        if(form.find("input[name='personal_info_change_form']").length){
-                            $('#nameModal').modal("hide");
-                            $('#personl-info').html(data.massage);
-                        }else if (form.find("input[name='email_change_form']").length){
-                            $('#emailModel').modal("hide");
-                            $('#personl-email').html(data.massage);
-                        }else{
-                            $('#passwordModal').modal("hide");
-                        }
-                    } else {
-                        form.find(":input").each(function () {
-                            $(this).css({
-                                'border': '1px solid black'
-                            }).next('p').remove();
-                        })
-                        $.each(data.errors, function (key, value) {
-                            form.find("#id_" + key).css({
-                                'border': '1px solid red'
-                            }).after('<p class="error m-0">' + value + '</p>');
-                        });
-                    }
-                },
-                error: function (data) {
-                    console.log(data);
-                },
-            });
-        });
-
-        $(document).on('click', '.remove-whishlist', function (e) {
-            e.preventDefault();
-            wishlist_record_id = $(this).attr('value');
-            $.ajax({
-                url: "{% url 'website:wishlist' %}",
-                method: 'POST',
-                data: {
-                    'wishlist_record_id' : wishlist_record_id,
-                    'wishlist_type' : 'remove'
-                },
-                dataType: 'JSON',
-                headers: {
-                    "X-CSRFToken": $("[name=csrfmiddlewaretoken]").val()
-                },
-                success: function (data) {
-                    if (data.status) {
-                        $('.wishlist_record_'+wishlist_record_id).html('');
-                    }   
-                },
-                error: function (data) {
-                    console.log(data);
-                },
-            });
-        });
-
-        $(document).on('click', '#remove-wishlist', function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: "{% url 'website:wishlist' %}",
-                method: 'POST',
-                data: {
-                    'wishlist_id' : $('#different-wish-list').val(),
-                    'wishlist_type' : 'remove_wishlist'
-                },
-                dataType: 'JSON',
-                headers: {
-                    "X-CSRFToken": $("[name=csrfmiddlewaretoken]").val()
-                },
-                success: function (data) {
-                    if (data.status) {
-                        window.location.reload();
-                    }   
-                },
-                error: function (data) {
-                    console.log(data);
-                },
-            });
-        });
-
-    
-        function customer_wishlist_change(wishlist_id, wishlist_name){
-            $('.product-item').hide();
-            $('.wishlist_'+wishlist_id).show();
-            $('#wish-list-title').html('<u>'+ wishlist_name +'</u>');
-        }
-
-        $(document).ready(function() {
-            customer_wishlist_change($('#different-wish-list').val(), 'Wish List')
-        });
-
-        $(document).on('change', '#different-wish-list', function (e) {
-            wishlist_name = $(this).find("option:selected").attr('id');
-            if(wishlist_name == 'Wish List'){
-                $('#remove-wishlist').hide();
-            }else{
-                $('#remove-wishlist').show();
-            }
-            customer_wishlist_change(this.value, wishlist_name);
-        });
-    });
+<script>
+    const user_profile_url = "{% url 'user:profile' %}";
+    const wishlist_url = "{% url 'website:wishlist' %}";
 </script>
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
