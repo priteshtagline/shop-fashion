@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    function wishlist_update(wishlist_name, remove_wishlist) {
+    function wishlist_update(wishlist_name, remove_wishlist, wishlist_url) {
         $.ajax({
             url: wishlist_url,
             method: 'POST',
@@ -15,12 +15,14 @@ $(document).ready(function () {
             },
             success: function (data) {
                 if (data.status) {
-                    $("#exampleModal").modal("hide");
+                    if (wishlist_name != 'wish list'){
+                        $("#exampleModal").modal("hide");
+                    }
                 } else {
                     $('#new-wish-list-name').after('<p class="text-danger" style="padding-left:30px">' +
                         data.message + '</p>')
                     if (data.message == 'login_required') {
-                        window.location = "{% url 'user:login' %}?next={{request.path}}";
+                        window.location = login_url;
                     }
                 }
             },
@@ -46,7 +48,7 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.wishlist-btn', function (e) {
-        wishlist_update('wish list', 'False');
+        wishlist_update('wish list', 'False', wishlist_url);
     });
 
     $(document).on('click', '.wishlist-btn-move', function (e) {
@@ -57,7 +59,7 @@ $(document).ready(function () {
             wish_list_name = $("#new-wish-list-name").val();
             wish_list_name == '' ? $("#new-wish-list-name").css('border', '1px solid red') : wishlist_update(wish_list_name, 'True');;
         } else {
-            wishlist_update(wish_list_name, 'True');
+            wishlist_update(wish_list_name, 'True', wishlist_url);
         }
     });
 

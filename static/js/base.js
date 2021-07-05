@@ -52,7 +52,7 @@
                  selector_heart.toggleClass('far');
              } else {
                  if (data.message == 'login_required') {
-                     window.location = "{% url 'user:login' %}?next={{request.path}}";
+                    window.location = login_url;
                  }
              }
          },
