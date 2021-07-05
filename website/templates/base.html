@@ -42,83 +42,22 @@
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <script src="{% static 'js/masonry.pkgd.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.lazy.min.js' %}"></script>
-    
+
     {% block exrta-js-file %}
     {% endblock %}
 
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
 
-   
+    <script>
+        const email_subscribe_url = '{% url "user:email_subscribe" %}';
+        const like_product_url = '{% url "website:like_product" %}';
+    </script>
 
     {% block custom_js %}
     {% endblock %}
 
-    <script type="text/javascript">
-        $(function() {
-            $('.lazy').Lazy({ 
-                effect: 'show',
-            });
-        });
-
-        $(document).ready(function () {
-            $(document).on('submit', 'form.email-subscribe-form', function (e) {
-                form = $(this);
-                e.preventDefault();
-                $.ajax({
-                    url: "{% url 'user:email_subscribe' %}",
-                    method: 'POST',
-                    data: form.serialize(),
-                    dataType: 'JSON',
-                    headers: {
-                        "X-CSRFToken": form.find("[name=csrfmiddlewaretoken]").val()
-                    },
-                    success: function (data) {
-                        if (data.status) {
-                            form.find("p").empty().show().html(data.message).delay(1500).fadeOut(300);
-                            setTimeout(function () {
-                                form.find("input[type=email]").val("");
-                            }, 1500);
-                        }
-                    },
-                    error: function (data) {
-                        console.log(data);
-                    },
-                });
-            });
-        });
-    
-        $(document).on('click', '.like-product', function (e) {
-            e.preventDefault();
-            selector_heart = $(this).find('i')
-            like_action = $.inArray('far', selector_heart.attr('class').split(' ')) != -1 ? 'add' : 'remove'
-            $.ajax({
-                url: "{% url 'website:like_product' %}",
-                method: 'POST',
-                data: {
-                    'product_id' : $(this).attr('value'),
-                    'like_action' : like_action
-                },
-                dataType: 'JSON',
-                headers: {
-                    "X-CSRFToken": $("[name=csrfmiddlewaretoken]").val()
-                },
-                success: function (data) {
-                    if (data.status) {
-                        selector_heart.toggleClass('fa');
-                        selector_heart.toggleClass('far');
-                    }else{
-                        if (data.message == 'login_required'){
-                            window.location = "{% url 'user:login' %}?next={{request.path}}";
-                        }
-                    }
-                },
-                error: function (data) {
-                    console.log(data);
-                },
-            });
-        });
-    </script>
+    <script src="{% static 'js/base.js' %}"></script>
 
 </body>
 
