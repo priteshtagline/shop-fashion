@@ -65,15 +65,15 @@ class SearchListView(ListView):
             for value in keyword.split(' '):
                 if value.lower() not in department_list_lower:
                     keyword_filter |= (
+                        Q(label__icontains=value) |
                         Q(title__icontains=fr"[[:<:]]{value}[[:>:]]") |
                         Q(merchant__name__icontains=fr"[[:<:]]{value}[[:>:]]") |
                         Q(brand__icontains=fr"[[:<:]]{value}[[:>:]]") |
-                        Q(category__name__icontains=fr"[[:<:]]{value}[[:>:]]") |
-                        Q(subcategory__name__icontains=fr"[[:<:]]{value}[[:>:]]")
+                        Q(category__name__icontains=value) |
+                        Q(subcategory__name__icontains=value)
                     )
-           
+            
             filter_object_list = Product.objects.filter(keyword_filter)
-            print(filter_object_list)
             if filter_object_list:
                 self.search_filter_data = filter_object_list
                 return self.search_filter_data.filter(query_dict)
