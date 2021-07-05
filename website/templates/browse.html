@@ -2,7 +2,7 @@
 {% load static %}
 {% load static admin_tags %}
 
-{% block title %} {{ view.kwargs.department|title }}'s
+{% block title %} {{ view.kwargs.department|title }}'s {% if not ',' in  request.GET.brand %}{{request.GET.brand}}{% endif %}
 {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %} |
 {{block.super}} {% endblock %}
 
@@ -31,7 +31,7 @@
                                     <li class="collections-item">
                                         <label> <a
                                                 href="{{ request.path }}{{ category|lower }}?{{request.GET.urlencode}}">{{category|title}}
-                                                ({{ sub_category.total_product }})</a></label>
+                                                ({{ category.total_product }})</a></label>
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -169,11 +169,10 @@
                         </ol>
                     </nav>
                     <div class="product-catalouge">
-                        <h4 class="fw-bold">{{ view.kwargs.department|title }}'s
-                            {% firstof view.kwargs.subcategory|default_if_none:""|title view.kwargs.category|default_if_none:""|title "" %}
+                        <h4 class="fw-bold">{{ view.kwargs.department|title }}'s {% if not ',' in  request.GET.brand %}{{request.GET.brand}}{% endif %}
+                            {% firstof view.kwargs.subcategory|default_if_none:""|title  view.kwargs.category|default_if_none:""|title "" %}
                         </h4>
                         <p>{{ page_obj.paginator.count }} item{{ page_obj.paginator.count|pluralize }}</p>
-                        <!-- <i class="{% if product in user_liked_product %}fa{% else %}far{% endif %}fa-heart"></i> -->
                         <div class="products">
                             <ul class="product-list d-flex justify-content-evenly">
                                 {% for product in products %}
