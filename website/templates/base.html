@@ -52,6 +52,7 @@
     <script>
         const email_subscribe_url = '{% url "user:email_subscribe" %}';
         const like_product_url = '{% url "website:like_product" %}';
+        const login_url = '{% url "user:login" %}?next={{request.path}}';
     </script>
 
     {% block custom_js %}
