@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    function wishlist_update(wishlist_name, remove_wishlist, wishlist_url) {
+    function wishlist_update(wishlist_name, wishlist_url) {
         $.ajax({
             url: wishlist_url,
             method: 'POST',
@@ -7,7 +7,6 @@ $(document).ready(function () {
                 'wishlist_type': 'add',
                 'product_id': product_id,
                 'wishlist_name': wishlist_name,
-                'remove_wishlist': remove_wishlist,
             },
             dataType: 'JSON',
             headers: {
@@ -48,7 +47,7 @@ $(document).ready(function () {
 
 
     $(document).on('click', '.wishlist-btn', function (e) {
-        wishlist_update('wish list', 'False', wishlist_url);
+        wishlist_update('wish list', wishlist_url);
     });
 
     $(document).on('click', '.wishlist-btn-move', function (e) {
@@ -57,9 +56,9 @@ $(document).ready(function () {
             $('#new-wish-list-name').after('<p class="text-danger" style="padding-left:30px">select at list one wihslist</p>');
         } else if (wish_list_name == 0) {
             wish_list_name = $("#new-wish-list-name").val();
-            wish_list_name == '' ? $("#new-wish-list-name").css('border', '1px solid red') : wishlist_update(wish_list_name, 'True');;
+            wish_list_name == '' ? $("#new-wish-list-name").css('border', '1px solid red') : wishlist_update(wish_list_name, wishlist_url);;
         } else {
-            wishlist_update(wish_list_name, 'True', wishlist_url);
+            wishlist_update(wish_list_name, wishlist_url);
         }
     });
 
