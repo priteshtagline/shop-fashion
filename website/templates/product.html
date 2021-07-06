@@ -24,13 +24,11 @@
                 <div class="product-images">
                     <div class="thumbs">
                         <div id="pr_item_gallery" class="product_gallery_item">
-                            <a href="#" class="product_gallery_item active" data-image="{{product.image1.url}}"
-                                data-zoom-image="{{product.image1.url}}">
+                            <a href="#" class="product_gallery_item active" data-image="{{product.image1.url}}">
                                 <img src="{{product.image1.url}}" alt="main-image" class="img-fluid">
                             </a>
                             {% if product.image2 %}
-                            <a href="#" class="product_gallery_item" data-image="{{product.image2.url}}"
-                                data-zoom-image="{{product.image2.url}}">
+                            <a href="#" class="product_gallery_item" data-image="{{product.image2.url}}">
                                 <img src="{{product.image2.url}}" alt="main-image" class="img-fluid">
                             </a>
                             {% endif %}
@@ -41,7 +39,7 @@
             <div class="col-md-5 order-xl-2 order-lg-2 order-md-2 order-sm-0 order-0">
                 <div class="text-center">
                     <div class="col-md-12 order-xl-2 order-lg-2 order-md-0 order-sm-0 order-0 big-images">
-                        <img id="product_imgz" src="{{product.image1.url}}" data-zoom-image="{{product.image1.url}} "
+                        <img id="product_img" src="{{product.image1.url}}" data-zoom-image="{{product.image1.url}}"
                             alt="product_img1" />
                     </div>
                 </div>
@@ -57,8 +55,7 @@
 
                 <button type="button"
                     class="btn btn-primary d-block wish-list-link text-decoration-underline wishlist-btn"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">
                     + Add to Wish list
                 </button>
 
@@ -78,18 +75,18 @@
                                         <img src="{{product.image1.url}}" alt="{{product.image1.url}}">
                                     </div>
                                     <h6 class='text-center py-2'>{{product.title}}</h6>
-                                    
+
                                     <div class="tab-pane fade py-0" id="nav-home" role="tabpanel"
                                         aria-labelledby="nav-home-tab">
                                         <p class="mb-1">Choose wish list</p>
                                         <form class="wish-list-info flex-column p-1">
                                             {% csrf_token %}
                                             {% for wishlist in customer_wishlits %}
-                                                <div class="form-group">
-                                                    <input type="radio" class="styled-radio" name="wish-list-name"
-                                                        id="{{wishlist.name}}" value="{{wishlist.name}}">
-                                                    <label for="{{wishlist.name}}">{{wishlist.name|title}}</label>
-                                                </div>
+                                            <div class="form-group">
+                                                <input type="radio" class="styled-radio" name="wish-list-name"
+                                                    id="{{wishlist.name}}" value="{{wishlist.name}}">
+                                                <label for="{{wishlist.name}}">{{wishlist.name|title}}</label>
+                                            </div>
                                             {% endfor %}
                                             <div class="form-group">
                                                 <input type="radio" class="styled-radio" name="wish-list-name"
@@ -107,8 +104,9 @@
                                 <ul class="nav nav-pills mb-3 flex-column text-center w-100 move-wish-list-btn"
                                     id="pills-tab" role="tablist">
                                     <li>
-                                        <button class="active position-absolute back-modal-btn" style="visibility:hidden">
-                                        <i class="fal fa-chevron-left"></i>  Back</button>
+                                        <button class="active position-absolute back-modal-btn"
+                                            style="visibility:hidden">
+                                            <i class="fal fa-chevron-left"></i> Back</button>
                                     </li>
                                     <div class="move-diffrent-wishlist">
                                         <li class="nav-item py-1">
@@ -116,7 +114,9 @@
                                                 data-bs-dismiss="modal">Close</button>
                                         </li>
                                         <li class="nav-item py-1" role="presentation">
-                                            <button class="btn btn-outline-dark w-100 rounded-0 move-diffrent-wishlist-btn">Move to a
+                                            <button
+                                                class="btn btn-outline-dark w-100 rounded-0 move-diffrent-wishlist-btn">Move
+                                                to a
                                                 different wish list</button>
                                         </li>
                                     </div>
