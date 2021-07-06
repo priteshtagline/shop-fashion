@@ -50,11 +50,11 @@
 
                 <p>{{product.description|linebreaks}}</p>
 
-                <a href="{{product.redirect_url}}" target="_blank" class="btn btn-dark rounded-0 my-5 buy-now-btn">Buy
+                <a href="{{product.redirect_url}}" target="_blank" class="btn btn-dark rounded-0 my-3 buy-now-btn">Buy
                     now from {{product.merchant}}</a>
 
                 <button type="button"
-                    class="btn btn-primary d-block wish-list-link text-decoration-underline wishlist-btn"
+                    class="btn btn-primary d-block wish-list-link text-decoration-underline wishlist-btn px-0"
                     data-bs-toggle="modal" data-bs-target="#exampleModal">
                     + Add to Wish list
                 </button>
@@ -149,11 +149,14 @@
                     <div class="recomended-item">
                         <a href="{% url 'website:product' similer_product.title|slugify similer_product.id %}"
                             target="_blank">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card position-relative" style="width: 18rem;">
                                 <img src="{{similer_product.image1.url}}" class="card-img-top img-fluid"
                                     alt="product-1">
                                 <div class="card-body">
-                                    <p class="card-text">{{similer_product.title}}</p>
+                                    <a class="position-absolute like-product"
+                                        style="margin-top: 0px; margin-right: 30px;" value="{{similer_product.id}}"><i
+                                            class="{% if similer_product in user_liked_product %}fa{% else %}far{% endif %} fa-heart"></i></a>
+                                    <p class="card-text text-center">{{similer_product.title}}</p>
                                 </div>
                             </div>
                         </a>
@@ -176,11 +179,15 @@
                     <div class="recomended-item">
                         <a href="{% url 'website:product' recommended_product.title|slugify recommended_product.id %}"
                             target="_blank">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card position-relative" style="width: 18rem;">
                                 <img src="{{recommended_product.image1.url}}" class="card-img-top img-fluid"
-                                    alt="product-1">
+                                    alt="{{recommended_product.image1.url}}">
                                 <div class="card-body">
-                                    <p class="card-text">{{recommended_product.title}}</p>
+                                    <a class="position-absolute like-product"
+                                        style="margin-top: 0px; margin-right: 30px;"
+                                        value="{{recommended_product.id}}"><i
+                                            class="{% if recommended_product in user_liked_product %}fa{% else %}far{% endif %} fa-heart"></i></a>
+                                    <p class="card-text text-center">{{recommended_product.title}}</p>
                                 </div>
                             </div>
                         </a>
@@ -202,10 +209,13 @@
                     <div class="recomended-item">
                         <a href="{% url 'website:product' vtov_product.title|slugify vtov_product.id %}"
                             target="_blank">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card position-relative" style="width: 18rem;">
                                 <img src="{{vtov_product.image1.url}}" class="card-img-top img-fluid" alt="product-1">
                                 <div class="card-body">
-                                    <p class="card-text">{{vtov_product.title}}</p>
+                                    <a class="position-absolute like-product"
+                                        style="margin-top: 0px; margin-right: 30px;" value="{{vtov_product.id}}"><i
+                                            class="{% if vtov_product in user_liked_product %}fa{% else %}far{% endif %} fa-heart"></i></a>
+                                    <p class="card-text text-center">{{vtov_product.title}}</p>
                                 </div>
                             </div>
                         </a>
