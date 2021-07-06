@@ -21,7 +21,7 @@ class WishlistView(View):
                 UserWihslistProduct.objects.get_or_create(
                     wishlist_id=wishlist.id, product_id=product_id)
 
-                if get_request('remove_wishlist') == 'True':
+                if wishlist_name != 'wish list':
                     default_wish_list, created = UserWishlist.objects.get_or_create(
                         user_id=user.id, name='wish list')
                     print(default_wish_list.id)
