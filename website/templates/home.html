@@ -44,7 +44,7 @@
             <div class="recomended-products">
                 <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
                     data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
-                    data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
+                    data-responsive='{"0":{"items": "1"}, "575":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for product in campaign.products.all %}
                     <div class="recomended-item">
                         <a href="{% url 'website:product' product.title|slugify product.id %}" target="_blank">
