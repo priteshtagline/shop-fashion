@@ -144,7 +144,7 @@
                 <h4 class="fw-bold text-center">Similar Products</h4>
                 <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
                     data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
-                    data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
+                    data-responsive='{"0":{"items": "1"}, "575":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for similer_product in similer_products%}
                     <div class="recomended-item">
                         <a href="{% url 'website:product' similer_product.title|slugify similer_product.id %}"
@@ -174,7 +174,7 @@
                 <h4 class="fw-bold text-center">Recommended Products</h4>
                 <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
                     data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
-                    data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
+                    data-responsive='{"0":{"items": "1"}, "575":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for recommended_product in recommended_products%}
                     <div class="recomended-item">
                         <a href="{% url 'website:product' recommended_product.title|slugify recommended_product.id %}"
@@ -204,7 +204,7 @@
                 <h4 class="fw-bold text-center">People also view this Products</h4>
                 <div class="text-center recomended-list carousel_slider owl-carousel owl-theme" data-dots="false"
                     data-nav="true" data-margin="10" data-loop="true" data-autoplay="true"
-                    data-responsive='{"0":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
+                    data-responsive='{"0":{"items": "1"}, "575":{"items": "1"}, "767":{"items": "2"}, "1199":{"items": "4"}, "1799":{"items": "6"}}'>
                     {% for vtov_product in vtov_products%}
                     <div class="recomended-item">
                         <a href="{% url 'website:product' vtov_product.title|slugify vtov_product.id %}"

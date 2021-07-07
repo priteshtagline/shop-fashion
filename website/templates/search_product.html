@@ -97,11 +97,15 @@
             </div>
 
             <div class="col-md-9 browse-page ms-auto">
+                <div id="overlay"></div>
+
                 <div class="browse-content">
                     <div class="product-catalouge mt-4">
                         <h4 class="fw-bold">
                             You searched for "{{ request.GET.keyword }}"
                         </h4>
+                        <a href="#" data-activates="slide-out" class="button-collapse d-lg-none filter-btn"><i
+                                class="fas fa-filter pe-2"></i>Filter</a>
                         <p>{{ page_obj.paginator.count }} item{{ page_obj.paginator.count|pluralize }}</p>
                         <div class="products">
                             <ul class="product-list d-flex justify-content-evenly">
