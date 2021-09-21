@@ -35,7 +35,26 @@
         {% endblock %}
     {% endwith %}
 
-    {% include "footer.html" %}
+    <footer class="pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center subscription">
+                    <h6>Join Our Mailing List</h6>
+
+                    <form method="post" class="email-subscribe-form" class="mt-2">
+                        {% csrf_token %}
+                        <input type="email" name="email_subscribe" autocomplete="off"
+                            placeholder="Enter your email here*" required>
+                        <input type="submit" class="btn-dark" id="submit" value="Subscribe Now" style="width: 124px;">
+                        <p class="text-success m-0 pt-1"></p>
+                    </form>
+                    <p class="mt-4">&copy; <script>
+                            document.write(new Date().getFullYear())
+                        </script> by shopfashion.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
