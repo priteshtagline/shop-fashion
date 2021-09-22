@@ -24,7 +24,7 @@
                             aria-labelledby="panelsStayOpen-headingOne">
                             <div class="accordion-body">
                                 <ul class="collections">
-                                    {% for brand in filter_brands|order_by:'brand_name' %}
+                                    {% for brand in filter_brands %}
                                     <li class="collections-item">
                                         <input type="checkbox" class="styled-checkbox" name="brand"
                                             id="{{ brand.brand_name|title }}"
@@ -50,7 +50,7 @@
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <ul class="collections">
-                                    {% for store in filter_stors|order_by:'merchant__name' %}
+                                    {% for store in filter_stors %}
                                     <li class="collections-item">
                                         <input type="checkbox" class="styled-checkbox" name="store"
                                             id="{{ store.merchant__name }}" value="{{ store.merchant__name }}"> <label
@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                
+
                     {% if filter_colors %}
                     <div class="accordion-item color">
                         <h2 class="accordion-header" id="headingThree">
@@ -78,11 +78,10 @@
                             aria-labelledby="panelsStayOpen-headingThree">
                             <div class="accordion-body">
                                 <ul class="colors-list d-flex">
-                                    {% for color in filter_colors|order_by:'color_name' %}
+                                    {% for color in filter_colors %}
                                     <li class="color-item">
                                         <input type="checkbox" class="styled-checkbox" name="color"
-                                            id="{{color.color_name}}"
-                                            value="{{color.color_name}}"> <label
+                                            id="{{color.color_name}}" value="{{color.color_name}}"> <label
                                             for="{{color.color_name}}"> {{ color.color_name|title }}
                                             ({{ color.product_count }})</label>
                                     </li>
@@ -137,7 +136,8 @@
 
                         <li class="me-auto" {%if not page_obj.has_previous %} style="visibility: hidden;" {% endif %}>
                             {%if page_obj.has_previous %}
-                            <a class="page-link-number" value="{{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <a class="page-link-number" value="{{ page_obj.previous_page_number }}"
+                                aria-label="Previous">
                                 <span aria-hidden="true">&laquo; Prev</span>
                             </a>
                             {% endif %}
@@ -146,27 +146,29 @@
                         <li>
                             <ul class="pagination pagination-sm mx-auto justify-content-center">
                                 {% for n in page_obj.paginator.page_range %}
-                                    {% if page_obj.number|add:'-3' == n %}
-                                    {# First page #}
-                                        <li class="page-item"><a class="page-link page-link-number" value="1">1</a></li>
-                                        {% if n != 1 %}
-                                            <li class="page-item"><a>&#8943;</a></li>
-                                        {% endif %}
-                                    {% elif page_obj.number == n %}
-                                    {# Current page #}
-                                        <li class="page-item active"><a class="page-link page-link-number" value="{{ n }}">{{ n }}</a></li>
-                                    {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
-                                    {# Pages around current page #}
-                                        <li class="page-item"><a class="page-link page-link-number" value="{{ n }}">{{ n }}</a></li>
-                                    {% elif page_obj.number|add:'3' == n %}
-                                    {# Last page #}
-                                        {% if n != num_pages %}
-                                            <li class="page-item"><a>&#8943;</a></li>
-                                        {% endif %}
-                                        <li class="page-item"><a class="page-link page-link-number"
-                                                value="{{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a>
-                                        </li>
-                                    {% endif %}
+                                {% if page_obj.number|add:'-3' == n %}
+                                {# First page #}
+                                <li class="page-item"><a class="page-link page-link-number" value="1">1</a></li>
+                                {% if n != 1 %}
+                                <li class="page-item"><a>&#8943;</a></li>
+                                {% endif %}
+                                {% elif page_obj.number == n %}
+                                {# Current page #}
+                                <li class="page-item active"><a class="page-link page-link-number"
+                                        value="{{ n }}">{{ n }}</a></li>
+                                {% elif page_obj.number|add:'-3' < n and n < page_obj.number|add:'3' %}
+                                {# Pages around current page #}
+                                <li class="page-item"><a class="page-link page-link-number" value="{{ n }}">{{ n }}</a>
+                                </li>
+                                {% elif page_obj.number|add:'3' == n %}
+                                {# Last page #}
+                                {% if n != num_pages %}
+                                <li class="page-item"><a>&#8943;</a></li>
+                                {% endif %}
+                                <li class="page-item"><a class="page-link page-link-number"
+                                        value="{{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages  }}</a>
+                                </li>
+                                {% endif %}
                                 {% endfor %}
                             </ul>
                         </li>
