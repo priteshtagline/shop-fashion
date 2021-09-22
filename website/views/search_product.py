@@ -34,11 +34,11 @@ class SearchListView(ListView):
 
         filter_fields = ('brand', 'store', 'color')
         query_dict = Q()
-        for param in self.request.GET:
-            if param in filter_fields and self.request.GET.get(param):
-                param_value_list = self.request.GET.get(param).split(',')
-                for param_value in param_value_list:
-                    print(param_value)
+        request_param = self.request.GET
+        for param in request_param:
+            param_value_list = request_param.get(param)
+            if param in filter_fields and param_value_list:
+                for param_value in param_value_list.split(','):
                     if param == 'brand':
                         query_dict |= (Q(brand__iexact=param_value))
                     elif param == 'store':
@@ -47,8 +47,8 @@ class SearchListView(ListView):
                         query_dict |= (Q(color__iexact=param_value))
 
         keyword_filter = Q()
-        if 'keyword' in self.request.GET:
-            keyword = self.request.GET.get('keyword').strip()
+        if 'keyword' in request_param:
+            keyword = request_param.get('keyword').lower().strip()
             keyword_filter &= (
                 Q(title__iexact=keyword) |
                 Q(description__iexact=keyword) |
@@ -63,7 +63,7 @@ class SearchListView(ListView):
             department_list_lower = [x.lower() for x in department_list]
 
             for value in keyword.split(' '):
-                if value.lower() not in department_list_lower:
+                if value not in department_list_lower:
                     keyword_filter |= (
                         Q(label__icontains=value) |
                         Q(title__icontains=fr"[[:<:]]{value}[[:>:]]") |
@@ -72,21 +72,19 @@ class SearchListView(ListView):
                         Q(category__name__icontains=value) |
                         Q(subcategory__name__icontains=value)
                     )
-            
-            filter_object_list = Product.objects.filter(keyword_filter)
-            if filter_object_list:
-                self.search_filter_data = filter_object_list
+
+            self.search_filter_data = Product.objects.filter(keyword_filter)
+            if self.search_filter_data:
                 return self.search_filter_data.filter(query_dict)
 
             keyword_filter = Q()
             for value in keyword.split(' '):
-                if value.lower() not in department_list_lower:
+                if value not in department_list_lower:
                     keyword_filter &= (
                         Q(description__iregex=fr"[[:<:]]{value}[[:>:]]")
                     )
 
-            filter_object_list = Product.objects.filter(keyword_filter)
-            self.search_filter_data = filter_object_list
+            self.search_filter_data = Product.objects.filter(keyword_filter)
             return self.search_filter_data.filter(query_dict)
 
     def get_context_data(self, **kwargs):
@@ -103,12 +101,12 @@ class SearchListView(ListView):
         context = super().get_context_data(**kwargs)
 
         context['filter_brands'] = self.search_filter_data.annotate(brand_name=Lower(
-            'brand')).values('brand_name').annotate(product_count=Count('brand_name'))
+            'brand')).values('brand_name').annotate(product_count=Count('brand_name')).order_by('brand_name')
 
         context['filter_colors'] = self.search_filter_data.annotate(color_name=Lower('color')).values(
-            'color_name').annotate(product_count=Count('color_name')).filter(product_count__gt=1).exclude(color_name__exact='')
+            'color_name').annotate(product_count=Count('color_name')).filter(product_count__gt=1).exclude(color_name__exact='').order_by('color_name')
 
         context['filter_stors'] = self.search_filter_data.annotate(brand_name=Lower(
-            'merchant__name')).values('merchant__name').annotate(product_count=Count('merchant__name'))
+            'merchant__name')).values('merchant__name').annotate(product_count=Count('merchant__name')).order_by('merchant__name')
 
         return context

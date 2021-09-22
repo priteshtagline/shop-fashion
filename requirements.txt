@@ -4,6 +4,7 @@ asttokens==2.0.5
 colorama==0.4.4
 Django==3.2.3
 django-admin-sortable2==1.0
+django-debug-toolbar==3.2.2
 django-environ==0.4.5
 django-widget-tweaks==1.4.8
 executing==0.6.0

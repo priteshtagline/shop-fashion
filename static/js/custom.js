@@ -103,37 +103,6 @@ $(document).ready(function () {
         }
     });
 
-    // $('#change-password').submit(function (e) {
-    //     e.preventDefault();
-    //     var current = $('#current-password').val();
-    //     var newPass = $('#new-password').val();
-
-    //     $(".error").remove();
-
-    //     if (current.length < 1) {
-    //         $('#current-password').after('<p class="error m-0">This field is required</p>');
-    //     }
-
-    //     if (newPass.length < 1) {
-    //         $('#new-password').after('<p class="error m-0">This field is required</p>');
-    //     }
-    // });
-
-    // $('#change-name').submit(function (e) {
-    //     e.preventDefault();
-    //     var fname = $('#first-name').val();
-    //     var lname = $('#last-name').val();
-
-    //     $(".error").remove();
-
-    //     if (fname.length < 1) {
-    //         $('#first-name').before('<p class="error m-0">This field is required</p>');
-    //     }
-    //     if (lname.length < 1) {
-    //         $('#last-name').after('<p class="error m-0">This field is required</p>');
-    //     }
-    // });
-
 });
 
 $(document).ready(function () {
@@ -170,7 +139,6 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $(".user-btn").click(function () {
-
         $("body").toggleClass("side-menu-open");
         $('#overlay').fadeToggle("slow", "swing");
 
@@ -292,7 +260,6 @@ $('.filter').affix({
 $(document).ready(function () {
     $(".error").remove();
     $('#current-password').blur(function () //whenever you click off an input element
-
         {
             if (!$('#current-password').val()) { //if it is blank. 
                 $('#current-password').after('<p class="error m-0">This field is required</p>');

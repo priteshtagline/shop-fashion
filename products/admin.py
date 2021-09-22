@@ -38,7 +38,7 @@ class SubCategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     search_fields = ('name', 'department__name', 'category__name')
 
 
-class ProductAdmin(SortableAdminMixin, admin.ModelAdmin):
+class ProductAdmin(admin.ModelAdmin):
     class Media:
         js = ('js/admin_category_custom.js',)
 
